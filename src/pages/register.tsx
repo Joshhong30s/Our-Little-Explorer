@@ -34,7 +34,7 @@ export default function Register() {
   return (
     <div className='relative '>
       <Image
-        src='/register.jpg'
+        src='/mimi2.jpg'
         alt='register'
         fill
         className='inset-0 -z-10 opacity-80 absolute object-cover'

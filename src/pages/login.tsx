@@ -34,7 +34,7 @@ export default function Login() {
   return (
     <div className='relative '>
       <Image
-        src='/login.jpg'
+        src='/mimi2.jpg'
         alt='login'
         fill
         className='inset-0 -z-10 opacity-80 absolute object-cover'

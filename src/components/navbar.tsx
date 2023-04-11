@@ -32,8 +32,8 @@ export default function Navbar() {
                   <Link href='/login'>
                     <Image
                       className='rounded-full border-2 border-yellow-400  drop-shadow-xl mx-auto '
-                      src='/baby1.jpg'
-                      alt='Josh Hong'
+                      src='/cat.jpg'
+                      alt='cat.jpg'
                       width={70}
                       height={70}
                       priority={true}
@@ -43,8 +43,8 @@ export default function Navbar() {
                   <Link href='/setting'>
                     <Image
                       className='rounded-full border-4 border-slate-900 drop-shadow-xl mx-auto'
-                      src='/baby1.jpg'
-                      alt='Josh Hong'
+                      src='/cat.jpg'
+                      alt='cat.jpg'
                       width={70}
                       height={70}
                       priority={true}
