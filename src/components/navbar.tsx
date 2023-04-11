@@ -1,14 +1,9 @@
 'use client'
 import Link from 'next/link'
-import {
-  IoMdMenu,
-  IoMdClose,
-  IoMdCloseCircle,
-  IoMdRestaurant,
-} from 'react-icons/io'
+import { IoMdMenu, IoMdClose, IoMdCloseCircle } from 'react-icons/io'
 import { useState } from 'react'
 import { useCookies } from 'react-cookie'
-import { HiSearch } from 'react-icons/hi'
+import { HiSearch, HiOutlineSearch } from 'react-icons/hi'
 import Image from 'next/image'
 
 export default function Navbar() {
@@ -36,8 +31,8 @@ export default function Navbar() {
                 {!cookies.access_token ? (
                   <Link href='/login'>
                     <Image
-                      className='rounded-full border-2 border-slate-900  drop-shadow-xl mx-auto '
-                      src='/momAvatar.png'
+                      className='rounded-full border-2 border-yellow-400  drop-shadow-xl mx-auto '
+                      src='/baby1.jpg'
                       alt='Josh Hong'
                       width={70}
                       height={70}
@@ -48,7 +43,7 @@ export default function Navbar() {
                   <Link href='/setting'>
                     <Image
                       className='rounded-full border-4 border-slate-900 drop-shadow-xl mx-auto'
-                      src='/dadAvatar.png'
+                      src='/baby1.jpg'
                       alt='Josh Hong'
                       width={70}
                       height={70}
@@ -108,11 +103,7 @@ export default function Navbar() {
             className='md:hidden'
             onClick={() => setSearchbar(!searchbar)}
           >
-            {searchbar ? (
-              <IoMdCloseCircle size={30} />
-            ) : (
-              <IoMdRestaurant size={30} />
-            )}
+            {searchbar ? <IoMdCloseCircle size={30} /> : <HiSearch size={30} />}
           </button>
         </div>
 
