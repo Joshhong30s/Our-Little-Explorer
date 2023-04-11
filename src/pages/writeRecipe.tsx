@@ -91,7 +91,7 @@ export default function WriteRecipe() {
   const onSubmit = async (e: any) => {
     e.preventDefault()
     try {
-      await axios.post('http://localhost:5000/recipes', recipe, {
+      await axios.post('https://zero6babyserver.onrender.com/recipes', recipe, {
         headers: { authorization: cookies.access_token },
       })
       console.log('recired created')

@@ -15,7 +15,9 @@ export default function Home() {
   useEffect(() => {
     const fetchRecipes = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/recipes')
+        const response = await axios.get(
+          'https://zero6babyserver.onrender.com/recipes'
+        )
         setRecipes(response.data)
         console.log(response.data)
       } catch (err) {
@@ -26,7 +28,7 @@ export default function Home() {
     const fetchSavedRecipes = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/recipes/savedRecipes/ids/${userID}`
+          `https://zero6babyserver.onrender.com/recipes/savedRecipes/ids/${userID}`
         )
         setSavedRecipes(response.data.savedRecipes)
       } catch (err) {
@@ -42,7 +44,7 @@ export default function Home() {
   const saveRecipe = async (recipeID: string) => {
     try {
       const response = await axios.put(
-        'http://localhost:5000/recipes',
+        'https://zero6babyserver.onrender.com/recipes',
         {
           recipeID,
           userID,

@@ -14,7 +14,7 @@ export default function Login() {
     e.preventDefault()
     try {
       const res = await axios.post(
-        'https://zero4recipe-s.onrender.com/auth/login',
+        'https://zero6babyserver.onrender.com/auth/login',
         {
           username,
           password,
