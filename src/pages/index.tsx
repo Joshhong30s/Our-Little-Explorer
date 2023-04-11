@@ -82,6 +82,7 @@ export default function Home() {
                     src={recipe.imageUrl}
                     alt={recipe.name}
                     className='object-cover'
+                    placeholder='blur'
                     fill
                   />
                   <button
