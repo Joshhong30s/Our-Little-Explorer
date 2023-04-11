@@ -118,7 +118,7 @@ export default function Home() {
                   </div>
                   {recipe.ingredients.map((ingredient) => (
                     <p key={ingredient} className='text-gray-600 text-sm '>
-                      拍照地點： {ingredient[0]}
+                      拍照地點： {ingredient[0]} <br />
                       拍照的人： {ingredient[1]}
                     </p>
                   ))}

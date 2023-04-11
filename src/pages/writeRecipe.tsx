@@ -130,7 +130,9 @@ export default function WriteRecipe() {
             <label
               htmlFor='ingredients'
               className='block text-gray-700 font-medium text-lg'
-            ></label>
+            >
+              相片資訊
+            </label>
             {recipe.ingredients.map((ingredient, index) => (
               <div key={index}>
                 <input
@@ -140,7 +142,6 @@ export default function WriteRecipe() {
                   onChange={(e) => handleIngredientChange(e, index)}
                   className='mt-1 block w-full  h-8 border-b-2 border-gray-300  focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:ring-opacity-50'
                 />
-                相片資訊
               </div>
             ))}
             <button
