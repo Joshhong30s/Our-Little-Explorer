@@ -68,18 +68,18 @@ export default function Navbar() {
                 {!cookies.access_token ? (
                   <Link href='/register'>註冊</Link>
                 ) : (
-                  <Link href='/savedRecipe'>我的食譜</Link>
+                  <Link href='/savedRecipe'>我的最愛</Link>
                 )}
               </li>
               <li className='block mb-4 md:mb-0 md:ml-6'>
                 {!cookies.access_token ? (
-                  <Link href='/login'>建立食譜</Link>
+                  <Link href='/login'>上傳相片</Link>
                 ) : (
-                  <Link href='/writeRecipe'>建立食譜</Link>
+                  <Link href='/writeRecipe'>上傳相片</Link>
                 )}
               </li>
               <li className='block mb-4 md:mb-0 md:ml-6'>
-                <Link href='/'>所有食譜</Link>
+                <Link href='/'>所有相片</Link>
               </li>
             </ul>
           </div>
@@ -94,7 +94,7 @@ export default function Navbar() {
 
           <Link href='/'>
             <Image
-              src='/logo3.svg'
+              src='/familybaby.svg'
               alt=''
               width={200}
               height={200}
@@ -126,7 +126,7 @@ export default function Navbar() {
             type='text'
             aria-label='search'
             className='px-2 py-2 w-11/12 md:w-7/12 border-2 rounded-md border-orange-950'
-            placeholder='...搜尋食譜功能施工中'
+            placeholder='...搜尋相片功能施工中'
             value=''
           />
           <button className='w-auto'>
