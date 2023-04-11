@@ -5,15 +5,11 @@ const nextConfig = {
 
 module.exports = {
   images: {
-    domains: ['onrender.com', 'render.com', 'zero4recipe-s.onrender.com'],
+    domains: ['onrender.com', 'render.com', 'zero6babyserver.onrender.com'],
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'www.pexels.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'www.simplyrecipes.com',
+        hostname: 'https://imgur.com/',
       },
       {
         protocol: 'https',
