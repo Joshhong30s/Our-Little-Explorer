@@ -4,7 +4,8 @@ import { useState, useEffect } from 'react'
 import { useGetUserID } from '../hooks/useGetUserId'
 import { useCookies } from 'react-cookie'
 import { RiHeartAddLine, RiHeartFill } from 'react-icons/ri'
-import { IoMdAlarm } from 'react-icons/io'
+import { IoMdMap, IoIosCamera } from 'react-icons/io'
+import { FaBaby } from 'react-icons/fa'
 
 export default function Home() {
   const [recipes, setRecipes] = useState([])
@@ -109,15 +110,16 @@ export default function Home() {
                       {recipe.name}
                     </h3>
                     <div className='flex space-x-1 items-center'>
-                      <IoMdAlarm size={30} />
+                      <FaBaby size={30} />
                       <p className=' text-gray-800 text-sm'>
-                        {recipe.cookingTime} mins
+                        {recipe.cookingTime} days
                       </p>
                     </div>
                   </div>
                   {recipe.ingredients.map((ingredient) => (
                     <p key={ingredient} className='text-gray-600 text-sm '>
-                      {ingredient}
+                      <IoMdMap size={30} /> {ingredient[0]}
+                      <IoIosCamera size={30} /> {ingredient[1]}
                     </p>
                   ))}
                   <p className='text-gray-600 text-sm my-4'>

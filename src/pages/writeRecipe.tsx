@@ -76,14 +76,14 @@ export default function WriteRecipe() {
         )
 
         // Handling success
-        alert('Image uploaded')
+        alert('相片上傳成功，可以送出')
         setRecipe({
           ...recipe,
           imageUrl: response.data.data.link,
         })
       } catch (err) {
         console.log(err)
-        alert('Failed to upload image')
+        alert('相片上傳失敗')
       }
     }
   }
@@ -108,22 +108,20 @@ export default function WriteRecipe() {
       style={{ backgroundImage: "url('recipebg.jpg')" }}
     >
       <div className='bg-white rounded-lg shadow-lg p-6 w-full max-w-lg mt-10'>
-        <h2 className='text-2xl text-center font-medium mb-6'>
-          分享你的食譜..
-        </h2>
+        <h2 className='text-2xl text-center font-medium mb-6'>小寶日誌..</h2>
         <form className='space-y-4' onSubmit={onSubmit}>
           <div>
             <label
               htmlFor='name'
               className='block text-gray-700 font-medium text-lg'
             >
-              食譜名稱
+              相片標題
             </label>
             <input
               type='text'
               id='name'
               name='name'
-              placeholder='...寫下你的食譜名稱'
+              placeholder='...這張照片是'
               onChange={handleChange}
               className='mt-1 block w-full h-8 border-b-2 border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:ring-opacity-50'
             />
@@ -133,7 +131,7 @@ export default function WriteRecipe() {
               htmlFor='ingredients'
               className='block text-gray-700 font-medium text-lg'
             >
-              食譜材料
+              ddd
             </label>
             {recipe.ingredients.map((ingredient, index) => (
               <div key={index}>
@@ -159,14 +157,14 @@ export default function WriteRecipe() {
               htmlFor='instructions'
               className='block text-gray-700 font-medium text-lg'
             >
-              食譜作法
+              照片描述
             </label>
             <textarea
               id='instructions'
               name='instructions'
               onChange={handleChange}
               className='mt-1 block w-full resize-none md:h-48 border-b-2 border-gray-300  focus:outline-none whitespace-pre-wrap'
-              placeholder='...寫下你的食譜做法'
+              placeholder='...寫下照片描述'
             ></textarea>
           </div>
           <div>
@@ -174,7 +172,7 @@ export default function WriteRecipe() {
               htmlFor='cookingTime'
               className='block text-gray-700 font-medium text-lg'
             >
-              所需時間 (分)
+              照片天數
             </label>
             <input
               type='text'
@@ -189,7 +187,7 @@ export default function WriteRecipe() {
               htmlFor='image'
               className='block text-gray-700 font-medium text-lg'
             >
-              上傳食譜照片
+              上傳小寶照片
             </label>
             {file && <img src={URL.createObjectURL(file)} alt='' />}
             <input
@@ -205,7 +203,7 @@ export default function WriteRecipe() {
               type='submit'
               className='bg-orange-950 text-black py-2 px-4 rounded-lg hover:bg-yellow-300 transition-colors duration-300'
             >
-              分享我的食譜
+              確認送出
             </button>
           </div>
         </form>

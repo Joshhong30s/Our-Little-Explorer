@@ -36,7 +36,7 @@ export default function Navbar() {
                 {!cookies.access_token ? (
                   <Link href='/login'>
                     <Image
-                      className='rounded-full border-2 border-orange-950  drop-shadow-xl mx-auto '
+                      className='rounded-full border-2 border-slate-900  drop-shadow-xl mx-auto '
                       src='/momAvatar.png'
                       alt='Josh Hong'
                       width={70}
@@ -47,7 +47,7 @@ export default function Navbar() {
                 ) : (
                   <Link href='/setting'>
                     <Image
-                      className='rounded-full border-4 border-orange-950 drop-shadow-xl mx-auto'
+                      className='rounded-full border-4 border-slate-900 drop-shadow-xl mx-auto'
                       src='/dadAvatar.png'
                       alt='Josh Hong'
                       width={70}
@@ -125,7 +125,7 @@ export default function Navbar() {
           <input
             type='text'
             aria-label='search'
-            className='px-2 py-2 w-11/12 md:w-7/12 border-2 rounded-md border-orange-950'
+            className='px-2 py-2 w-11/12 md:w-7/12 border-2 rounded-md border-slate-900'
             placeholder='...搜尋相片功能施工中'
             value=''
           />
