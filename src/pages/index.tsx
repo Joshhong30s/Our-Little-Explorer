@@ -118,8 +118,8 @@ export default function Home() {
                   </div>
                   {recipe.ingredients.map((ingredient) => (
                     <p key={ingredient} className='text-gray-600 text-sm '>
-                      <IoMdMap size={30} /> {ingredient[0]}
-                      <IoIosCamera size={30} /> {ingredient[1]}
+                      拍照地點： {ingredient[0]}
+                      拍照的人： {ingredient[1]}
                     </p>
                   ))}
                   <p className='text-gray-600 text-sm my-4'>

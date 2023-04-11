@@ -130,9 +130,7 @@ export default function WriteRecipe() {
             <label
               htmlFor='ingredients'
               className='block text-gray-700 font-medium text-lg'
-            >
-              ddd
-            </label>
+            ></label>
             {recipe.ingredients.map((ingredient, index) => (
               <div key={index}>
                 <input
@@ -142,6 +140,7 @@ export default function WriteRecipe() {
                   onChange={(e) => handleIngredientChange(e, index)}
                   className='mt-1 block w-full  h-8 border-b-2 border-gray-300  focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:ring-opacity-50'
                 />
+                相片資訊
               </div>
             ))}
             <button
@@ -149,7 +148,7 @@ export default function WriteRecipe() {
               type='button'
               className='mt-2 bg-orange-950 text-black py-2 px-4 rounded-lg hover:bg-yellow-300 transition-colors duration-300'
             >
-              點選加入一項材料
+              加入地點和拍攝者
             </button>
           </div>
           <div className='whitespace-pre-wrap'>
@@ -172,7 +171,7 @@ export default function WriteRecipe() {
               htmlFor='cookingTime'
               className='block text-gray-700 font-medium text-lg'
             >
-              照片天數
+              相片年齡
             </label>
             <input
               type='text'
