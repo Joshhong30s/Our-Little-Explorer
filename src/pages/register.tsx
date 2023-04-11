@@ -16,11 +16,14 @@ export default function Register() {
     setError(false)
     setSubmitting(true)
     try {
-      const res = await axios.post('https://zero6babyserver.onrender.com', {
-        username,
-        email,
-        password,
-      })
+      const res = await axios.post(
+        'https://zero6babyserver.onrender.com/auth/register',
+        {
+          username,
+          email,
+          password,
+        }
+      )
       res.data && setSuccess(true)
       window.location.replace('/login')
     } catch (err) {
