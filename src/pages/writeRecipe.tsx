@@ -191,14 +191,7 @@ export default function WriteRecipe() {
             >
               上傳食譜照片
             </label>
-            {file && (
-              <Image
-                src={URL.createObjectURL(file)}
-                alt=''
-                width={300}
-                height={300}
-              />
-            )}
+            {file && <Image src={URL.createObjectURL(file)} alt='' />}
             <input
               type='file'
               id='image'
