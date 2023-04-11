@@ -78,11 +78,10 @@ export default function Home() {
                 className='border border-gray-200 rounded-lg'
               >
                 <div className='relative w-full h-96 sm:h-[450px] lg:h-[600px]'>
-                  <Image
+                  <img
                     src={recipe.imageUrl}
                     alt={recipe.name}
                     className='object-cover text-center text-3xl'
-                    fill
                   />
                   <button
                     className='absolute top-2 right-2 bg-neutral-50 bg-opacity-30 text-red-500 rounded-full p-3'
