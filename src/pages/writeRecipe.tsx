@@ -51,25 +51,39 @@ export default function WriteRecipe() {
     })
   }
 
-  const IMAGE_URL_PREFIX = 'http://localhost:5000/images/'
-
   const handleImageChange = async (e: any) => {
     const file = e.target.files[0]
     setFile(file)
 
     if (file) {
+      const clientId = '204e2ddd7271745',
+        auth = 'Client-ID ' + clientId
       const data = new FormData()
       const filename = file.name
       data.append('name', filename)
       data.append('image', file)
       try {
-        await axios.post('http://localhost:5000/upload', data)
+        const response = await axios.post(
+          'https://api.imgur.com/3/image',
+          data,
+          {
+            headers: {
+              // Setting header
+              Authorization: auth,
+              Accept: 'application/json',
+            },
+          }
+        )
+
+        // Handling success
+        alert('Image uploaded')
         setRecipe({
           ...recipe,
-          imageUrl: IMAGE_URL_PREFIX + file.name,
+          imageUrl: response.data.data.link,
         })
       } catch (err) {
         console.log(err)
+        alert('Failed to upload image')
       }
     }
   }
@@ -84,6 +98,7 @@ export default function WriteRecipe() {
       window.location.replace('/')
     } catch (error) {
       console.log(error)
+      alert('Failed to upload image')
     }
   }
 
@@ -176,7 +191,14 @@ export default function WriteRecipe() {
             >
               上傳食譜照片
             </label>
-            {file && <Image src={URL.createObjectURL(file)} alt='' />}
+            {file && (
+              <Image
+                src={URL.createObjectURL(file)}
+                alt=''
+                width={300}
+                height={300}
+              />
+            )}
             <input
               type='file'
               id='image'
