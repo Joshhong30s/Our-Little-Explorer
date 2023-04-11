@@ -2,7 +2,7 @@ import axios from 'axios'
 import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import { useGetUserID } from '../hooks/useGetUserId'
-import { IoMdAlarm } from 'react-icons/io'
+import { FaBaby } from 'react-icons/fa'
 
 export default function SavedRecipes() {
   const [savedRecipes, setSavedRecipes] = useState([])
@@ -54,15 +54,16 @@ export default function SavedRecipes() {
                       {recipe.name}
                     </h3>
                     <div className='flex space-x-1 items-center'>
-                      <IoMdAlarm size={30} />
+                      <FaBaby size={30} />
                       <p className=' text-gray-800 text-sm'>
-                        {recipe.cookingTime} mins
+                        {recipe.cookingTime} days
                       </p>
                     </div>
                   </div>
                   {recipe.ingredients.map((ingredient) => (
                     <p key={ingredient} className='text-gray-600 text-sm '>
-                      {ingredient}
+                      拍照地點： {ingredient} <br />
+                      拍照的人： {ingredient}
                     </p>
                   ))}
                   <p className='text-gray-600 text-sm my-4'>

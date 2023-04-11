@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { useGetUserID } from '../hooks/useGetUserId'
 import { useCookies } from 'react-cookie'
 import { RiHeartAddLine, RiHeartFill } from 'react-icons/ri'
-import { IoMdMap, IoIosCamera } from 'react-icons/io'
+
 import { FaBaby } from 'react-icons/fa'
 
 export default function Home() {
@@ -118,8 +118,8 @@ export default function Home() {
                   </div>
                   {recipe.ingredients.map((ingredient) => (
                     <p key={ingredient} className='text-gray-600 text-sm '>
-                      拍照地點： {ingredient[0]} <br />
-                      拍照的人： {ingredient[1]}
+                      拍照地點： {ingredient} <br />
+                      拍照的人： {ingredient}
                     </p>
                   ))}
                   <p className='text-gray-600 text-sm my-4'>
