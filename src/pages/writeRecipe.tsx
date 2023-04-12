@@ -27,7 +27,7 @@ export default function WriteRecipe() {
     cookingTime: 0,
     userOwner: userID ?? '',
   })
-
+  const reversedRecipes = recipes.slice().reverse()
   const handleChange = (e: any) => {
     setRecipe({
       ...recipe,

@@ -12,6 +12,7 @@ export default function Home() {
   const [savedRecipes, setSavedRecipes] = useState<string[]>([])
   const [cookies, _] = useCookies(['access_token'])
   const userID = useGetUserID()
+  const reversedRecipes = recipes.slice().reverse()
 
   useEffect(() => {
     const fetchRecipes = async () => {
