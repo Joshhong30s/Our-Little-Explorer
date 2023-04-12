@@ -12,7 +12,6 @@ export default function Home() {
   const [savedRecipes, setSavedRecipes] = useState<string[]>([])
   const [cookies, _] = useCookies(['access_token'])
   const userID = useGetUserID()
-  const reversedRecipes = recipes.slice().reverse()
 
   useEffect(() => {
     const fetchRecipes = async () => {
@@ -62,11 +61,13 @@ export default function Home() {
   const isRecipeSaved = (id: string) =>
     savedRecipes && savedRecipes.includes(id)
 
+  const reversedRecipes = recipes.slice().reverse()
+
   return (
     <main>
       <div className='px-6 mx-auto mb-8 text-black'>
         <ul className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8'>
-          {recipes.map(
+          {reversedRecipes.map(
             (recipe: {
               _id: string
               name: string
