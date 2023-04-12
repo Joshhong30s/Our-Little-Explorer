@@ -1,4 +1,5 @@
 import axios from 'axios'
+import link from 'next-link'
 import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import { useGetUserID } from '../hooks/useGetUserId'
@@ -81,13 +82,19 @@ export default function Home() {
                 className='border border-gray-200 rounded-lg'
               >
                 <div className='relative w-full h-96 sm:h-[450px] lg:h-[600px]'>
-                  <Image
-                    src={recipe.imageUrl}
-                    alt={recipe.name}
-                    className='object-cover'
-                    placeholder='blur'
-                    fill
-                  />
+                  <Link
+                    href={recipe.imageUrl}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                  >
+                    <Image
+                      src={recipe.imageUrl}
+                      alt={recipe.name}
+                      className='object-cover'
+                      placeholder='blur'
+                      fill
+                    />
+                  </Link>
                   <button
                     className='absolute top-2 right-2 bg-neutral-50 bg-opacity-30 text-red-500 rounded-full p-3'
                     onClick={() => saveRecipe(recipe._id)}
