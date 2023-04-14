@@ -77,8 +77,7 @@ export default function Home() {
     }
   }
 
-  const isRecipeSaved = (id: string) =>
-    savedRecipes && savedRecipes.includes(id)
+  const isRecipeSaved = (id: string) => savedRecipes.includes(id)
 
   const toggleSaveRecipe = (recipeID: string) => {
     if (isRecipeSaved(recipeID)) {
