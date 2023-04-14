@@ -20,13 +20,13 @@
     "react-cookie": "^4.1.1",
     "react-dom": "18.2.0",
     "react-icons": "^4.8.0",
-    "tg-use-local-storage-state": "^16.0.3",
-    "typescript": "5.0.2"
+    "tg-use-local-storage-state": "^16.0.3"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^13.3.0",
     "autoprefixer": "^10.4.14",
     "postcss": "^8.4.21",
-    "tailwindcss": "^3.3.1"
+    "tailwindcss": "^3.3.1",
+    "typescript": "^5.0.4"
   }
 }

@@ -59,8 +59,34 @@ export default function Home() {
     }
   }
 
+  const unsaveRecipe = async (recipeID: string) => {
+    try {
+      const response = await axios.delete(
+        'https://zero6babyserver.onrender.com/recipes',
+        {
+          data: {
+            recipeID,
+            userID,
+          },
+          headers: { authorization: cookies.access_token },
+        }
+      )
+      setSavedRecipes(response.data.savedRecipes)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   const isRecipeSaved = (id: string) =>
     savedRecipes && savedRecipes.includes(id)
+
+  const toggleSaveRecipe = (recipeID: string) => {
+    if (isRecipeSaved(recipeID)) {
+      unsaveRecipe(recipeID)
+    } else {
+      saveRecipe(recipeID)
+    }
+  }
 
   const reversedRecipes = recipes.slice().reverse()
 
@@ -97,7 +123,7 @@ export default function Home() {
                   </Link>
                   <button
                     className='absolute top-2 right-2 bg-neutral-50 bg-opacity-30 text-red-500 rounded-full p-3'
-                    onClick={() => saveRecipe(recipe._id)}
+                    onClick={() => toggleSaveRecipe(recipe._id)}
                     disabled={isRecipeSaved(recipe._id)}
                   >
                     {isRecipeSaved(recipe._id) ? (

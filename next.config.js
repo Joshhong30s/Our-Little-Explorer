@@ -11,19 +11,24 @@ module.exports = {
       'zero6babyserver.onrender.com',
       'imgur.com',
       'i.imgur.com',
+      'vercel.com',
     ],
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'https://imgur.com/',
+        hostname: 'imgur.com/',
       },
       {
         protocol: 'https',
-        hostname: 'https://i.imgur.com/',
+        hostname: 'i.imgur.com/',
       },
       {
         protocol: 'https',
         hostname: 'onrender.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'vercel.com',
       },
     ],
   },
