@@ -27,31 +27,6 @@ export default function Navbar() {
         >
           <div className='xl:text-xl'>
             <ul className='xl:flex items-center'>
-              <li className='hidden xl:block mb-4 md:mb-0 md:ml-6'>
-                {!cookies.access_token ? (
-                  <Link href='/login'>
-                    <Image
-                      className='rounded-full border-2 border-yellow-400  drop-shadow-xl mx-auto '
-                      src='/baby.jpg'
-                      alt='cat.jpg'
-                      width={70}
-                      height={70}
-                      priority={true}
-                    />
-                  </Link>
-                ) : (
-                  <Link href='/setting'>
-                    <Image
-                      className='rounded-full border-2 border-yellow-400 drop-shadow-xl mx-auto'
-                      src='/baby.jpg'
-                      alt='cat.jpg'
-                      width={70}
-                      height={70}
-                      priority={true}
-                    />
-                  </Link>
-                )}
-              </li>
               <li className='block mb-4 md:mb-0 md:ml-6'>
                 {!cookies.access_token ? (
                   <Link href='/login'>登入</Link>
@@ -89,13 +64,13 @@ export default function Navbar() {
 
           <Link href='/'>
             <Image
-              src='/familybaby.svg'
-              alt=''
-              width={200}
-              height={200}
-              color='transparent'
-              className='hover:ease-in cursor-pointer md:w-72 md:h-24'
-            ></Image>
+              className='rounded-full border-2 border-yellow-400  drop-shadow-xl mx-auto '
+              src='/baby.jpg'
+              alt='cat.jpg'
+              width={70}
+              height={70}
+              priority={true}
+            />
           </Link>
 
           {/* searchbar button for mobile */}
