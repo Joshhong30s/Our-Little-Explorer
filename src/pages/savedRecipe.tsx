@@ -93,7 +93,9 @@ export default function SavedRecipes() {
     }
   }
 
-  const savedRecipesList = recipes.filter((recipe) => isRecipeSaved(recipe))
+  const savedRecipesList = recipes
+    ? recipes.filter((recipe) => isRecipeSaved(recipe))
+    : []
 
   return (
     <main>
