@@ -3,37 +3,12 @@ import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import { useGetUserID } from '../hooks/useGetUserId'
 import { FaBaby } from 'react-icons/fa'
-import { useCookies } from 'react-cookie'
-import Link from 'next/link'
-import { RiHeartAddLine, RiHeartFill } from 'react-icons/ri'
-
-interface Recipe {
-  _id: string
-  name: string
-  ingredients: string[]
-  instructions: string
-  imageUrl: string
-  cookingTime: number
-}
 
 export default function SavedRecipes() {
-  const [recipes, setRecipes] = useState<Recipe[]>([])
-  const [savedRecipes, setSavedRecipes] = useState<string[]>([])
-  const [cookies, _] = useCookies(['access_token'])
+  const [savedRecipes, setSavedRecipes] = useState([])
+
   const userID = useGetUserID()
-
   useEffect(() => {
-    const fetchRecipes = async () => {
-      try {
-        const response = await axios.get(
-          'https://zero6babyserver.onrender.com/recipes'
-        )
-        setRecipes(response.data.recipes)
-      } catch (err) {
-        console.log(err)
-      }
-    }
-
     const fetchSavedRecipes = async () => {
       try {
         const response = await axios.get(
@@ -45,63 +20,14 @@ export default function SavedRecipes() {
       }
     }
 
-    fetchRecipes()
-    if (userID) fetchSavedRecipes()
-  }, [cookies.access_token, userID])
-
-  const saveRecipe = async (recipeID: string) => {
-    try {
-      const response = await axios.put(
-        'https://zero6babyserver.onrender.com/recipes',
-        {
-          recipeID,
-          userID,
-        },
-        { headers: { authorization: cookies.access_token } }
-      )
-      setSavedRecipes(response.data.savedRecipes)
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
-  const unsaveRecipe = async (recipeID: string) => {
-    try {
-      const response = await axios.delete(
-        'https://zero6babyserver.onrender.com/recipes',
-        {
-          data: {
-            recipeID,
-            userID,
-          },
-          headers: { authorization: cookies.access_token },
-        }
-      )
-      setSavedRecipes(response.data.savedRecipes)
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
-  const isRecipeSaved = (recipe: Recipe) => savedRecipes.includes(recipe._id)
-
-  const toggleSaveRecipe = (recipe: Recipe) => {
-    if (isRecipeSaved(recipe)) {
-      unsaveRecipe(recipe._id)
-    } else {
-      saveRecipe(recipe._id)
-    }
-  }
-
-  const savedRecipesList = recipes
-    ? recipes.filter((recipe) => isRecipeSaved(recipe))
-    : []
+    fetchSavedRecipes()
+  }, [userID])
 
   return (
     <main>
       <div className='px-6 mx-auto mb-8 text-black'>
         <ul className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8'>
-          {savedRecipesList.map(
+          {savedRecipes.map(
             (recipe: {
               _id: string
               name: string
@@ -115,35 +41,12 @@ export default function SavedRecipes() {
                 key={recipe._id}
               >
                 <div className='relative w-full h-96 sm:h-[450px] lg:h-[600px]'>
-                  <Link
-                    href={recipe.imageUrl}
-                    target='_blank'
-                    rel='noopener noreferrer'
-                  >
-                    <Image
-                      src={recipe.imageUrl}
-                      alt={recipe.name}
-                      className='object-cover'
-                      placeholder='blur'
-                      fill
-                    />
-                  </Link>
-                  <button
-                    className='absolute top-2 right-2 bg-neutral-50 bg-opacity-30 text-red-500 rounded-full p-3'
-                    onClick={() => toggleSaveRecipe(recipe)}
-                  >
-                    {isRecipeSaved(recipe) ? (
-                      <RiHeartFill
-                        size={40}
-                        className='text-red-500 text-base hover:scale-125'
-                      />
-                    ) : (
-                      <RiHeartAddLine
-                        size={40}
-                        className='text-base hover:scale-125'
-                      />
-                    )}
-                  </button>
+                  <Image
+                    src={recipe.imageUrl}
+                    alt={recipe.name}
+                    className='object-cover'
+                    fill
+                  />
                 </div>
                 <div className='p-4'>
                   <div className='flex justify-between items-center mb-4'>
