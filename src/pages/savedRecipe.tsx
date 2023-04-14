@@ -21,8 +21,18 @@ export default function SavedRecipes() {
   const [savedRecipes, setSavedRecipes] = useState<string[]>([])
   const [cookies, _] = useCookies(['access_token'])
   const userID = useGetUserID()
-
   useEffect(() => {
+    const fetchRecipes = async () => {
+      try {
+        const response = await axios.get(
+          'https://zero6babyserver.onrender.com/recipes'
+        )
+        setRecipes(response.data.recipes)
+      } catch (err) {
+        console.log(err)
+      }
+    }
+
     const fetchSavedRecipes = async () => {
       try {
         const response = await axios.get(
@@ -34,6 +44,7 @@ export default function SavedRecipes() {
       }
     }
 
+    fetchRecipes()
     fetchSavedRecipes()
   }, [userID])
 
