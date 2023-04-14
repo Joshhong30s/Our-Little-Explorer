@@ -8,8 +8,17 @@ import Link from 'next/link'
 import { RiHeartAddLine, RiHeartFill } from 'react-icons/ri'
 
 export default function SavedRecipes() {
-  const [savedRecipes, setSavedRecipes] = useState([])
-  const [recipes, setRecipes] = useState([])
+  interface Recipe {
+    _id: string
+    name: string
+    ingredients: string[]
+    instructions: string
+    imageUrl: string
+    cookingTime: number
+  }
+
+  const [recipes, setRecipes] = useState<Recipe[]>([])
+  const [savedRecipes, setSavedRecipes] = useState<string[]>([])
   const [cookies, _] = useCookies(['access_token'])
   const userID = useGetUserID()
 
@@ -72,11 +81,15 @@ export default function SavedRecipes() {
     }
   }
 
+  const savedRecipesList = recipes.filter((recipe) =>
+    savedRecipes.includes(recipe._id)
+  )
+
   return (
     <main>
       <div className='px-6 mx-auto mb-8 text-black'>
         <ul className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8'>
-          {savedRecipes.map(
+          {savedRecipesList.map(
             (recipe: {
               _id: string
               name: string
