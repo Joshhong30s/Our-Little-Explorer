@@ -82,19 +82,17 @@ export default function SavedRecipes() {
     }
   }
 
-  const isRecipeSaved = (recipeID: string) => savedRecipes.includes(recipeID)
+  const isRecipeSaved = (recipe: Recipe) => savedRecipes.includes(recipe._id)
 
-  const toggleSaveRecipe = (recipeID: string) => {
-    if (isRecipeSaved(recipeID)) {
-      unsaveRecipe(recipeID)
+  const toggleSaveRecipe = (recipe: Recipe) => {
+    if (isRecipeSaved(recipe)) {
+      unsaveRecipe(recipe._id)
     } else {
-      saveRecipe(recipeID)
+      saveRecipe(recipe._id)
     }
   }
 
-  const savedRecipesList = recipes.filter((recipe) =>
-    savedRecipes.includes(recipeID)
-  )
+  const savedRecipesList = recipes.filter((recipe) => isRecipeSaved(recipe))
 
   return (
     <main>
@@ -129,9 +127,9 @@ export default function SavedRecipes() {
                   </Link>
                   <button
                     className='absolute top-2 right-2 bg-neutral-50 bg-opacity-30 text-red-500 rounded-full p-3'
-                    onClick={() => toggleSaveRecipe(recipe._id)}
+                    onClick={() => toggleSaveRecipe(recipe)}
                   >
-                    {isRecipeSaved(recipe._id) ? (
+                    {isRecipeSaved(recipe) ? (
                       <RiHeartFill
                         size={40}
                         className='text-red-500 text-base hover:scale-125'
