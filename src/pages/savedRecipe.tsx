@@ -92,8 +92,9 @@ export default function SavedRecipes() {
     }
   }
 
-  const savedRecipesList =
-    recipes.filter((recipe) => savedRecipes.includes(recipe._id)) || []
+  const savedRecipesList = recipes.filter((recipe) =>
+    savedRecipes.includes(recipeID)
+  )
 
   return (
     <main>
