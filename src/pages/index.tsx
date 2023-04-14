@@ -124,7 +124,6 @@ export default function Home() {
                   <button
                     className='absolute top-2 right-2 bg-neutral-50 bg-opacity-30 text-red-500 rounded-full p-3'
                     onClick={() => toggleSaveRecipe(recipe._id)}
-                    disabled={isRecipeSaved(recipe._id)}
                   >
                     {isRecipeSaved(recipe._id) ? (
                       <RiHeartFill
