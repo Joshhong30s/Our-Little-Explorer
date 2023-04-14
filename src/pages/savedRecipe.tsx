@@ -7,20 +7,21 @@ import { useCookies } from 'react-cookie'
 import Link from 'next/link'
 import { RiHeartAddLine, RiHeartFill } from 'react-icons/ri'
 
-export default function SavedRecipes() {
-  interface Recipe {
-    _id: string
-    name: string
-    ingredients: string[]
-    instructions: string
-    imageUrl: string
-    cookingTime: number
-  }
+interface Recipe {
+  _id: string
+  name: string
+  ingredients: string[]
+  instructions: string
+  imageUrl: string
+  cookingTime: number
+}
 
+export default function SavedRecipes() {
   const [recipes, setRecipes] = useState<Recipe[]>([])
   const [savedRecipes, setSavedRecipes] = useState<string[]>([])
   const [cookies, _] = useCookies(['access_token'])
   const userID = useGetUserID()
+
   useEffect(() => {
     const fetchRecipes = async () => {
       try {
@@ -45,8 +46,8 @@ export default function SavedRecipes() {
     }
 
     fetchRecipes()
-    fetchSavedRecipes()
-  }, [userID])
+    if (userID) fetchSavedRecipes()
+  }, [cookies.access_token, userID])
 
   const saveRecipe = async (recipeID: string) => {
     try {
