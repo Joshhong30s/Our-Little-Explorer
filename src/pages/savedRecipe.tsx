@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import { useGetUserID } from '../hooks/useGetUserId'
 import { FaBaby } from 'react-icons/fa'
+import Link from 'next/link'
 
 export default function SavedRecipes() {
   const [savedRecipes, setSavedRecipes] = useState([])
@@ -23,11 +24,13 @@ export default function SavedRecipes() {
     fetchSavedRecipes()
   }, [userID])
 
+  const reversedSavedRecipes = savedRecipes.slice().reverse()
+
   return (
     <main>
       <div className='px-6 mx-auto mb-8 text-black'>
         <ul className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8'>
-          {savedRecipes.map(
+          {reversedSavedRecipes.map(
             (recipe: {
               _id: string
               name: string
@@ -41,12 +44,18 @@ export default function SavedRecipes() {
                 key={recipe._id}
               >
                 <div className='relative w-full h-96 sm:h-[450px] lg:h-[600px]'>
-                  <Image
-                    src={recipe.imageUrl}
-                    alt={recipe.name}
-                    className='object-cover'
-                    fill
-                  />
+                  <Link
+                    href={recipe.imageUrl}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                  >
+                    <Image
+                      src={recipe.imageUrl}
+                      alt={recipe.name}
+                      className='object-cover'
+                      fill
+                    />
+                  </Link>
                 </div>
                 <div className='p-4'>
                   <div className='flex justify-between items-center mb-4'>
