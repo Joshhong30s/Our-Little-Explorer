@@ -12,6 +12,7 @@ module.exports = {
       'imgur.com',
       'i.imgur.com',
       'vercel.com',
+      'youtube.com',
     ],
     remotePatterns: [
       {
@@ -29,6 +30,10 @@ module.exports = {
       {
         protocol: 'https',
         hostname: 'vercel.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'youtube.com',
       },
     ],
   },
