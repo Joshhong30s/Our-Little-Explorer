@@ -7,10 +7,15 @@ import { useCookies } from 'react-cookie'
 import { RiHeartAddLine, RiHeartFill } from 'react-icons/ri'
 import ReactPlayer from 'react-player/lazy'
 import { FaBaby } from 'react-icons/fa'
-import Timer from '../components/timer'
+import getAge from '../components/getAge'
 
 export default function Home() {
   const [recipes, setRecipes] = useState([])
+
+  // getAge
+  const birthdate = '2023-04-12' // replace with actual birthdate
+  const inputDate = '2023-04-15' // replace with actual input date
+  const age = getAge(birthdate, inputDate)
 
   // empty array of strings
   const [savedRecipes, setSavedRecipes] = useState<string[]>([])
@@ -159,7 +164,7 @@ export default function Home() {
                     </h3>
                     <div className='flex space-x-1 items-center'>
                       <FaBaby size={30} />
-                      <Timer birthday={recipe.birthday} />
+                      {recipe.cookingTime} days
                     </div>
                   </div>
                   {recipe.ingredients.map((ingredient) => (
