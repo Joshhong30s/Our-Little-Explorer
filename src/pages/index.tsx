@@ -5,11 +5,14 @@ import { useState, useEffect } from 'react'
 import { useGetUserID } from '../hooks/useGetUserId'
 import { useCookies } from 'react-cookie'
 import { RiHeartAddLine, RiHeartFill } from 'react-icons/ri'
-
+import ReactPlayer from 'react-player/lazy'
 import { FaBaby } from 'react-icons/fa'
+import Timer from '../components/timer'
 
 export default function Home() {
   const [recipes, setRecipes] = useState([])
+
+  // empty array of strings
   const [savedRecipes, setSavedRecipes] = useState<string[]>([])
   const [cookies, _] = useCookies(['access_token'])
   const userID = useGetUserID()
@@ -43,6 +46,7 @@ export default function Home() {
     if (cookies.access_token) fetchSavedRecipes()
   }, [cookies.access_token, userID])
 
+  // send update request to backend and wait for response
   const saveRecipe = async (recipeID: string) => {
     try {
       const response = await axios.put(
@@ -95,6 +99,7 @@ export default function Home() {
         <ul className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8'>
           {reversedRecipes.map(
             (recipe: {
+              birthday: string
               _id: string
               name: string
               ingredients: Array<string>
@@ -107,19 +112,28 @@ export default function Home() {
                 className='border border-gray-200 rounded-lg'
               >
                 <div className='relative w-full h-96 sm:h-[450px] lg:h-[600px]'>
-                  <Link
-                    href={recipe.imageUrl}
-                    target='_blank'
-                    rel='noopener noreferrer'
-                  >
-                    <Image
-                      src={recipe.imageUrl}
-                      alt={recipe.name}
-                      className='object-cover'
-                      placeholder='blur'
-                      fill
+                  {recipe.imageUrl.endsWith('.jpg') ||
+                  recipe.imageUrl.endsWith('.png') ? (
+                    <Link
+                      href={recipe.imageUrl}
+                      target='_blank'
+                      rel='noopener noreferrer'
+                    >
+                      <Image
+                        src={recipe.imageUrl}
+                        alt={recipe.name}
+                        className='object-cover'
+                        fill
+                      />
+                    </Link>
+                  ) : (
+                    <ReactPlayer
+                      url={recipe.imageUrl}
+                      playing
+                      width='100%'
+                      height='100%'
                     />
-                  </Link>
+                  )}
                   <button
                     className='absolute top-2 right-2 bg-neutral-50 bg-opacity-30 text-red-500 rounded-full p-3'
                     onClick={() => toggleSaveRecipe(recipe._id)}
@@ -144,9 +158,7 @@ export default function Home() {
                     </h3>
                     <div className='flex space-x-1 items-center'>
                       <FaBaby size={30} />
-                      <p className=' text-gray-800 text-sm'>
-                        {recipe.cookingTime} days
-                      </p>
+                      <Timer birthday={recipe.birthday} />
                     </div>
                   </div>
                   {recipe.ingredients.map((ingredient) => (

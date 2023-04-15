@@ -19,6 +19,7 @@ export default function WriteRecipe() {
   const userID = useGetUserID()
   const [file, setFile] = useState(null)
   const [cookies, _] = useCookies(['access_token'])
+  const [allowYoutubeUrl, setAllowYoutubeUrl] = useState(false)
   const [recipe, setRecipe] = useState<RecipeType>({
     name: '',
     ingredients: [],
@@ -53,6 +54,7 @@ export default function WriteRecipe() {
 
   const handleImageChange = async (e: any) => {
     const file = e.target.files[0]
+    const inputUrl = e.target.value
     setFile(file)
 
     if (file) {
@@ -85,6 +87,14 @@ export default function WriteRecipe() {
         console.log(err)
         alert('相片上傳失敗')
       }
+      // youtubelink
+    } else if (inputUrl) {
+      setRecipe({
+        ...recipe,
+        imageUrl: inputUrl,
+      })
+    } else {
+      alert('Invalid YouTube URL')
     }
   }
 
@@ -183,21 +193,47 @@ export default function WriteRecipe() {
             />
           </div>
           <div>
-            <label
-              htmlFor='image'
-              className='block text-gray-700 font-medium text-lg'
-            >
-              上傳小寶照片
-            </label>
-            {file && <img src={URL.createObjectURL(file)} alt='' />}
             <input
-              type='file'
-              id='image'
-              name='image'
-              onChange={handleImageChange}
-              className='mt-1 block w-full h-8 border-b-2 border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:ring-opacity-50'
+              type='radio'
+              id='allowYoutubeUrl'
+              name='allowYoutubeUrl'
+              onChange={(e) => setAllowYoutubeUrl(true)}
+              className='mr-2'
             />
+            <label htmlFor='allowYoutubeUrl'>貼上 YouTube 影片連結</label>
+            <br />
+            <input
+              type='radio'
+              id='allowYoutubeUrl'
+              name='allowYoutubeUrl'
+              onChange={(e) => setAllowYoutubeUrl(false)}
+              className='mr-2'
+            />
+            <label htmlFor='allowYoutubeUrl'>上傳小寶照片</label>
           </div>
+          <div>
+            {allowYoutubeUrl && (
+              <input
+                type='text'
+                id='youtubeUrl'
+                name='youtubeUrl'
+                placeholder='貼上 YouTube 連結'
+                onChange={(e) => handleImageChange(e)}
+                className='mt-1 block w-full h-8 border-b-2 border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:ring-opacity-50'
+              />
+            )}
+            {!allowYoutubeUrl && (
+              <input
+                type='file'
+                id='image'
+                name='image'
+                onChange={(e) => handleImageChange(e)}
+                className='mt-1 block w-full h-8 border-b-2 border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:ring-opacity-50'
+              />
+            )}
+            {file && <img src={URL.createObjectURL(file)} alt='' />}
+          </div>
+
           <div className='py-4 text-center'>
             <button
               type='submit'

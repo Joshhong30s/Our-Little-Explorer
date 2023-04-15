@@ -20,6 +20,7 @@
     "react-cookie": "^4.1.1",
     "react-dom": "18.2.0",
     "react-icons": "^4.8.0",
+    "react-player": "^2.12.0",
     "tg-use-local-storage-state": "^16.0.3"
   },
   "devDependencies": {
