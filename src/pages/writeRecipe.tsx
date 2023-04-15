@@ -53,48 +53,48 @@ export default function WriteRecipe() {
   }
 
   const handleImageChange = async (e: any) => {
-    const file = e.target.files[0]
-    const inputUrl = e.target.value
-    setFile(file)
-
-    if (file) {
-      const clientId = '204e2ddd7271745',
-        auth = 'Client-ID ' + clientId
-      const data = new FormData()
-      const filename = file.name
-      data.append('name', filename)
-      data.append('image', file)
-      try {
-        const response = await axios.post(
-          'https://api.imgur.com/3/image',
-          data,
-          {
-            headers: {
-              // Setting header
-              Authorization: auth,
-              Accept: 'application/json',
-            },
-          }
-        )
-
-        // Handling success
-        alert('相片上傳成功，可以送出')
-        setRecipe({
-          ...recipe,
-          imageUrl: response.data.data.link,
-        })
-      } catch (err) {
-        console.log(err)
-        alert('相片上傳失敗')
-      }
-      // youtubelink
-    } else if (inputUrl) {
+    if (allowYoutubeUrl) {
+      const inputUrl = e.target.value
       setRecipe({
         ...recipe,
         imageUrl: inputUrl,
       })
     } else {
-      alert('Invalid YouTube URL')
+      const file = e.target.files[0]
+      setFile(file)
+
+      if (file) {
+        const clientId = '204e2ddd7271745'
+        const auth = 'Client-ID ' + clientId
+        const data = new FormData()
+        const filename = file.name
+        data.append('name', filename)
+        data.append('image', file)
+
+        try {
+          const response = await axios.post(
+            'https://api.imgur.com/3/image',
+            data,
+            {
+              headers: {
+                Authorization: auth,
+                Accept: 'application/json',
+              },
+            }
+          )
+
+          alert('相片上傳成功，可以送出')
+          setRecipe({
+            ...recipe,
+            imageUrl: response.data.data.link,
+          })
+        } catch (err) {
+          console.log(err)
+          alert('相片上傳失敗')
+        }
+      } else {
+        alert('請上傳相片')
+      }
     }
   }
 
@@ -195,21 +195,21 @@ export default function WriteRecipe() {
           <div>
             <input
               type='radio'
-              id='allowYoutubeUrl'
-              name='allowYoutubeUrl'
-              onChange={(e) => setAllowYoutubeUrl(true)}
+              id='image'
+              name='image'
+              onChange={() => setAllowYoutubeUrl(true)}
               className='mr-2'
             />
-            <label htmlFor='allowYoutubeUrl'>貼上 YouTube 影片連結</label>
+            <label htmlFor='image'>貼上 YouTube 影片連結</label>
             <br />
             <input
               type='radio'
-              id='allowYoutubeUrl'
-              name='allowYoutubeUrl'
-              onChange={(e) => setAllowYoutubeUrl(false)}
+              id='image'
+              name='image'
+              onChange={() => setAllowYoutubeUrl(false)}
               className='mr-2'
             />
-            <label htmlFor='allowYoutubeUrl'>上傳小寶照片</label>
+            <label htmlFor='image'>上傳小寶照片</label>
           </div>
           <div>
             {allowYoutubeUrl && (
@@ -218,7 +218,7 @@ export default function WriteRecipe() {
                 id='youtubeUrl'
                 name='youtubeUrl'
                 placeholder='貼上 YouTube 連結'
-                onChange={(e) => handleImageChange(e)}
+                onChange={handleImageChange}
                 className='mt-1 block w-full h-8 border-b-2 border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:ring-opacity-50'
               />
             )}
@@ -227,7 +227,7 @@ export default function WriteRecipe() {
                 type='file'
                 id='image'
                 name='image'
-                onChange={(e) => handleImageChange(e)}
+                onChange={handleImageChange}
                 className='mt-1 block w-full h-8 border-b-2 border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:ring-opacity-50'
               />
             )}

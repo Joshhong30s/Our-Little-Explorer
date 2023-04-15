@@ -129,7 +129,7 @@ export default function Home() {
                   ) : (
                     <ReactPlayer
                       url={recipe.imageUrl}
-                      playing
+                      fill
                       width='100%'
                       height='100%'
                     />
