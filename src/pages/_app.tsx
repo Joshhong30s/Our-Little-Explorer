@@ -17,7 +17,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <div className={klee.className}>
       <Head>
-        <link rel='apple-touch-icon' href='/family.svg' />
+        <link rel='apple-touch-icon' href='/family.png' />
         <title>小寶成長紀錄</title>
       </Head>
       <NoSSR>
