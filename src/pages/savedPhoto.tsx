@@ -14,7 +14,7 @@ export default function savedPhoto() {
     const fetchsavedPhoto = async () => {
       try {
         const response = await axios.get(
-          `https://zero6babyserver.onrender.com/photos/savedPhoto/${userID}`
+          `https://zero6babyserver.onrender.com/recipes/savedPhoto/${userID}`
         )
         setsavedPhoto(response.data.savedPhoto)
       } catch (err) {

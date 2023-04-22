@@ -26,7 +26,7 @@ export default function Home() {
     const fetchPhoto = async () => {
       try {
         const response = await axios.get(
-          'https://zero6babyserver.onrender.com/Photo'
+          'https://zero6babyserver.onrender.com/Recipes'
         )
         setPhoto(response.data)
         console.log(response.data)
@@ -38,7 +38,7 @@ export default function Home() {
     const fetchSavedPhoto = async () => {
       try {
         const response = await axios.get(
-          `https://zero6babyserver.onrender.com/Photo/savedPhoto/ids/${userID}`
+          `https://zero6babyserver.onrender.com/recipes/savedPhoto/ids/${userID}`
         )
         setSavedPhoto(response.data.savedPhoto)
       } catch (err) {
@@ -55,7 +55,7 @@ export default function Home() {
   const savePhoto = async (photoID: string) => {
     try {
       const response = await axios.put(
-        'https://zero6babyserver.onrender.com/Photo',
+        'https://zero6babyserver.onrender.com/recipes',
         {
           photoID,
           userID,
@@ -71,7 +71,7 @@ export default function Home() {
   const unsavePhoto = async (photoID: string) => {
     try {
       const response = await axios.delete(
-        'https://zero6babyserver.onrender.com/Photo',
+        'https://zero6babyserver.onrender.com/recipes',
         {
           data: {
             photoID,
