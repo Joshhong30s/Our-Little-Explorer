@@ -6,57 +6,41 @@ import { useGetUserID } from '../hooks/useGetUserId'
 import { useCookies } from 'react-cookie'
 import Image from 'next/image'
 
-type RecipeType = {
+type PhotoType = {
   name: string
-  ingredients: Array<string>
+  location: string
   instructions: string
   imageUrl: string
-  cookingTime: number
+  growingTime: number
   userOwner: string
 }
 
-export default function WriteRecipe() {
+export default function WritePhoto() {
   const userID = useGetUserID()
   const [file, setFile] = useState(null)
   const [cookies, _] = useCookies(['access_token'])
   const [allowYoutubeUrl, setAllowYoutubeUrl] = useState(false)
-  const [recipe, setRecipe] = useState<RecipeType>({
+  const [photo, setPhoto] = useState<PhotoType>({
     name: '',
-    ingredients: [],
+    location: '',
     instructions: '',
     imageUrl: '',
-    cookingTime: 0,
+    growingTime: 0,
     userOwner: userID ?? '',
   })
 
   const handleChange = (e: any) => {
-    setRecipe({
-      ...recipe,
+    setPhoto({
+      ...photo,
       [e.target.name]: e.target.value,
-    })
-  }
-
-  const handleIngredientChange = (e: any, index: number) => {
-    const ingredients = recipe.ingredients
-    ingredients[index] = e.target.value
-    setRecipe({
-      ...recipe,
-      ingredients: ingredients,
-    })
-  }
-
-  const addIngredients = () => {
-    setRecipe({
-      ...recipe,
-      ingredients: [...recipe.ingredients, ''],
     })
   }
 
   const handleImageChange = async (e: any) => {
     if (allowYoutubeUrl) {
       const inputUrl = e.target.value
-      setRecipe({
-        ...recipe,
+      setPhoto({
+        ...photo,
         imageUrl: inputUrl,
       })
     } else {
@@ -84,8 +68,8 @@ export default function WriteRecipe() {
           )
 
           alert('相片上傳成功，可以送出')
-          setRecipe({
-            ...recipe,
+          setPhoto({
+            ...photo,
             imageUrl: response.data.data.link,
           })
         } catch (err) {
@@ -101,10 +85,10 @@ export default function WriteRecipe() {
   const onSubmit = async (e: any) => {
     e.preventDefault()
     try {
-      await axios.post('https://zero6babyserver.onrender.com/recipes', recipe, {
+      await axios.post('https://zero6babyserver.onrender.com/recipes', photo, {
         headers: { authorization: cookies.access_token },
       })
-      console.log('recired created')
+      console.log('photo created')
       window.location.replace('/')
     } catch (error) {
       console.log(error)
@@ -138,29 +122,22 @@ export default function WriteRecipe() {
           </div>
           <div>
             <label
-              htmlFor='ingredients'
+              htmlFor='location'
               className='block text-gray-700 font-medium text-lg'
             >
-              相片資訊
+              相片地點
             </label>
-            {recipe.ingredients.map((ingredient, index) => (
-              <div key={index}>
-                <input
-                  type='text'
-                  name='ingredients'
-                  value={ingredient}
-                  onChange={(e) => handleIngredientChange(e, index)}
-                  className='mt-1 block w-full  h-8 border-b-2 border-gray-300  focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:ring-opacity-50'
-                />
-              </div>
-            ))}
-            <button
-              onClick={addIngredients}
-              type='button'
-              className='mt-2 bg-orange-950 text-black py-2 px-4 rounded-lg hover:bg-yellow-300 transition-colors duration-300'
-            >
-              加入地點和拍攝者
-            </button>
+
+            <div>
+              <input
+                type='text'
+                id='location'
+                name='location'
+                placeholder='...照片拍攝地點'
+                onChange={handleChange}
+                className='mt-1 block w-full  h-8 border-b-2 border-gray-300  focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:ring-opacity-50'
+              />
+            </div>
           </div>
           <div className='whitespace-pre-wrap'>
             <label
@@ -179,15 +156,16 @@ export default function WriteRecipe() {
           </div>
           <div>
             <label
-              htmlFor='cookingTime'
+              htmlFor='growingTime'
               className='block text-gray-700 font-medium text-lg'
             >
               相片年齡
             </label>
             <input
               type='text'
-              id='cookingTime'
-              name='cookingTime'
+              id='growingTime'
+              name='growingTime'
+              placeholder='...照片裡的年齡'
               onChange={handleChange}
               className='mt-1 block w-full h-8 border-b-2 border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:ring-opacity-50'
             />

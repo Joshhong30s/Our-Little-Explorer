@@ -38,14 +38,14 @@ export default function Navbar() {
                 {!cookies.access_token ? (
                   <Link href='/register'>註冊</Link>
                 ) : (
-                  <Link href='/savedRecipe'>我的最愛</Link>
+                  <Link href='/savedPhoto'>我的最愛</Link>
                 )}
               </li>
               <li className='block mb-4 md:mb-0 md:ml-6'>
                 {!cookies.access_token ? (
                   <Link href='/login'>上傳相片</Link>
                 ) : (
-                  <Link href='/writeRecipe'>上傳相片</Link>
+                  <Link href='/writePhoto'>上傳相片</Link>
                 )}
               </li>
               <li className='block mb-4 md:mb-0 md:ml-6'>
