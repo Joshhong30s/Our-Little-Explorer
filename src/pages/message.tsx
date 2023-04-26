@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { useState } from 'react'
 import Select from 'react-select'
 
@@ -9,16 +10,22 @@ export default function Message() {
   })
   const [selectedAvatar, setSelectedAvatar] = useState('')
   const avatarOptions = [
-    { value: '/path/to/avatar1.png', label: 'Avatar 1' },
-    { value: '/path/to/avatar2.png', label: 'Avatar 2' },
-    { value: '/path/to/avatar2.png', label: 'Avatar 3' },
-    { value: '/path/to/avatar2.png', label: 'Avatar 4' },
-    { value: '/path/to/avatar2.png', label: 'Avatar 5' },
-    { value: '/path/to/avatar2.png', label: 'Avatar 6' },
-    { value: '/path/to/avatar2.png', label: 'Avatar 7' },
-    { value: '/path/to/avatar2.png', label: 'Avatar 8' },
-    { value: '/path/to/avatar2.png', label: 'Avatar 9' },
-    // Add more avatar options here
+    { value: '/01.svg', label: 'Avatar 1' },
+    { value: '/02.svg', label: 'Avatar 2' },
+    { value: '/03.svg', label: 'Avatar 3' },
+    { value: '/04.svg', label: 'Avatar 4' },
+    { value: '/05.svg', label: 'Avatar 5' },
+    { value: '/06.svg', label: 'Avatar 6' },
+    { value: '/07.svg', label: 'Avatar 7' },
+    { value: '/08.svg', label: 'Avatar 8' },
+    { value: '/09.svg', label: 'Avatar 9' },
+    { value: '/10.svg', label: 'Avatar 10' },
+    { value: '/11.svg', label: 'Avatar 11' },
+    { value: '/12.svg', label: 'Avatar 12' },
+    { value: '/13.svg', label: 'Avatar 13' },
+    { value: '/14.svg', label: 'Avatar 14' },
+    { value: '/15.svg', label: 'Avatar 15' },
+    { value: '/16.svg', label: 'Avatar 16' },
   ]
 
   const handleAvatarClick = (avatar: string) => {
@@ -78,7 +85,7 @@ export default function Message() {
           <form className='space-y-4' onSubmit={handleSubmit}>
             <div className='grid grid-cols-3 gap-2'>
               {avatarOptions.map((option, index) => (
-                <img
+                <Image
                   key={index}
                   src={option.value}
                   alt={option.label}
