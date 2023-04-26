@@ -3,13 +3,13 @@ import Link from 'next/link'
 import { IoMdMenu, IoMdClose, IoMdCloseCircle } from 'react-icons/io'
 import { useState } from 'react'
 import { useCookies } from 'react-cookie'
-import { HiSearch, HiOutlineSearch } from 'react-icons/hi'
+import { TbDeviceAnalytics } from 'react-icons/tb'
 import Image from 'next/image'
 
 export default function Navbar() {
   const [cookies, setCookies] = useCookies(['access_token'])
   const [navbar, setNavbar] = useState(false)
-  const [searchbar, setSearchbar] = useState(false)
+  const [databar, setDatabar] = useState(false)
   const logout = () => {
     setCookies('access_token', '')
     window.localStorage.clear()
@@ -21,34 +21,34 @@ export default function Navbar() {
       <div className='flex flex-col md:flex-row justify-center md:items-center md:justify-between'>
         {/* navbar for md */}
         <div
-          className={`md:flex md:pb-0 mt-2 md:my-2  basis-1/3 order-2 md:order-1 ${
+          className={`md:flex md:pb-0 mt-2 md:my-2 basis-1/3 order-2 md:order-1 ${
             navbar ? 'block' : 'hidden'
           }`}
         >
           <div className='xl:text-xl'>
-            <ul className='xl:flex items-center'>
-              <li className='block mb-4 md:mb-0 md:ml-6'>
+            <ul className='xl:flex items-center md:space-x-10'>
+              <li className='block mb-4 md:mb-0 md:ml-6 hover:bg-gray-600 hover:text-white hover:p-4 hover:rounded-md'>
                 {!cookies.access_token ? (
                   <Link href='/login'>登入</Link>
                 ) : (
                   <button onClick={logout}>登出</button>
                 )}
               </li>
-              <li className='block mb-4 md:mb-0 md:ml-6'>
+              <li className='block mb-4 md:mb-0 md:ml-6 hover:bg-gray-600 hover:text-white hover:p-4 hover:rounded-md'>
                 {!cookies.access_token ? (
                   <Link href='/register'>註冊</Link>
                 ) : (
                   <Link href='/savedPhoto'>我的最愛</Link>
                 )}
               </li>
-              <li className='block mb-4 md:mb-0 md:ml-6'>
+              <li className='block mb-4 md:mb-0 md:ml-6 hover:bg-gray-600 hover:text-white hover:p-4 hover:rounded-md'>
                 {!cookies.access_token ? (
                   <Link href='/login'>上傳相片</Link>
                 ) : (
                   <Link href='/writePhoto'>上傳相片</Link>
                 )}
               </li>
-              <li className='block mb-4 md:mb-0 md:ml-6'>
+              <li className='block mb-4 md:mb-0 md:ml-6 hover:bg-gray-600 hover:text-white hover:p-4 hover:rounded-md'>
                 <Link href='/'>所有相片</Link>
               </li>
             </ul>
@@ -73,31 +73,32 @@ export default function Navbar() {
             />
           </Link>
 
-          {/* searchbar button for mobile */}
-          <button
-            className='md:hidden'
-            onClick={() => setSearchbar(!searchbar)}
-          >
-            {searchbar ? <IoMdCloseCircle size={30} /> : <HiSearch size={30} />}
+          {/* monitor button for mobile */}
+          <button className='md:hidden' onClick={() => setDatabar(!databar)}>
+            {databar ? (
+              <IoMdCloseCircle size={30} />
+            ) : (
+              <TbDeviceAnalytics size={30} />
+            )}
           </button>
         </div>
 
-        {/* searchbar for mobile */}
+        {/* databar for mobile */}
         <div
-          className={`order-3 md:flex justify-end space-x-4 md:space-x-6 my-4 md:my-0 md:text-lg lg:text-xl basis-1/3 ${
-            searchbar ? 'flex' : 'hidden'
+          className={`order-3 justify-end md:flex md:justify-end md:space-x-10 py-2 md:text-lg lg:text-xl basis-1/3 ${
+            databar ? 'block' : 'hidden'
           }`}
+          style={{ textAlign: 'right' }}
         >
-          <input
-            type='text'
-            aria-label='search'
-            className='px-2 py-2 w-11/12 md:w-7/12 border-2 rounded-md border-slate-900'
-            placeholder='...搜尋相片功能施工中'
-            value=''
-          />
-          <button className='w-auto'>
-            <HiSearch size={30} />
-          </button>
+          <div className='mb-4 md:mb-0 md:ml-6 hover:bg-gray-600 hover:text-white hover:p-4 hover:rounded-md'>
+            <Link href='/dashboard'>成長圖表</Link>
+          </div>
+          <div className='mb-4 md:mb-0 md:ml-6 hover:bg-gray-600 hover:text-white hover:p-4 hover:rounded-md'>
+            <Link href='/table'>成長數據</Link>
+          </div>
+          <div className='mb-4 md:mb-0 md:ml-6 hover:bg-gray-600 hover:text-white hover:p-4 hover:rounded-md'>
+            <Link href='/message'>留言小寶</Link>
+          </div>
         </div>
       </div>
     </nav>
