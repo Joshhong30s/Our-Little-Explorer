@@ -171,6 +171,7 @@ export default function Message() {
                 name='name'
                 placeholder='Your Name'
                 onChange={handleChange}
+                value={formData.name}
                 className='mt-1 block w-full h-8 border-b-2 border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:ring-opacity-50'
               />
             </div>
@@ -185,6 +186,7 @@ export default function Message() {
                 id='message'
                 name='message'
                 onChange={handleChange}
+                value={formData.message}
                 className='mt-1 block w-full resize-none md:h-48 border-b-2 border-gray-300  focus:outline-none whitespace-pre-wrap'
                 placeholder='Write your message'
               ></textarea>
