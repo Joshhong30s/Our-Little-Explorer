@@ -1,6 +1,6 @@
 import Select from 'react-select'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { components } from 'react-select'
 
 const MenuList = (props: any) => (
@@ -64,8 +64,7 @@ export default function Message() {
       if (response.ok) {
         const data = await response.json()
         console.log(data)
-        /// alert
-        alert('suceess!!!')
+        alert('success!!!')
         setFormData({
           avatar: '',
           name: '',
@@ -80,7 +79,34 @@ export default function Message() {
     }
   }
 
+  // Add a new state variable for storing messages
+  const [messages, setMessages] = useState([])
+  useEffect(() => {
+    fetchMessages()
+  }, [])
   // Fetch message board data from Google Sheets here
+
+  const fetchMessages = async () => {
+    try {
+      const response = await fetch('/api/loading', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        console.log(data)
+        setMessages(data.messages) // Store fetched messages in the state
+      } else {
+        throw new Error('Error loading data')
+      }
+    } catch (error) {
+      console.error('Error loading data:', error)
+      alert('Error loading data')
+    }
+  }
 
   return (
     <div
@@ -160,40 +186,25 @@ export default function Message() {
             Message Board
           </h2>
           <div className='message-board space-y-4 max-h-96 overflow-y-auto'>
-            {/* Render message board data here */}
-            <div className='bg-gray-100 p-4 rounded-md'>
-              <div className='flex items-center justify-between mb-2'>
-                <div className='flex items-center'>
-                  <img
-                    src='avatar1.jpg'
-                    alt='Avatar 1'
-                    className='w-10 h-10 rounded-full mr-3'
-                  />
-                  <h3 className='font-semibold text-lg'>John Doe</h3>
+            {messages.map(({ date, avatar, name, message }) => (
+              <div
+                key={`${date}-${name}`}
+                className='bg-gray-100 p-4 rounded-md'
+              >
+                <div className='flex items-center justify-between mb-2'>
+                  <div className='flex items-center'>
+                    <img
+                      src={avatar}
+                      alt={name}
+                      className='w-10 h-10 rounded-full mr-3'
+                    />
+                    <h3 className='font-semibold text-lg'>{name}</h3>
+                  </div>
+                  <p className='text-gray-500 text-sm'>{date}</p>
                 </div>
-                <p className='text-gray-500 text-sm'>2023/05/01</p>
+                <p className='text-gray-700'>{message}</p>
               </div>
-              <p className='text-gray-700'>
-                This is a sample message from John Doe.
-              </p>
-            </div>
-            <div className='bg-gray-100 p-4 rounded-md'>
-              <div className='flex items-center justify-between mb-2'>
-                <div className='flex items-center'>
-                  <img
-                    src='avatar2.jpg'
-                    alt='Avatar 2'
-                    className='w-10 h-10 rounded-full mr-3'
-                  />
-                  <h3 className='font-semibold text-lg'>Jane Smith</h3>
-                </div>
-                <p className='text-gray-500 text-sm'>2023/05/02</p>
-              </div>
-              <p className='text-gray-700'>
-                This is another sample message from Jane Smith.
-              </p>
-            </div>
-            {/* Continue rendering more messages */}
+            ))}
           </div>
         </div>
       </div>
