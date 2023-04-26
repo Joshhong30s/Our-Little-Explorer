@@ -1,9 +1,22 @@
-/* eslint-disable react/jsx-key */
 import { useMemo } from 'react'
-import { useTable } from 'react-table'
+import { useTable, Column } from 'react-table'
 
-export default function RawTable({ data }) {
-  const columns = useMemo(
+interface Data {
+  Day: string | Date
+  Weight: number
+  FeedingTime: string | Date
+  FeedingVolume: number
+  DiaperTime: string | Date
+  DiaperColor: string
+  Event: string
+}
+
+interface RawTableProps {
+  data: Data[]
+}
+
+export default function RawTable({ data }: RawTableProps) {
+  const columns: Column<Data>[] = useMemo(
     () => [
       {
         Header: 'Day',

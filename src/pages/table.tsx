@@ -1,6 +1,16 @@
 import { google } from 'googleapis'
 import RawTable from '../components/rawTable'
 
+type Table = {
+  Day: string | Date
+  Weight: number
+  FeedingTime: string | Date
+  FeedingVolume: number
+  DiaperTime: string | Date
+  DiaperColor: string
+  Event: string
+}
+
 export async function getServerSideProps() {
   //auth
   const auth = await google.auth.getClient({
@@ -16,29 +26,30 @@ export async function getServerSideProps() {
   })
 
   //result
-  const data = response.data.values
-    .slice(1)
-    .map((row) => {
-      const [
-        Day,
-        Weight,
-        FeedingTime,
-        FeedingVolume,
-        DiaperTime,
-        DiaperColor,
-        Event,
-      ] = row
-      return {
-        Day,
-        Weight,
-        FeedingTime,
-        FeedingVolume,
-        DiaperTime,
-        DiaperColor,
-        Event: Event !== undefined ? Event : null,
-      }
-    })
-    .reverse()
+  const data =
+    response.data.values
+      ?.slice(1)
+      .map((row) => {
+        const [
+          Day,
+          Weight,
+          FeedingTime,
+          FeedingVolume,
+          DiaperTime,
+          DiaperColor,
+          Event,
+        ] = row
+        return {
+          Day,
+          Weight,
+          FeedingTime,
+          FeedingVolume,
+          DiaperTime,
+          DiaperColor,
+          Event: Event !== undefined ? Event : null,
+        }
+      })
+      ?.reverse() ?? []
 
   return {
     props: {
@@ -47,12 +58,10 @@ export async function getServerSideProps() {
   }
 }
 
-export default function Table(props) {
-  console.log(props)
-
+export default function Table({ data }: { data: Table[] }) {
   return (
     <div>
-      <RawTable data={props.data} />
+      <RawTable data={data} />
     </div>
   )
 }
