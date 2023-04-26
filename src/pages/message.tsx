@@ -205,7 +205,7 @@ export default function Message() {
           </h2>
           <div className='space-y-6 max-h-[600px] overflow-y-auto'>
             {messages.map(({ date, avatar, name, message }) => (
-              <div key={`${date}-${name}`} className=' p-4 rounded-md'>
+              <div key={`${date}-${name}`} className='bg-white p-4 rounded-md'>
                 <div className='flex items-center justify-between mb-2'>
                   <div className='flex items-center'>
                     <img
