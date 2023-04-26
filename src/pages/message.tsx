@@ -199,11 +199,11 @@ export default function Message() {
             </div>
           </form>
         </div>
-        <div className='bg-white rounded-lg shadow-lg p-6 w-full max-w-lg h-full'>
+        <div className='bg-orange-950 unded-lg shadow-lg p-6 w-full max-w-lg h-full'>
           <h2 className='text-2xl text-center font-medium mb-6'>
             Message Board
           </h2>
-          <div className='space-y-6 max-h-[600px] h-full overflow-y-auto'>
+          <div className='space-y-6 max-h-[600px] overflow-y-auto'>
             {messages.map(({ date, avatar, name, message }) => (
               <div key={`${date}-${name}`} className=' p-4 rounded-md'>
                 <div className='flex items-center justify-between mb-2'>
