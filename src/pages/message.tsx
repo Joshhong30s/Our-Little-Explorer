@@ -196,11 +196,14 @@ export default function Message() {
             </div>
           </form>
         </div>
-        <div className='bg-white rounded-lg shadow-lg p-6 w-full max-w-lg'>
+        <div className='bg-red-500 rounded-lg shadow-lg p-6 w-full max-w-lg'>
           <h2 className='text-2xl text-center font-medium mb-6'>
             Message Board
           </h2>
-          <div className='space-y-4 max-h-96 overflow-y-auto bg-red-600'>
+          <div className='space-y-4 max-h-96 overflow-y-auto bg-red-600 border-2 border-black'>
+            <div className='bg-blue-500 p-4 rounded-md'>
+              <p>Test message</p>
+            </div>
             {messages.map(({ date, avatar, name, message }) => (
               <div
                 key={`${date}-${name}`}
