@@ -12,10 +12,28 @@ type Table = {
 }
 
 export async function getServerSideProps() {
-  //auth
-  const auth = await google.auth.getClient({
+  // check if base64 settled
+  if (!process.env.NEXT_PUBLIC_GOOGLE_APPLICATION_CREDENTIALS_JSON_BASE64) {
+    throw new Error(
+      'NEXT_PUBLIC_GOOGLE_APPLICATION_CREDENTIALS_JSON_BASE64 is not set in env variables'
+    )
+  }
+
+  // decode base64 string
+  const credentialsJson = Buffer.from(
+    process.env.NEXT_PUBLIC_GOOGLE_APPLICATION_CREDENTIALS_JSON_BASE64,
+    'base64'
+  ).toString()
+
+  // pase the JSON string into an object
+  const credentials = JSON.parse(credentialsJson)
+
+  // create Google Auth Client
+  const auth = new google.auth.GoogleAuth({
+    credentials,
     scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
   })
+
   const sheets = google.sheets({ version: 'v4', auth })
 
   //query
