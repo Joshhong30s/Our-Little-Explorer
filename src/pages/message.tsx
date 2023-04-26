@@ -84,6 +84,7 @@ export default function Message() {
 
   // Add a new state variable for storing messages
   const [messages, setMessages] = useState([])
+  const [loading, setLoading] = useState(false)
   const [refresh, setRefresh] = useState(0)
   useEffect(() => {
     fetchMessages()
@@ -91,6 +92,7 @@ export default function Message() {
   // Fetch message board data from Google Sheets here
 
   const fetchMessages = async () => {
+    setLoading(true)
     try {
       const response = await fetch('/api/loading', {
         method: 'GET',
@@ -123,6 +125,8 @@ export default function Message() {
     } catch (error) {
       console.error('Error loading data:', error)
       alert('Error loading data')
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -206,22 +210,32 @@ export default function Message() {
             Message Board
           </h2>
           <div className='space-y-6 max-h-[600px] overflow-y-auto'>
-            {messages.map(({ date, avatar, name, message }) => (
-              <div key={`${date}-${name}`} className='bg-white p-4 rounded-md'>
-                <div className='flex items-center justify-between mb-2'>
-                  <div className='flex items-center'>
-                    <img
-                      src={avatar}
-                      alt={name}
-                      className='w-10 h-10 rounded-full mr-3'
-                    />
-                    <h3 className='font-semibold text-lg'>{name}</h3>
-                  </div>
-                  <p className='text-gray-500 text-sm'>{date}</p>
-                </div>
-                <p className='text-gray-700'>{message}</p>
+            {loading ? (
+              <div className='flex justify-center items-center h-64'>
+                <span className='animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-gray-900'></span>
+                <span className='sr-only'>Loading...</span>
               </div>
-            ))}
+            ) : (
+              messages.map(({ date, avatar, name, message }) => (
+                <div
+                  key={`${date}-${name}`}
+                  className='bg-white p-4 rounded-md'
+                >
+                  <div className='flex items-center justify-between mb-2'>
+                    <div className='flex items-center'>
+                      <img
+                        src={avatar}
+                        alt={name}
+                        className='w-10 h-10 rounded-full mr-3'
+                      />
+                      <h3 className='font-semibold text-lg'>{name}</h3>
+                    </div>
+                    <p className='text-gray-500 text-sm'>{date}</p>
+                  </div>
+                  <p className='text-gray-700'>{message}</p>
+                </div>
+              ))
+            )}
           </div>
         </div>
       </div>
