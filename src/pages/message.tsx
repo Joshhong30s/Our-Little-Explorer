@@ -102,7 +102,8 @@ export default function Message() {
         console.log(data)
 
         // Extract the values property from the fetched data
-        const values = data.values || []
+        const values = data.messages || []
+
         console.log('values:', values)
         const formattedMessages = values.slice(1).map((row: any) => {
           return {
