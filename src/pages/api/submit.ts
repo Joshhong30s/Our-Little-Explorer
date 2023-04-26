@@ -60,9 +60,7 @@ export default async function handler(
 
     console.log('Response data:', response.data)
 
-    return new Response(JSON.stringify({ status: 'success' }), {
-      headers: { 'Content-Type': 'application/json' },
-    })
+    res.status(200).json({ status: 'success' })
   } catch (error) {
     console.error('Error appending data to GoogleSheet:', error)
     return new Response(JSON.stringify({ status: 'error' }), {
