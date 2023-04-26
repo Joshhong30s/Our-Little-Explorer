@@ -112,7 +112,7 @@ export default function Message() {
             message: row[3],
           }
         })
-
+        console.log('formattedMessages:', formattedMessages)
         setMessages(formattedMessages) // Store fetched messages in the state
       } else {
         throw new Error('Error loading data')
@@ -122,7 +122,7 @@ export default function Message() {
       alert('Error loading data')
     }
   }
-
+  console.log('messages:', messages)
   return (
     <div
       className='min-h-screen bg-gray-900/70 flex flex-col items-center bg-cover bg-center '
@@ -204,25 +204,28 @@ export default function Message() {
             <div className='bg-blue-500 p-4 rounded-md'>
               <p>Test message</p>
             </div>
-            {messages.map(({ date, avatar, name, message }) => (
-              <div
-                key={`${date}-${name}`}
-                className=' p-4 rounded-md bg-yellow-500'
-              >
-                <div className='flex items-center justify-between mb-2'>
-                  <div className='flex items-center'>
-                    <img
-                      src={avatar}
-                      alt={name}
-                      className='w-10 h-10 rounded-full mr-3'
-                    />
-                    <h3 className='font-semibold text-lg'>{name}</h3>
+            {messages.map(({ date, avatar, name, message }) => {
+              console.log('Rendering message:', { date, avatar, name, message })
+              return (
+                <div
+                  key={`${date}-${name}`}
+                  className=' p-4 rounded-md bg-yellow-500'
+                >
+                  <div className='flex items-center justify-between mb-2'>
+                    <div className='flex items-center'>
+                      <img
+                        src={avatar}
+                        alt={name}
+                        className='w-10 h-10 rounded-full mr-3'
+                      />
+                      <h3 className='font-semibold text-lg'>{name}</h3>
+                    </div>
+                    <p className='text-gray-500 text-sm'>{date}</p>
                   </div>
-                  <p className='text-gray-500 text-sm'>{date}</p>
+                  <p className='text-gray-700'>{message}</p>
                 </div>
-                <p className='text-gray-700'>{message}</p>
-              </div>
-            ))}
+              )
+            })}
           </div>
         </div>
       </div>
