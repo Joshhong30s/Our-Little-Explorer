@@ -25,6 +25,8 @@ export async function getServerSideProps() {
     range,
   })
 
+  console.log(response)
+
   //result
   const data =
     response.data.values
