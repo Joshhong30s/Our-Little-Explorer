@@ -98,7 +98,17 @@ export default function Message() {
       if (response.ok) {
         const data = await response.json()
         console.log(data)
-        setMessages(data.messages) // Store fetched messages in the state
+
+        const formattedMessages = data.values.slice(1).map((row: any) => {
+          return {
+            date: row[0],
+            avatar: row[1],
+            name: row[2],
+            message: row[3],
+          }
+        })
+
+        setMessages(formattedMessages) // Store fetched messages in the state
       } else {
         throw new Error('Error loading data')
       }
