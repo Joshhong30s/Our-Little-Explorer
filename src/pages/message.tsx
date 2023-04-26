@@ -103,7 +103,7 @@ export default function Message() {
 
         // Extract the values property from the fetched data
         const values = data.values || []
-
+        console.log('values:', values)
         const formattedMessages = values.slice(1).map((row: any) => {
           return {
             date: row[0],
@@ -122,7 +122,7 @@ export default function Message() {
       alert('Error loading data')
     }
   }
-  console.log('messages:', messages)
+
   return (
     <div
       className='min-h-screen bg-gray-900/70 flex flex-col items-center bg-cover bg-center '
@@ -201,31 +201,25 @@ export default function Message() {
             Message Board
           </h2>
           <div className='space-y-4 max-h-96 overflow-y-auto bg-red-600 border-2 border-black'>
-            <div className='bg-blue-500 p-4 rounded-md'>
-              <p>Test message</p>
-            </div>
-            {messages.map(({ date, avatar, name, message }) => {
-              console.log('Rendering message:', { date, avatar, name, message })
-              return (
-                <div
-                  key={`${date}-${name}`}
-                  className=' p-4 rounded-md bg-yellow-500'
-                >
-                  <div className='flex items-center justify-between mb-2'>
-                    <div className='flex items-center'>
-                      <img
-                        src={avatar}
-                        alt={name}
-                        className='w-10 h-10 rounded-full mr-3'
-                      />
-                      <h3 className='font-semibold text-lg'>{name}</h3>
-                    </div>
-                    <p className='text-gray-500 text-sm'>{date}</p>
+            {messages.map(({ date, avatar, name, message }) => (
+              <div
+                key={`${date}-${name}`}
+                className=' p-4 rounded-md bg-yellow-500'
+              >
+                <div className='flex items-center justify-between mb-2'>
+                  <div className='flex items-center'>
+                    <img
+                      src={avatar}
+                      alt={name}
+                      className='w-10 h-10 rounded-full mr-3'
+                    />
+                    <h3 className='font-semibold text-lg'>{name}</h3>
                   </div>
-                  <p className='text-gray-700'>{message}</p>
+                  <p className='text-gray-500 text-sm'>{date}</p>
                 </div>
-              )
-            })}
+                <p className='text-gray-700'>{message}</p>
+              </div>
+            ))}
           </div>
         </div>
       </div>
