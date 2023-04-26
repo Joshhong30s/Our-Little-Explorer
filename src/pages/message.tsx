@@ -1,6 +1,13 @@
-import Image from 'next/image'
-import { useState } from 'react'
 import Select from 'react-select'
+
+import { useState } from 'react'
+import { components } from 'react-select'
+
+const MenuList = (props: any) => (
+  <components.MenuList {...props} className='grid grid-cols-4 gap-2'>
+    {props.children}
+  </components.MenuList>
+)
 
 export default function Message() {
   const [formData, setFormData] = useState({
@@ -8,7 +15,14 @@ export default function Message() {
     name: '',
     message: '',
   })
-  const [selectedAvatar, setSelectedAvatar] = useState('')
+
+  const handleAvatarChange = (selectedOption: any) => {
+    setFormData({
+      ...formData,
+      avatar: selectedOption.value,
+    })
+  }
+
   const avatarOptions = [
     { value: '/01.svg', label: 'Avatar 1' },
     { value: '/02.svg', label: 'Avatar 2' },
@@ -28,10 +42,6 @@ export default function Message() {
     { value: '/16.svg', label: 'Avatar 16' },
   ]
 
-  const handleAvatarClick = (avatar: string) => {
-    setSelectedAvatar(avatar)
-    handleChange({ target: { name: 'avatar', value: avatar } })
-  }
   const handleChange = (e: any) => {
     setFormData({
       ...formData,
@@ -82,22 +92,28 @@ export default function Message() {
           <h2 className='text-2xl text-center font-medium mb-6'>
             Leave a Message
           </h2>
-          <form className='space-y-4' onSubmit={handleSubmit}>
-            <div className='grid grid-cols-3 gap-2'>
-              {avatarOptions.map((option, index) => (
-                <Image
-                  key={index}
-                  src={option.value}
-                  alt={option.label}
-                  className={`w-full h-auto rounded-lg cursor-pointer border-2 ${
-                    selectedAvatar === option.value
-                      ? 'border-indigo-500'
-                      : 'border-transparent'
-                  }`}
-                  onClick={() => handleAvatarClick(option.value)}
-                />
-              ))}
-            </div>
+          <form className='space-y-6' onSubmit={handleSubmit}>
+            <label htmlFor='avatar'>Choose an avatar:</label>
+            <Select
+              name='avatar'
+              id='avatar'
+              value={avatarOptions.find(
+                (option) => option.value === formData.avatar
+              )}
+              onChange={handleAvatarChange}
+              options={avatarOptions}
+              placeholder='Select an avatar'
+              formatOptionLabel={(option) => (
+                <div className=''>
+                  <img
+                    src={option.value}
+                    alt={option.label}
+                    className='w-30 h-30 hover:cursor-pointer'
+                  />
+                </div>
+              )}
+              components={{ MenuList }}
+            />
             <div>
               <label
                 htmlFor='name'
