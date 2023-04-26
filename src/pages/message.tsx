@@ -200,11 +200,11 @@ export default function Message() {
           <h2 className='text-2xl text-center font-medium mb-6'>
             Message Board
           </h2>
-          <div className='message-board space-y-4 max-h-96 overflow-y-auto'>
+          <div className='message-board space-y-4 max-h-96 overflow-y-auto bg-red-600'>
             {messages.map(({ date, avatar, name, message }) => (
               <div
                 key={`${date}-${name}`}
-                className='bg-gray-100 p-4 rounded-md'
+                className=' p-4 rounded-md bg-yellow-500'
               >
                 <div className='flex items-center justify-between mb-2'>
                   <div className='flex items-center'>
