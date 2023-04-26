@@ -72,6 +72,7 @@ export default function Message() {
           name: '',
           message: '',
         })
+        setRefresh(refresh + 1)
       } else {
         throw new Error('Error submitting data')
       }
@@ -83,9 +84,10 @@ export default function Message() {
 
   // Add a new state variable for storing messages
   const [messages, setMessages] = useState([])
+  const [refresh, setRefresh] = useState(0)
   useEffect(() => {
     fetchMessages()
-  }, [])
+  }, [refresh])
   // Fetch message board data from Google Sheets here
 
   const fetchMessages = async () => {
@@ -130,7 +132,7 @@ export default function Message() {
       style={{ backgroundImage: "url('comi.jpg')" }}
     >
       <div className='w-full max-w-7xl mt-10 flex flex-col md:flex-row gap-8 justify-center'>
-        <div className='bg-white rounded-lg shadow-lg p-6 w-full max-w-lg'>
+        <div className='bg-white rounded-lg shadow-lg p-6 w-full max-w-lg h-full'>
           <h2 className='text-2xl text-center font-medium mb-6'>
             Leave a Message
           </h2>
@@ -197,16 +199,13 @@ export default function Message() {
             </div>
           </form>
         </div>
-        <div className='bg-red-500 rounded-lg shadow-lg p-6 w-full max-w-lg'>
+        <div className='bg-white rounded-lg shadow-lg p-6 w-full max-w-lg h-full'>
           <h2 className='text-2xl text-center font-medium mb-6'>
             Message Board
           </h2>
-          <div className='space-y-4 max-h-96 overflow-y-auto bg-red-600 border-2 border-black'>
+          <div className='space-y-6 max-h-[600px] h-full overflow-y-auto'>
             {messages.map(({ date, avatar, name, message }) => (
-              <div
-                key={`${date}-${name}`}
-                className=' p-4 rounded-md bg-yellow-500'
-              >
+              <div key={`${date}-${name}`} className=' p-4 rounded-md'>
                 <div className='flex items-center justify-between mb-2'>
                   <div className='flex items-center'>
                     <img
