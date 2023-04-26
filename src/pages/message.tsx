@@ -99,7 +99,10 @@ export default function Message() {
         const data = await response.json()
         console.log(data)
 
-        const formattedMessages = data.values.slice(1).map((row: any) => {
+        // Extract the values property from the fetched data
+        const values = data.values || []
+
+        const formattedMessages = values.slice(1).map((row) => {
           return {
             date: row[0],
             avatar: row[1],
