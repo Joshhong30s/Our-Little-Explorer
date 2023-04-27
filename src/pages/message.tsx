@@ -210,7 +210,7 @@ export default function Message() {
             </div>
           </form>
         </div>
-        <div className='bg-blue-980 rounded-lg shadow-lg p-6 w-full max-w-lg h-full'>
+        <div className='bg-teal-980 rounded-lg shadow-lg p-6 w-full max-w-lg h-full'>
           <h2 className='text-2xl text-center font-medium mb-6'>小寶留言板</h2>
           <div className='space-y-6 max-h-[600px] overflow-y-auto'>
             {loading ? (
