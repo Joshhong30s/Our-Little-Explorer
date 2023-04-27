@@ -41,6 +41,7 @@ export default function Home() {
           `https://zero6babyserver.onrender.com/photos/savedPhoto/ids/${userID}`
         )
         setSavedPhoto(response.data.savedPhoto)
+        console.log('Response data:', response.data)
       } catch (err) {
         console.log(err)
       }
@@ -86,10 +87,10 @@ export default function Home() {
     }
   }
 
-  const isPhotoaved = (photoID: string) => savedPhoto.includes(photoID)
+  const isPhotosaved = (photoID: string) => savedPhoto.includes(photoID)
 
   const toggleSavePhoto = (photoID: string) => {
-    if (isPhotoaved(photoID)) {
+    if (isPhotosaved(photoID)) {
       unsavePhoto(photoID)
     } else {
       savePhoto(photoID)
@@ -141,7 +142,7 @@ export default function Home() {
                     className='absolute top-2 right-2 bg-neutral-50 bg-opacity-30 text-red-500 rounded-full p-3'
                     onClick={() => toggleSavePhoto(photo._id)}
                   >
-                    {isPhotoaved(photo._id) ? (
+                    {isPhotosaved(photo._id) ? (
                       <RiHeartFill
                         size={40}
                         className='text-red-500 text-base hover:scale-125'

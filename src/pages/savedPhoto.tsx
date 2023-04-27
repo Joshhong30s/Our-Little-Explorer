@@ -6,32 +6,33 @@ import { FaBaby } from 'react-icons/fa'
 import Link from 'next/link'
 import ReactPlayer from 'react-player'
 
-export default function savedPhoto() {
-  const [savedPhoto, setsavedPhoto] = useState([])
+export default function savedPhotos() {
+  const [savedPhotos, setsavedPhotos] = useState([])
 
   const userID = useGetUserID()
   useEffect(() => {
-    const fetchsavedPhoto = async () => {
+    const fetchsavedPhotos = async () => {
       try {
         const response = await axios.get(
-          `https://zero6babyserver.onrender.com/photos/savedPhoto/${userID}`
+          `https://zero6babyserver.onrender.com/photos/savedPhotos/${userID}`
         )
-        setsavedPhoto(response.data.savedPhoto)
+        setsavedPhotos(response.data.savedPhotos)
+        console.log('Response data:', response.data)
       } catch (err) {
         console.log(err)
       }
     }
 
-    fetchsavedPhoto()
+    fetchsavedPhotos()
   }, [userID])
 
-  const reversedSavedPhoto = savedPhoto.slice().reverse()
+  const reversedSavedPhotos = savedPhotos.slice().reverse()
 
   return (
     <main>
       <div className='px-6 mx-auto mb-8 text-black'>
         <ul className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8'>
-          {reversedSavedPhoto.map(
+          {reversedSavedPhotos.map(
             (photo: {
               _id: string
               name: string
