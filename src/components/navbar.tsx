@@ -27,28 +27,28 @@ export default function Navbar() {
         >
           <div className='xl:text-xl'>
             <ul className='xl:flex items-center md:space-x-10'>
-              <li className='block mb-4 md:mb-0 md:ml-6 hover:bg-gray-600 hover:text-white hover:p-4 hover:rounded-md'>
+              <li className='block mb-4 md:mb-0 md:ml-6 hover:bg-teal-980 hover:text-gray-50 hover:p-4 hover:rounded-md'>
                 {!cookies.access_token ? (
                   <Link href='/login'>登入</Link>
                 ) : (
                   <button onClick={logout}>登出</button>
                 )}
               </li>
-              <li className='block mb-4 md:mb-0 md:ml-6 hover:bg-gray-600 hover:text-white hover:p-4 hover:rounded-md'>
+              <li className='block mb-4 md:mb-0 md:ml-6 hover:bg-teal-980 hover:text-gray-50 hover:p-4 hover:rounded-md'>
                 {!cookies.access_token ? (
                   <Link href='/register'>註冊</Link>
                 ) : (
                   <Link href='/savedPhoto'>我的最愛</Link>
                 )}
               </li>
-              <li className='block mb-4 md:mb-0 md:ml-6 hover:bg-gray-600 hover:text-white hover:p-4 hover:rounded-md'>
+              <li className='block mb-4 md:mb-0 md:ml-6 hover:bg-teal-980 hover:text-gray-50 hover:p-4 hover:rounded-md'>
                 {!cookies.access_token ? (
                   <Link href='/login'>上傳相片</Link>
                 ) : (
                   <Link href='/writePhoto'>上傳相片</Link>
                 )}
               </li>
-              <li className='block mb-4 md:mb-0 md:ml-6 hover:bg-gray-600 hover:text-white hover:p-4 hover:rounded-md'>
+              <li className='block mb-4 md:mb-0 md:ml-6 hover:bg-teal-980 hover:text-gray-50 hover:p-4 hover:rounded-md'>
                 <Link href='/'>所有相片</Link>
               </li>
             </ul>
@@ -90,13 +90,13 @@ export default function Navbar() {
           }`}
           style={{ textAlign: 'right' }}
         >
-          <div className='mb-4 md:mb-0 md:ml-6 hover:bg-gray-600 hover:text-white hover:p-4 hover:rounded-md'>
+          <div className='mb-4 md:mb-0 md:ml-6 hover:bg-teal-980 hover:text-gray-50 hover:p-4 hover:rounded-md'>
             <Link href='/dashboard'>成長圖表</Link>
           </div>
-          <div className='mb-4 md:mb-0 md:ml-6 hover:bg-gray-600 hover:text-white hover:p-4 hover:rounded-md'>
+          <div className='mb-4 md:mb-0 md:ml-6 hover:bg-teal-980 hover:text-gray-50 hover:p-4 hover:rounded-md'>
             <Link href='/table'>成長數據</Link>
           </div>
-          <div className='mb-4 md:mb-0 md:ml-6 hover:bg-gray-600 hover:text-white hover:p-4 hover:rounded-md'>
+          <div className='mb-4 md:mb-0 md:ml-6 hover:bg-teal-980 hover:text-gray-50 hover:p-4 hover:rounded-md'>
             <Link href='/message'>留言小寶</Link>
           </div>
         </div>

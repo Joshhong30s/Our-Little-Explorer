@@ -141,7 +141,12 @@ export default function Message() {
             我要留言給小寶
           </h2>
           <form className='space-y-6' onSubmit={handleSubmit}>
-            <label htmlFor='avatar'>選擇頭像</label>
+            <label
+              className='block text-gray-700 font-medium text-lg'
+              htmlFor='avatar'
+            >
+              我的頭像
+            </label>
             <Select
               name='avatar'
               id='avatar'
@@ -150,7 +155,7 @@ export default function Message() {
               )}
               onChange={handleAvatarChange}
               options={avatarOptions}
-              placeholder='Select an avatar'
+              placeholder='請在下方選擇一個頭像'
               formatOptionLabel={(option) => (
                 <div className=''>
                   <img
@@ -167,16 +172,16 @@ export default function Message() {
                 htmlFor='name'
                 className='block text-gray-700 font-medium text-lg'
               >
-                稱呼
+                我的稱呼
               </label>
               <input
                 type='text'
                 id='name'
                 name='name'
-                placeholder='你/妳是誰..'
+                placeholder='我是誰..'
                 onChange={handleChange}
                 value={formData.name}
-                className='mt-1 block w-full h-8 border-b-2 border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:ring-opacity-50'
+                className='mt-1 block w-full h-8 border-b-2 border-gray-300 focus:border-blue-980 focus:ring-1 focus:ring-blue-980 focus:ring-opacity-50'
               />
             </div>
             <div className='whitespace-pre-wrap'>
@@ -184,7 +189,7 @@ export default function Message() {
                 htmlFor='message'
                 className='block text-gray-700 font-medium text-lg'
               >
-                你/妳的留言
+                我的的留言
               </label>
               <textarea
                 id='message'
@@ -192,20 +197,20 @@ export default function Message() {
                 onChange={handleChange}
                 value={formData.message}
                 className='mt-1 block w-full resize-none md:h-48 border-b-2 border-gray-300  focus:outline-none whitespace-pre-wrap'
-                placeholder='這邊寫下要對小寶說的話..'
+                placeholder='請在這裡寫下要對小寶說的話..'
               ></textarea>
             </div>
             <div className='py-4 text-center'>
               <button
                 type='submit'
-                className='bg-orange-950 text-black py-2 px-4 rounded-lg hover:bg-yellow-300 transition-colors duration-300'
+                className='hover:bg-teal-980 hover:text-gray-100 text-slate-600 bg-blue-980 text-xl font-medium py-4 px-6 rounded-lg transition-colors duration-300'
               >
-                確認送出
+                送出
               </button>
             </div>
           </form>
         </div>
-        <div className='bg-orange-950 unded-lg shadow-lg p-6 w-full max-w-lg h-full'>
+        <div className='bg-blue-980 rounded-lg shadow-lg p-6 w-full max-w-lg h-full'>
           <h2 className='text-2xl text-center font-medium mb-6'>小寶留言板</h2>
           <div className='space-y-6 max-h-[600px] overflow-y-auto'>
             {loading ? (

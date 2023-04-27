@@ -104,7 +104,7 @@ export default function Register() {
               </div>
               <button
                 type='submit'
-                className='mt-12 group relative w-full flex justify-center py-2 px-4 border border-transparent text-lg font-medium rounded-full text-black bg-orange-950 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500'
+                className='mt-12 group relative w-full flex justify-center py-2 px-4 border border-transparent text-lg font-medium rounded-full hover:bg-teal-980 hover:text-gray-100 text-slate-600 bg-blue-980 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500'
               >
                 <span className='absolute left-0 inset-y-0 flex items-center pl-3'></span>
                 {submitting ? null : '點我註冊'}

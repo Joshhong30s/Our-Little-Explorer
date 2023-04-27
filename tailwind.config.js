@@ -16,8 +16,11 @@ module.exports = {
       },
       colors: {
         orange: {
-          950: '#f88d19',
+          980: '#ffb254',
         },
+        teal: { 980: '#51a9dd' },
+        blue: { 980: '#aad9f5' },
+        green: { 980: '#0d7abb' },
       },
     },
   },
