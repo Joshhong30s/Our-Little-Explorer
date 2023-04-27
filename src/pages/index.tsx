@@ -18,7 +18,7 @@ export default function Home() {
   const age = getAge(birthdate, inputDate)
 
   // empty array of strings
-  const [savedPhoto, setSavedPhoto] = useState<string[]>([])
+  const [savedPhotos, setSavedPhotos] = useState<string[]>([])
   const [cookies, _] = useCookies(['access_token'])
   const userID = useGetUserID()
 
@@ -35,12 +35,12 @@ export default function Home() {
       }
     }
 
-    const fetchSavedPhoto = async () => {
+    const fetchSavedPhotos = async () => {
       try {
         const response = await axios.get(
-          `https://zero6babyserver.onrender.com/photos/savedPhoto/ids/${userID}`
+          `https://zero6babyserver.onrender.com/photos/savedPhotos/ids/${userID}`
         )
-        setSavedPhoto(response.data.savedPhoto)
+        setSavedPhotos(response.data.savedPhotos)
         console.log('Response data:', response.data)
       } catch (err) {
         console.log(err)
@@ -49,7 +49,7 @@ export default function Home() {
 
     fetchPhoto()
 
-    if (cookies.access_token) fetchSavedPhoto()
+    if (cookies.access_token) fetchSavedPhotos()
   }, [cookies.access_token, userID])
 
   // send update request to backend and wait for response
@@ -63,7 +63,7 @@ export default function Home() {
         },
         { headers: { authorization: cookies.access_token } }
       )
-      setSavedPhoto(response.data.savedPhoto)
+      setSavedPhotos(response.data.savedPhotos)
     } catch (err) {
       console.log(err)
     }
@@ -81,13 +81,13 @@ export default function Home() {
           headers: { authorization: cookies.access_token },
         }
       )
-      setSavedPhoto(response.data.savedPhoto)
+      setSavedPhotos(response.data.savedPhotos)
     } catch (err) {
       console.log(err)
     }
   }
 
-  const isPhotosaved = (photoID: string) => savedPhoto.includes(photoID)
+  const isPhotosaved = (photoID: string) => savedPhotos.includes(photoID)
 
   const toggleSavePhoto = (photoID: string) => {
     if (isPhotosaved(photoID)) {
