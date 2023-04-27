@@ -85,7 +85,7 @@ export default function WritePhoto() {
   const onSubmit = async (e: any) => {
     e.preventDefault()
     try {
-      await axios.post('https://zero6babyserver.onrender.com/recipes', photo, {
+      await axios.post('https://zero6babyserver.onrender.com/photos', photo, {
         headers: { authorization: cookies.access_token },
       })
       console.log('photo created')
