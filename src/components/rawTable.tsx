@@ -68,7 +68,7 @@ export default function RawTable({ data }: RawTableProps) {
         className='w-full text-center border-collapse'
         {...getTableProps()}
       >
-        <thead className='bg-slate-600'>
+        <thead className='bg-green-980'>
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
@@ -86,7 +86,7 @@ export default function RawTable({ data }: RawTableProps) {
           {rows.map((row) => {
             prepareRow(row)
             return (
-              <tr {...row.getRowProps()} className='even:bg-slate-100'>
+              <tr {...row.getRowProps()} className='even:bg-blue-980'>
                 {row.cells.map((cell) => (
                   <td
                     className='px-4 py-3 border-b border-slate-300'

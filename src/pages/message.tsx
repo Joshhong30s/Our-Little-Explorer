@@ -219,7 +219,7 @@ export default function Message() {
                 <span className='sr-only'>讀取留言中 ...</span>
               </div>
             ) : (
-              messages.map(({ date, avatar, name, message }) => (
+              messages.reverse().map(({ date, avatar, name, message }) => (
                 <div
                   key={`${date}-${name}`}
                   className='bg-white p-4 rounded-md'
