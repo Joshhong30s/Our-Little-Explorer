@@ -127,7 +127,7 @@ export default function RawTable({ data }: RawTableProps) {
           })}
         </tbody>
       </table>
-      <div className='text-center mt-4'>
+      <div className='text-center mt-4 space-x-4'>
         Page{' '}
         <span className='font-semibold'>
           {pageIndex + 1} of {pageOptions.length}{' '}
