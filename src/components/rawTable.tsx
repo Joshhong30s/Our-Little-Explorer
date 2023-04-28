@@ -130,9 +130,15 @@ export default function RawTable({ data }: RawTableProps) {
       <div className='text-center mt-4'>
         <span>
           Page{' '}
-          <strong>
-            {pageIndex + 1} of {pageOptions.length}
-          </strong>
+          <p className='font-semibold'>
+            {pageIndex + 1} of {pageOptions.length}{' '}
+          </p>
+          <button onClick={() => gotoPage(0)} disabled={!previousPage}>
+            {' << '}
+          </button>
+          <button onClick={() => previousPage()} disabled={!canPreviousPage}>
+            上一頁
+          </button>
         </span>
         <span>
           | Go Page :{' '}
@@ -143,21 +149,15 @@ export default function RawTable({ data }: RawTableProps) {
               const pageNumber = e.target.value ? Number(e.target.value) - 1 : 0
               gotoPage(pageNumber)
             }}
-            className='w-20'
+            className='w-10'
           ></input>
         </span>
-        <button onClick={() => gotoPage(0)} disabled={!previousPage}>
-          {'<<'}
-        </button>
-        <button onClick={() => previousPage()} disabled={!canPreviousPage}>
-          上一頁
-        </button>
         <button onClick={() => nextPage()} disabled={!canNextPage}>
           <button
             onClick={() => gotoPage(pageCount - 1)}
             disabled={!canNextPage}
           >
-            {'>>'}
+            {' >> '}
           </button>
           下一頁
         </button>
