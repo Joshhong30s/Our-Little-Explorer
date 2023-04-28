@@ -66,6 +66,10 @@ export default function RawTable({ data }: RawTableProps) {
     canPreviousPage,
     // @ts-expect-error previosPage is not in type def
     pageOptions,
+    // @ts-expect-error
+    gotoPage,
+    // @ts-expect-error
+    pageCount,
     state,
     prepareRow,
   } = useTable(
@@ -123,17 +127,38 @@ export default function RawTable({ data }: RawTableProps) {
           })}
         </tbody>
       </table>
-      <div>
+      <div className='text-center mt-4'>
         <span>
           Page{' '}
           <strong>
             {pageIndex + 1} of {pageOptions.length}
           </strong>
         </span>
-        <button onClick={() => previousPage} disabled={!canPreviousPage}>
+        <span>
+          | Go Page :{' '}
+          <input
+            type='number'
+            defaultValue={pageIndex + 1}
+            onChange={(e) => {
+              const pageNumber = e.target.value ? Number(e.target.value) - 1 : 0
+              gotoPage(pageNumber)
+            }}
+            className='w-20'
+          ></input>
+        </span>
+        <button onClick={() => gotoPage(0)} disabled={!previousPage}>
+          {'<<'}
+        </button>
+        <button onClick={() => previousPage()} disabled={!canPreviousPage}>
           上一頁
         </button>
-        <button onClick={() => nextPage} disabled={!canNextPage}>
+        <button onClick={() => nextPage()} disabled={!canNextPage}>
+          <button
+            onClick={() => gotoPage(pageCount - 1)}
+            disabled={!canNextPage}
+          >
+            {'>>'}
+          </button>
           下一頁
         </button>
       </div>
