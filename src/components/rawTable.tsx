@@ -139,7 +139,7 @@ export default function RawTable({ data }: RawTableProps) {
           上一頁
         </button>
         <span>
-          | Go Page :{' '}
+          | 跳到{' '}
           <input
             type='number'
             defaultValue={' '}
@@ -149,15 +149,13 @@ export default function RawTable({ data }: RawTableProps) {
             }}
             className='w-8'
           ></input>
+          頁
         </span>
         <button onClick={() => nextPage()} disabled={!canNextPage}>
-          <button
-            onClick={() => gotoPage(pageCount - 1)}
-            disabled={!canNextPage}
-          >
-            {' >> '}
-          </button>
           下一頁
+        </button>
+        <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
+          {' >> '}
         </button>
       </div>
     </div>
