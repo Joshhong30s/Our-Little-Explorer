@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { useTable, Column } from 'react-table'
+import { useTable, Column, useSortBy } from 'react-table'
 
 interface Data {
   Day: string | Date
@@ -57,10 +57,13 @@ export default function RawTable({ data }: RawTableProps) {
     footerGroups,
     rows,
     prepareRow,
-  } = useTable({
-    columns,
-    data: data,
-  })
+  } = useTable(
+    {
+      columns,
+      data: data,
+    },
+    useSortBy
+  )
 
   return (
     <div className='overflow-x-auto'>
@@ -74,9 +77,14 @@ export default function RawTable({ data }: RawTableProps) {
               {headerGroup.headers.map((column) => (
                 <th
                   className='px-4 py-3 text-white font-semibold border-b-2 border-slate-400'
-                  {...column.getHeaderProps()}
+                  // @ts-expect-error getSortByToggleProps is not in type def
+                  {...column.getHeaderProps(column.getSortByToggleProps())}
                 >
                   {column.render('Header')}
+                  <span>
+                    {/* @ts-expect-error property isSorted is not in type def */}
+                    {column.isSorted ? (column.isSortedDesc ? '▽' : '△') : ''}
+                  </span>
                 </th>
               ))}
             </tr>
