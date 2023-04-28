@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { useTable, Column, useSortBy } from 'react-table'
+import { useTable, Column, useSortBy, usePagination, Row } from 'react-table'
 
 interface Data {
   Day: string | Date
@@ -54,16 +54,31 @@ export default function RawTable({ data }: RawTableProps) {
     getTableProps,
     getTableBodyProps,
     headerGroups,
-    footerGroups,
-    rows,
+    // @ts-expect-error page is not in type def
+    page,
+    // @ts-expect-error nextPage is not in type def
+    nextPage,
+    // @ts-expect-error previosPage is not in type def
+    previousPage,
+    // @ts-expect-error previosPage is not in type def
+    canNextPage,
+    // @ts-expect-error previosPage is not in type def
+    canPreviousPage,
+    // @ts-expect-error previosPage is not in type def
+    pageOptions,
+    state,
     prepareRow,
   } = useTable(
     {
       columns,
       data: data,
     },
-    useSortBy
+    useSortBy,
+    usePagination
   )
+
+  // @ts-expect-error is not in type def
+  const { pageIndex } = state
 
   return (
     <div className='overflow-x-auto'>
@@ -83,7 +98,7 @@ export default function RawTable({ data }: RawTableProps) {
                   {column.render('Header')}
                   <span>
                     {/* @ts-expect-error property isSorted is not in type def */}
-                    {column.isSorted ? (column.isSortedDesc ? '▽' : '△') : ''}
+                    {column.isSorted ? (column.isSortedDesc ? ' ▽' : ' △') : ''}
                   </span>
                 </th>
               ))}
@@ -91,7 +106,7 @@ export default function RawTable({ data }: RawTableProps) {
           ))}
         </thead>
         <tbody {...getTableBodyProps()}>
-          {rows.map((row) => {
+          {page.map((row: Row<Data>) => {
             prepareRow(row)
             return (
               <tr {...row.getRowProps()} className='even:bg-blue-980'>
@@ -107,21 +122,21 @@ export default function RawTable({ data }: RawTableProps) {
             )
           })}
         </tbody>
-        <tfoot>
-          {footerGroups.map((footerGroup) => (
-            <tr {...footerGroup.getFooterGroupProps()}>
-              {footerGroup.headers.map((column) => (
-                <td
-                  className='px-4 py-3 bg-slate-200 font-semibold border-t-2 border-slate-300'
-                  {...column.getFooterProps()}
-                >
-                  {column.render('Footer')}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tfoot>
       </table>
+      <div>
+        <span>
+          Page{' '}
+          <strong>
+            {pageIndex + 1} of {pageOptions.length}
+          </strong>
+        </span>
+        <button onClick={() => previousPage} disabled={!canPreviousPage}>
+          上一頁
+        </button>
+        <button onClick={() => nextPage} disabled={!canNextPage}>
+          下一頁
+        </button>
+      </div>
     </div>
   )
 }
