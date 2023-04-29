@@ -70,6 +70,8 @@ export default function RawTable({ data }: RawTableProps) {
     gotoPage,
     // @ts-expect-error
     pageCount,
+    // @ts-expect-error
+    setPageSize,
     state,
     prepareRow,
   } = useTable(
@@ -82,7 +84,7 @@ export default function RawTable({ data }: RawTableProps) {
   )
 
   // @ts-expect-error is not in type def
-  const { pageIndex } = state
+  const { pageIndex, pageSize } = state
 
   return (
     <div className='overflow-x-auto'>
@@ -151,6 +153,16 @@ export default function RawTable({ data }: RawTableProps) {
           ></input>
           頁
         </span>
+        <select
+          value={pageSize}
+          onChange={(e) => setPageSize(Number(e.target.value))}
+        >
+          {[10, 30, 60].map((pageSize) => (
+            <option key={pageSize} value={pageSize}>
+              Show {pageSize}
+            </option>
+          ))}
+        </select>
         <button onClick={() => nextPage()} disabled={!canNextPage}>
           下一頁
         </button>
