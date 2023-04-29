@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import Link from 'next/link'
 import axios from 'axios'
 import Image from 'next/image'
 

@@ -189,7 +189,7 @@ export default function Message() {
                 htmlFor='message'
                 className='block text-gray-700 font-medium text-lg'
               >
-                我的的留言
+                我的留言
               </label>
               <textarea
                 id='message'

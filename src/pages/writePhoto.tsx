@@ -215,7 +215,7 @@ export default function WritePhoto() {
           <div className='py-4 text-center'>
             <button
               type='submit'
-              className=' py-2 px-4 rounded-lg transition-colors duration-300 hover:bg-teal-980 hover:text-gray-100 text-slate-600 bg-blue-980'
+              className=' py-2 px-4 rounded-lg transition-colors duration-300 hover:bg-teal-980 hover:text-gray-100 text-slate-600 bg-blue-980  '
             >
               確認送出
             </button>

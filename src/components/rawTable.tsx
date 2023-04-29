@@ -19,31 +19,31 @@ export default function RawTable({ data }: RawTableProps) {
   const columns: Column<Data>[] = useMemo(
     () => [
       {
-        Header: 'Day',
+        Header: ' 日期',
         accessor: 'Day',
       },
       {
-        Header: 'Weight',
+        Header: '體重',
         accessor: 'Weight',
       },
       {
-        Header: 'FeedingTime',
+        Header: '瓶餵時間',
         accessor: 'FeedingTime',
       },
       {
-        Header: 'FeedingVolume',
+        Header: '瓶餵量(ml)',
         accessor: 'FeedingVolume',
       },
       {
-        Header: 'DiaperTime',
+        Header: '尿布次數',
         accessor: 'DiaperTime',
       },
       {
-        Header: 'DiaperColor',
+        Header: '尿布顏色',
         accessor: 'DiaperColor',
       },
       {
-        Header: ' 事件',
+        Header: '事件',
         accessor: 'Event',
       },
     ],
@@ -87,7 +87,7 @@ export default function RawTable({ data }: RawTableProps) {
   const { pageIndex, pageSize } = state
 
   return (
-    <div className='overflow-x-auto'>
+    <div className='overflow-x-auto mb-4'>
       <table
         className='w-full text-center border-collapse'
         {...getTableProps()}
