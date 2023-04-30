@@ -12,6 +12,7 @@ import dynamic from 'next/dynamic'
 export default function Home() {
   const [photo, setPhoto] = useState([])
   const ReactPlayer = dynamic(() => import('react-player/lazy'), { ssr: false })
+
   // empty array of strings
   const [savedPhotos, setSavedPhotos] = useState<string[]>([])
   const [cookies, _] = useCookies(['access_token'])
@@ -76,13 +77,14 @@ export default function Home() {
           headers: { authorization: cookies.access_token },
         }
       )
-      setSavedPhotos(response.data.savedPhotos)
+      setSavedPhotos(response.data.savedPhotos || [])
     } catch (err) {
       console.log(err)
     }
   }
 
-  const isPhotosaved = (photoID: string) => savedPhotos.includes(photoID)
+  const isPhotosaved = (photoID: string) =>
+    savedPhotos && savedPhotos.includes(photoID)
 
   const toggleSavePhoto = (photoID: string) => {
     if (isPhotosaved(photoID)) {
