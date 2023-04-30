@@ -1,6 +1,9 @@
 // export const useGetUserID = () => {
 //   return window.localStorage.getItem('userID')
 // }
+
+'use client'
+
 import { useState, useEffect } from 'react'
 
 export const useGetUserID = () => {
