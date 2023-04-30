@@ -28,7 +28,9 @@ export default function savedPhotos() {
     fetchsavedPhotos()
   }, [userID])
 
-  const reversedSavedPhotos = savedPhotos.slice().reverse()
+  const reversedSavedPhotos = Array.isArray(savedPhotos)
+    ? savedPhotos.slice().reverse()
+    : []
 
   return (
     <main>
