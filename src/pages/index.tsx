@@ -99,6 +99,7 @@ export default function Home() {
   return (
     <main>
       <div className='px-6 mx-auto mb-8 text-black'>
+        <div id='player'></div> {/* add a div for the YouTube player */}
         <ul className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8'>
           {reversedPhoto.map(
             (photo: {
@@ -137,7 +138,7 @@ export default function Home() {
                       config={{
                         youtube: {
                           playerVars: {
-                            origin: 'https://06baby.vercel.app',
+                            origin: 'https://www.youtube.com',
                           },
                         },
                       }}
