@@ -75,6 +75,7 @@ export default function savedPhotos() {
                           },
                         },
                       }}
+                      allow='fullscreen; autoplay'
                     />
                   )}
                 </div>
