@@ -131,9 +131,16 @@ export default function Home() {
                       url={photo.imageUrl}
                       fill
                       muted={true}
-                      controls={false}
+                      controls
                       width='100%'
                       height='100%'
+                      config={{
+                        youtube: {
+                          playerVars: {
+                            origin: 'https://06baby.vercel.app',
+                          },
+                        },
+                      }}
                     />
                   )}
                   <button

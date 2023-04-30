@@ -66,6 +66,13 @@ export default function savedPhotos() {
                       controls
                       width='100%'
                       height='100%'
+                      config={{
+                        youtube: {
+                          playerVars: {
+                            origin: 'https://06baby.vercel.app',
+                          },
+                        },
+                      }}
                     />
                   )}
                 </div>
