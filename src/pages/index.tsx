@@ -1,5 +1,3 @@
-'use client'
-
 import axios from 'axios'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -7,18 +5,13 @@ import { useState, useEffect } from 'react'
 import { useGetUserID } from '../hooks/useGetUserId'
 import { useCookies } from 'react-cookie'
 import { RiHeartAddLine, RiHeartFill } from 'react-icons/ri'
-import ReactPlayer from 'react-player/lazy'
+
 import { FaBaby } from 'react-icons/fa'
-import getAge from '../components/getAge'
+import dynamic from 'next/dynamic'
 
 export default function Home() {
   const [photo, setPhoto] = useState([])
-
-  // getAge
-  const birthdate = '2023-04-12' // replace with actual birthdate
-  const inputDate = '2023-04-15' // replace with actual input date
-  const age = getAge(birthdate, inputDate)
-
+  const ReactPlayer = dynamic(() => import('react-player/lazy'), { ssr: false })
   // empty array of strings
   const [savedPhotos, setSavedPhotos] = useState<string[]>([])
   const [cookies, _] = useCookies(['access_token'])
