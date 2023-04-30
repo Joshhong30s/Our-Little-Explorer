@@ -130,7 +130,8 @@ export default function Home() {
                     <ReactPlayer
                       url={photo.imageUrl}
                       fill
-                      controls
+                      muted={true}
+                      controls={false}
                       width='100%'
                       height='100%'
                     />
