@@ -128,21 +128,23 @@ export default function Home() {
                       />
                     </Link>
                   ) : (
-                    <ReactPlayer
-                      url={photo.imageUrl}
-                      fill
-                      muted={true}
-                      controls
-                      width='100%'
-                      height='100%'
-                      config={{
-                        youtube: {
-                          playerVars: {
-                            origin: 'https://www.youtube.com',
+                    <div>
+                      <ReactPlayer
+                        url={photo.imageUrl}
+                        fill
+                        muted={true}
+                        controls={false}
+                        width='100%'
+                        height='100%'
+                        config={{
+                          youtube: {
+                            playerVars: {
+                              origin: 'https://www.youtube.com',
+                            },
                           },
-                        },
-                      }}
-                    />
+                        }}
+                      />
+                    </div>
                   )}
                   <button
                     className='absolute top-2 right-2 bg-neutral-50 bg-opacity-30 text-red-500 rounded-full p-3'

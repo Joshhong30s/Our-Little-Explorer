@@ -65,13 +65,13 @@ export default function savedPhotos() {
                     <ReactPlayer
                       url={photo.imageUrl}
                       fill
-                      controls
+                      controls={false}
                       width='100%'
                       height='100%'
                       config={{
                         youtube: {
                           playerVars: {
-                            origin: 'https://06baby.vercel.app',
+                            origin: 'https://www.youtube.com',
                           },
                         },
                       }}
