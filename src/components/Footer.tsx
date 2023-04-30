@@ -1,19 +1,4 @@
-import { FaGithub, FaLinkedin, FaLine, FaEnvelope } from 'react-icons/fa'
-
-const isClient = typeof window !== 'undefined'
-const isMobile = isClient
-  ? /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
-  : false
-
-const handleLineClick = () => {
-  if (!isClient) return
-
-  if (isMobile) {
-    window.location.href = 'https://line.me/ti/p/0u5WhCBHF-'
-  } else {
-    window.open('https://line.me/ti/p/0u5WhCBHF-', '_blank')
-  }
-}
+import { FaGithub, FaLinkedin } from 'react-icons/fa'
 
 export default function Footer() {
   return (
