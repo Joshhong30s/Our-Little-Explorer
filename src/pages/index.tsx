@@ -13,7 +13,6 @@ export default function Home() {
   const [photo, setPhoto] = useState([])
   const ReactPlayer = dynamic(() => import('react-player/lazy'), { ssr: false })
 
-  // empty array of strings
   const [savedPhotos, setSavedPhotos] = useState<string[]>([])
   const [cookies, _] = useCookies(['access_token'])
   const userID = useGetUserID()
@@ -130,7 +129,6 @@ export default function Home() {
                   ) : (
                     <ReactPlayer
                       url={photo.imageUrl}
-                      fill
                       controls={false}
                       width='100%'
                       height='100%'

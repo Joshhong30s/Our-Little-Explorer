@@ -64,7 +64,6 @@ export default function savedPhotos() {
                   ) : (
                     <ReactPlayer
                       url={photo.imageUrl}
-                      fill
                       controls={false}
                       width='100%'
                       height='100%'

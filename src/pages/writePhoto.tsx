@@ -162,7 +162,7 @@ export default function WritePhoto() {
               相片年齡
             </label>
             <input
-              type='text'
+              type='number'
               id='growingTime'
               name='growingTime'
               placeholder='...照片裡的年齡'
