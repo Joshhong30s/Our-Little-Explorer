@@ -14,6 +14,7 @@ const klee = Klee_One({
 
 const wenkai = localFont({
   src: '../public/fonts/LXGWWenKaiTC-Regular.ttf',
+  weight: '600',
 })
 
 export default function App({ Component, pageProps }: AppProps) {
