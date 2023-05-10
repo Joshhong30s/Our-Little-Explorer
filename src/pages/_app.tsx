@@ -12,14 +12,14 @@ const klee = Klee_One({
   subsets: ['latin'],
 })
 
-const wenkai = localFont({
-  weight: '600',
-  src: '/fonts/LXGWWenKaiTC-Regular.ttf',
-})
+// const wenkai = localFont({
+//   weight: '600',
+//   src: '/fonts/LXGWWenKaiTC-Regular.ttf',
+// })
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <div className={wenkai.className}>
+    <div className={klee.className}>
       <Head>
         <link rel='apple-touch-icon' href='/family.jpg' />
         <title>小寶成長紀錄</title>
