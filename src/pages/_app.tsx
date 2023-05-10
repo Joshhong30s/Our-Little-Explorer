@@ -13,7 +13,7 @@ const klee = Klee_One({
 })
 
 const wenkai = localFont({
-  src: 'fonts/LXGWWenKaiTC-Regular.ttf',
+  src: 'LXGWWenKaiTC-Regular.ttf',
 })
 
 export default function App({ Component, pageProps }: AppProps) {
