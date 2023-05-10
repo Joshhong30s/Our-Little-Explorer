@@ -15,17 +15,17 @@ const klee = Klee_One({
 const wenkai = localFont({
   src: [
     {
-      path: '/fonts/LXGWWenKaiTC-Regular.ttf',
+      path: 'fonts/LXGWWenKaiTC-Regular.ttf',
       weight: '500',
       style: 'normal',
     },
     {
-      path: '/fonts/LXGWWenKaiTC-Light.ttf',
+      path: 'fonts/LXGWWenKaiTC-Light.ttf',
       weight: '400',
       style: 'light',
     },
     {
-      path: '/fonts/LXGWWenKaiTC-Light.ttf',
+      path: 'fonts/LXGWWenKaiTC-Light.ttf',
       weight: '600',
       style: 'bold',
     },
