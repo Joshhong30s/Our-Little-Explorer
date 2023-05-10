@@ -160,7 +160,7 @@ export default function Home() {
                 </div>
                 <div className='p-4'>
                   <div className='flex justify-between items-center mb-4'>
-                    <h3 className='text-3xl font-extrabold pt-1 pb-3 mb-0'>
+                    <h3 className='text-3xl font-bold pt-1 pb-3 mb-0'>
                       {photo.name}
                     </h3>
                     <div className='flex space-x-1 items-center'>
