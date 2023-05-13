@@ -131,7 +131,7 @@ export default function Home() {
           className='absolute left-4 m-auto text-3xl md:text-6xl inset-y-1/2 cursor-pointer text-white p-1 md:p-4 bg-black rounded-full z-20'
         />
 
-        <div className='w-full h-[85vh] flex overflow-hidden relative m-auto '>
+        <div className='w-full h-[75vh] flex overflow-hidden relative m-auto '>
           <Swipe
             onSwipeLeft={handleNextSlide}
             onSwipeRight={handlePrevSlide}
