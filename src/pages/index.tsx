@@ -125,10 +125,10 @@ export default function Home() {
 
   return (
     <main>
-      <div className='relative bg-gradient-to-br from-neutral-800 to-neutral-500 '>
+      <div className='relative bg-gradient-to-br from-neutral-800 to-neutral-500'>
         <AiOutlineLeft
           onClick={handlePrevSlide}
-          className='absolute left-4 m-auto text-xl md:text-6xl inset-y-1/2 cursor-pointer text-white p-1 md:p-4 bg-black rounded-full z-20'
+          className='absolute left-4 m-auto text-3xl md:text-6xl inset-y-1/2 cursor-pointer text-white p-1 md:p-4 bg-black rounded-full z-20'
         />
 
         <div className='w-full h-[85vh] flex overflow-hidden relative m-auto '>
@@ -157,26 +157,25 @@ export default function Home() {
         </div>
         <AiOutlineRight
           onClick={handleNextSlide}
-          className='absolute right-4 m-auto text-xl md:text-6xl inset-y-1/2 cursor-pointer text-white p-1 md:p-4 bg-black rounded-full z-20'
+          className='absolute right-4 m-auto text-3xl md:text-6xl inset-y-1/2 cursor-pointer text-white p-1 md:p-4 bg-black rounded-full z-20'
         />
-
-        <div className='relative flex justify-center items-center p-6 bg-white'>
-          {images.map((_, index) => {
-            return (
-              <div
-                className={
-                  index === currentSlide
-                    ? 'h-4 w-4 bg-gray-700 rounded-full mx-2  cursor-pointer'
-                    : 'h-4 w-4 bg-gray-300 rounded-full mx-2  cursor-pointer'
-                }
-                key={index}
-                onClick={() => {
-                  setCurrentSlide(index)
-                }}
-              />
-            )
-          })}
-        </div>
+      </div>
+      <div className='relative flex justify-center items-center p-6 bg-white'>
+        {images.map((_, index) => {
+          return (
+            <div
+              className={
+                index === currentSlide
+                  ? 'h-4 w-4 bg-gray-700 rounded-full mx-2  cursor-pointer'
+                  : 'h-4 w-4 bg-gray-300 rounded-full mx-2  cursor-pointer'
+              }
+              key={index}
+              onClick={() => {
+                setCurrentSlide(index)
+              }}
+            />
+          )
+        })}
       </div>
 
       <div className='px-2 md:px-6 mx-auto mb-8 text-black'>
