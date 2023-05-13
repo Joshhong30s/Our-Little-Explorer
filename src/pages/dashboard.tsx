@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import { google } from 'googleapis'
+import { GiWeightScale, GiBodyHeight, GiAges } from 'react-icons/gi'
 
 type Daily = {
   Day: string
@@ -227,7 +228,12 @@ export async function getServerSideProps() {
   }
 }
 
-export default function Home() {
+export default function Dashboard({ data }: { data: Daily[] }) {
+  const latestWeightEntry = data.find((entry) => entry.Weight)
+  const weight = latestWeightEntry
+    ? latestWeightEntry.Weight
+    : 'No data available'
+
   return (
     <div className='container mx-auto p-4'>
       <Head>
@@ -236,6 +242,36 @@ export default function Home() {
       </Head>
 
       <div className='flex flex-col md:flex-row  h-[80vh]'>
+        <div className='md:w-1/3 flex flex-col md:pl-4'>
+          <div className='flex-1 bg-yellow-200 p-4 rounded-md mb-4'>
+            {/* Avatar and infocards */}
+            <div className='card bg-white shadow-md rounded p-4 mb-4'>
+              <h2 className='text-lg font-semibold mb-2'>Avatar</h2>
+            </div>
+            <div className='flex justify-between gap-4'>
+              <div className='card bg-white shadow-md rounded p-4 w-1/3'>
+                <GiWeightScale size={20} />
+                <p>Age</p>
+                <p>g</p>
+              </div>
+              <div className='card bg-white shadow-md rounded p-4 w-1/3'>
+                <GiWeightScale size={20} />
+                <p>Age</p>
+                <p>{weight}kg</p>
+              </div>
+              <div className='card bg-white shadow-md rounded p-4 w-1/3'>
+                <h2 className='text-lg font-semibold mb-2'>Info Card 3</h2>
+              </div>
+            </div>
+          </div>
+          <div className='flex-1 bg-purple-200 p-4 rounded-md'>
+            {/* Calendar */}
+            <div className='card bg-white shadow-md rounded p-4'>
+              <h2 className='text-lg font-semibold mb-2'>Calendar</h2>
+            </div>
+          </div>
+        </div>
+
         <div className='md:w-2/3 flex flex-col md:pr-4'>
           <div className='flex-1 flex justify-between gap-4 bg-blue-200 p-4 rounded-md mb-4'>
             {/* Health cards */}
@@ -259,32 +295,6 @@ export default function Home() {
             {/* Chart */}
             <div className='card bg-white shadow-md rounded p-4'>
               <h2 className='text-lg font-semibold mb-2'>Chart</h2>
-            </div>
-          </div>
-        </div>
-
-        <div className='md:w-1/3 flex flex-col md:pl-4'>
-          <div className='flex-1 bg-yellow-200 p-4 rounded-md mb-4'>
-            {/* Avatar and infocards */}
-            <div className='card bg-white shadow-md rounded p-4 mb-4'>
-              <h2 className='text-lg font-semibold mb-2'>Avatar</h2>
-            </div>
-            <div className='flex justify-between gap-4'>
-              <div className='card bg-white shadow-md rounded p-4 w-1/3'>
-                <h2 className='text-lg font-semibold mb-2'>Info Card 1</h2>
-              </div>
-              <div className='card bg-white shadow-md rounded p-4 w-1/3'>
-                <h2 className='text-lg font-semibold mb-2'>Info Card 2</h2>
-              </div>
-              <div className='card bg-white shadow-md rounded p-4 w-1/3'>
-                <h2 className='text-lg font-semibold mb-2'>Info Card 3</h2>
-              </div>
-            </div>
-          </div>
-          <div className='flex-1 bg-purple-200 p-4 rounded-md'>
-            {/* Calendar */}
-            <div className='card bg-white shadow-md rounded p-4'>
-              <h2 className='text-lg font-semibold mb-2'>Calendar</h2>
             </div>
           </div>
         </div>

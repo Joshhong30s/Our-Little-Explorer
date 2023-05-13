@@ -133,7 +133,7 @@ export default function Message() {
   return (
     <div
       className='min-h-screen bg-gray-900/70 flex flex-col items-center bg-cover bg-center '
-      style={{ backgroundImage: "url('comi.jpg')" }}
+      style={{ backgroundImage: "url('bao12.jpeg')" }}
     >
       <div className='w-full max-w-7xl mt-10 flex flex-col md:flex-row gap-8 justify-center'>
         <div className='bg-white rounded-lg shadow-lg p-6 w-full max-w-lg h-full'>
