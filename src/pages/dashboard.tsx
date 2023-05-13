@@ -238,8 +238,11 @@ export async function getServerSideProps() {
 }
 
 export default function Dashboard({ data }: { data: Daily[] }) {
-  const [selected, setSelected] = useState<Date | undefined>(undefined)
-  const [dailyData, setDailyData] = useState<Daily | null>(null)
+  const latestData = data[0]
+  const [selected, setSelected] = useState<Date | undefined>(
+    latestData ? new Date(latestData.Day) : undefined
+  )
+  const [dailyData, setDailyData] = useState<Daily | null>(latestData || null)
 
   useEffect(() => {
     if (selected) {
