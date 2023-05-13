@@ -1,8 +1,10 @@
 import Head from 'next/head'
+import { useState, useEffect } from 'react'
 import { google } from 'googleapis'
 import { GiWeightScale, GiBodyHeight, GiAges } from 'react-icons/gi'
 import { FaTint, FaPoop } from 'react-icons/fa'
-FaPoop
+import { DayPicker } from 'react-day-picker'
+import 'react-day-picker/dist/style.css'
 
 type Daily = {
   Day: string
@@ -236,6 +238,19 @@ export async function getServerSideProps() {
 }
 
 export default function Dashboard({ data }: { data: Daily[] }) {
+  const [selected, setSelected] = useState<Date>()
+
+  const [dailyData, setDailyData] = useState<Daily | null>(null)
+
+  useEffect(() => {
+    if (selected) {
+      const foundData = data.find(
+        (d) => new Date(d.Day).toDateString() === selected.toDateString()
+      )
+      setDailyData(foundData || null)
+    }
+  }, [selected, data])
+
   // Get today's date
   const today = new Date()
   // Get baby's birthdate
@@ -279,68 +294,74 @@ export default function Dashboard({ data }: { data: Daily[] }) {
       </Head>
 
       <div className='flex flex-col md:flex-row  h-[80vh]'>
-        <div className='md:w-1/3 flex flex-col md:pr-4'>
-          <div className='flex-1 bg-yellow-200 p-4 rounded-md mb-4'>
-            {/* Avatar and infocards */}
-            <div className='card bg-white shadow-md rounded p-4 mb-4'>
-              <h2 className='text-lg font-semibold mb-2'>Avatar</h2>
+        <DayPicker selected={selected} onSelect={setSelected} />
+        {dailyData && (
+          <div className='md:w-1/3 flex flex-col md:pr-4'>
+            <div className='flex-1 bg-yellow-200 p-4 rounded-md mb-4'>
+              {/* Avatar and infocards */}
+              <div className='card bg-white shadow-md rounded p-4 mb-4'>
+                <h2 className='text-lg font-semibold mb-2'>Avatar</h2>
+              </div>
+              <div className='flex justify-between gap-4'>
+                <div className='card bg-white shadow-md rounded p-4 w-1/3'>
+                  <GiAges size={20} />
+                  <p>Age</p>
+                  <p>{months}M</p>
+                </div>
+                <div className='card bg-white shadow-md rounded p-4 w-1/3'>
+                  <GiWeightScale size={20} />
+                  <p>Age</p>
+                  <p>{weight}g</p>
+                </div>
+                <div className='card bg-white shadow-md rounded p-4 w-1/3'>
+                  <GiBodyHeight size={20} />
+                  <p>Age</p>
+                  <p>{height}cm</p>
+                </div>
+              </div>
             </div>
-            <div className='flex justify-between gap-4'>
-              <div className='card bg-white shadow-md rounded p-4 w-1/3'>
-                <GiAges size={20} />
-                <p>Age</p>
-                <p>{months}M</p>
-              </div>
-              <div className='card bg-white shadow-md rounded p-4 w-1/3'>
-                <GiWeightScale size={20} />
-                <p>Age</p>
-                <p>{weight}g</p>
-              </div>
-              <div className='card bg-white shadow-md rounded p-4 w-1/3'>
-                <GiBodyHeight size={20} />
-                <p>Age</p>
-                <p>{height}cm</p>
+            <div className='flex-1 bg-purple-200 p-4 rounded-md'>
+              {/* Calendar */}
+              <div className='card bg-white shadow-md rounded p-4'>
+                <h2 className='text-lg font-semibold mb-2'>Calendar</h2>
               </div>
             </div>
           </div>
-          <div className='flex-1 bg-purple-200 p-4 rounded-md'>
-            {/* Calendar */}
-            <div className='card bg-white shadow-md rounded p-4'>
-              <h2 className='text-lg font-semibold mb-2'>Calendar</h2>
-            </div>
-          </div>
-        </div>
+        )}
 
-        <div className='md:w-2/3 flex flex-col md:pl-4'>
-          <div className='flex-1 flex justify-between gap-4 bg-blue-200 p-4 rounded-md mb-4'>
-            {/* Health cards */}
-            <div className='card bg-white shadow-md rounded p-4 w-1/3'>
-              <h2 className='text-lg font-semibold mb-2'>Total Feed</h2>
-              <p>{feed}</p>
+        <DayPicker selected={selected} onSelect={setSelected} />
+        {dailyData && (
+          <div className='md:w-2/3 flex flex-col md:pl-4'>
+            <div className='flex-1 flex justify-between gap-4 bg-blue-200 p-4 rounded-md mb-4'>
+              {/* Health cards */}
+              <div className='card bg-white shadow-md rounded p-4 w-1/3'>
+                <h2 className='text-lg font-semibold mb-2'>Total Feed</h2>
+                <p>{feed}</p>
+              </div>
+              <div className='card bg-white shadow-md rounded p-4 w-1/3'>
+                <h2 className='text-lg font-semibold mb-2'>Total Pee</h2>
+                <p>{pee} times</p>
+              </div>
+              <div className='card bg-white shadow-md rounded p-4 w-1/3'>
+                <h2 className='text-lg font-semibold mb-2'>Total Poop</h2>
+                <p>{poop} times</p>
+              </div>
             </div>
-            <div className='card bg-white shadow-md rounded p-4 w-1/3'>
-              <h2 className='text-lg font-semibold mb-2'>Total Pee</h2>
-              <p>{pee} times</p>
+            <div className='flex-1 bg-green-200 p-4 rounded-md mb-4'>
+              {/* Simple card */}
+              <div className='card bg-white shadow-md rounded p-4'>
+                <h2 className='text-lg font-semibold mb-2'>本日記事</h2>
+                <h5 className='text-lg font-semibold mb-2'>{note}</h5>
+              </div>
             </div>
-            <div className='card bg-white shadow-md rounded p-4 w-1/3'>
-              <h2 className='text-lg font-semibold mb-2'>Total Poop</h2>
-              <p>{poop} times</p>
+            <div className='flex-1 bg-red-200 p-4 rounded-md'>
+              {/* Chart */}
+              <div className='card bg-white shadow-md rounded p-4'>
+                <h2 className='text-lg font-semibold mb-2'>Chart</h2>
+              </div>
             </div>
           </div>
-          <div className='flex-1 bg-green-200 p-4 rounded-md mb-4'>
-            {/* Simple card */}
-            <div className='card bg-white shadow-md rounded p-4'>
-              <h2 className='text-lg font-semibold mb-2'>本日記事</h2>
-              <h5 className='text-lg font-semibold mb-2'>{note}</h5>
-            </div>
-          </div>
-          <div className='flex-1 bg-red-200 p-4 rounded-md'>
-            {/* Chart */}
-            <div className='card bg-white shadow-md rounded p-4'>
-              <h2 className='text-lg font-semibold mb-2'>Chart</h2>
-            </div>
-          </div>
-        </div>
+        )}
       </div>
     </div>
   )
