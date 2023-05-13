@@ -161,7 +161,7 @@ export async function getServerSideProps() {
   const sheets = google.sheets({ version: 'v4', auth })
 
   //query
-  const range = 'daily!A1:CA'
+  const range = 'daily!A1:CB'
   const response = await sheets.spreadsheets.values.get({
     spreadsheetId: process.env.SHEET_ID,
     range,
@@ -218,9 +218,9 @@ export async function getServerSideProps() {
         })
 
         // Add total feed, pee, and poop values
-        obj.TotalFeed = Number(row.length - 3)
-        obj.TotalPee = Number(row.length - 2)
-        obj.TotalPoop = Number(row.length - 1)
+        obj.TotalFeed = Number(row[row.length - 3])
+        obj.TotalPee = Number(row[row.length - 2])
+        obj.TotalPoop = Number(row[row.length - 1])
 
         return obj
       })
