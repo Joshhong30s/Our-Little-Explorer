@@ -33,7 +33,7 @@ export default function Register() {
   return (
     <div className='relative '>
       <Image
-        src='/bao6.jpg'
+        src='/bao6.jpeg'
         alt='register'
         fill
         quality={10}
