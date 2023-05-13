@@ -284,17 +284,14 @@ export default function Dashboard({ data }: { data: Daily[] }) {
     : 'No data available'
 
   const latestEntry = data[0]
-  const note =
-    latestEntry && latestEntry.Note ? latestEntry.Note : 'Nothing today'
 
-  const latestFeedEntry = data.find((entry) => entry.TotalFeed)
-  const feed = latestFeedEntry ? latestFeedEntry.TotalFeed : 'No data available'
+  const note = dailyData?.Note ?? 'No data available'
 
-  const latestPeeEntry = data.find((entry) => entry.TotalPee)
-  const pee = latestPeeEntry ? latestPeeEntry.TotalPee : 'No data available'
+  const feed = dailyData?.TotalFeed ?? 'No data available'
 
-  const latestPoopEntry = data.find((entry) => entry.TotalPoop)
-  const poop = latestPoopEntry ? latestPoopEntry.TotalPoop : 'No data available'
+  const pee = dailyData?.TotalPee ?? 'No data available'
+
+  const poop = dailyData?.TotalPoop ?? 'No data available'
 
   return (
     <div className='container mx-auto p-4'>
