@@ -19,16 +19,14 @@ const Noto = Noto_Sans_TC({
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <div className={`flex flex-col min-h-screen ${Noto.className}`}>
+    <div className={Noto.className}>
       <Head>
         <link rel='apple-touch-icon' href='/family.jpg' />
         <title>小寶成長紀錄</title>
       </Head>
       <NoSSR>
         <Navbar />
-        <div className='flex-grow'>
-          <Component {...pageProps} />
-        </div>
+        <Component {...pageProps} />
         <Footer />
       </NoSSR>
     </div>
