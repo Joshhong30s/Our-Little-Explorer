@@ -34,7 +34,7 @@ export default function Login() {
   return (
     <div className='relative '>
       <Image
-        src='/bao6.jpg'
+        src='/baby.jpg'
         alt='login'
         fill
         quality={10}
