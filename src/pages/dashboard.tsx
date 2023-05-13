@@ -345,22 +345,24 @@ export default function Dashboard({ data }: { data: Daily[] }) {
               {/* Health cards */}
               <div className='card bg-white shadow-md rounded p-4 w-1/3'>
                 <h2 className='text-lg font-semibold mb-2'>Total Feed</h2>
-                <p>{feed}</p>
+                <p>{dailyData ? feed : 'N/A'}</p>
               </div>
               <div className='card bg-white shadow-md rounded p-4 w-1/3'>
                 <h2 className='text-lg font-semibold mb-2'>Total Pee</h2>
-                <p>{pee} times</p>
+                <p>{dailyData ? pee + ' times' : 'N/A'}</p>
               </div>
               <div className='card bg-white shadow-md rounded p-4 w-1/3'>
                 <h2 className='text-lg font-semibold mb-2'>Total Poop</h2>
-                <p>{poop} times</p>
+                <p>{dailyData ? poop + ' times' : 'N/A'}</p>
               </div>
             </div>
             <div className='flex-1 bg-green-200 p-4 rounded-md mb-4'>
               {/* Simple card */}
               <div className='card bg-white shadow-md rounded p-4'>
                 <h2 className='text-lg font-semibold mb-2'>本日記事</h2>
-                <h5 className='text-lg font-semibold mb-2'>{note}</h5>
+                <h5 className='text-lg font-semibold mb-2'>
+                  {dailyData ? note : 'No Note Today'}
+                </h5>
               </div>
             </div>
             <div className='flex-1 bg-red-200 p-4 rounded-md'>
