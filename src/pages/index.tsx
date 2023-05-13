@@ -111,16 +111,16 @@ export default function Home() {
   ///slideshow
 
   const images = [
-    { id: 1, src: '/bao1.jpg', alt: 'bao1' },
-    { id: 2, src: '/bao2.jpg', alt: 'bao2' },
-    { id: 3, src: '/bao3.jpg', alt: 'bao3' },
-    // { id: 4, src: '/bao4.jpg', alt: 'bao4' },
-    // { id: 5, src: '/bao5.jpg', alt: 'bao5' },
-    // { id: 6, src: '/bao6.jpg', alt: 'bao6' },
-    // { id: 7, src: '/bao7.jpg', alt: 'bao7' },
-    // { id: 8, src: '/bao8.jpg', alt: 'bao8' },
-    // { id: 9, src: '/bao9.jpg', alt: 'bao9' },
-    // { id: 10, src: '/bao10.jpg', alt: 'bao10' },
+    { id: 1, src: '/bao1.jpeg', alt: 'bao1' },
+    { id: 2, src: '/bao2.jpeg', alt: 'bao2' },
+    { id: 3, src: '/bao3.jpeg', alt: 'bao3' },
+    { id: 4, src: '/bao4.jpeg', alt: 'bao4' },
+    { id: 5, src: '/bao5.jpeg', alt: 'bao5' },
+    { id: 6, src: '/bao6.jpeg', alt: 'bao6' },
+    { id: 7, src: '/bao7.jpeg', alt: 'bao7' },
+    { id: 8, src: '/bao8.jpeg', alt: 'bao8' },
+    { id: 9, src: '/bao9.jpeg', alt: 'bao9' },
+    { id: 10, src: '/bao10.jpeg', alt: 'bao10' },
   ]
 
   return (

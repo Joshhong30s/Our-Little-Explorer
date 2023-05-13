@@ -99,7 +99,7 @@ export default function WritePhoto() {
   return (
     <div
       className='min-h-screen bg-gray-900/70 flex flex-col items-center bg-cover bg-center '
-      style={{ backgroundImage: "url('bao6.jpg')" }}
+      style={{ backgroundImage: "url('bao6.jpeg')" }}
     >
       <div className='bg-white rounded-lg shadow-lg p-6 w-full max-w-lg mt-10'>
         <h2 className='text-2xl text-center font-medium mb-6'>小寶日誌..</h2>
