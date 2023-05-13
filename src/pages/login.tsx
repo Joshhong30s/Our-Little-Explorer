@@ -34,9 +34,10 @@ export default function Login() {
   return (
     <div className='relative '>
       <Image
-        src='/mimi2.jpg'
+        src='/bao6.jpg'
         alt='login'
         fill
+        quality={10}
         className='inset-0 -z-10 opacity-80 absolute object-cover'
       />
       <div className='bg-gray-100/70 min-h-screen flex flex-col justify-start py-12 px-4 sm:px-6 lg:px-8'>

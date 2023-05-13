@@ -33,9 +33,10 @@ export default function Register() {
   return (
     <div className='relative '>
       <Image
-        src='/mimi2.jpg'
+        src='/bao6.jpg'
         alt='register'
         fill
+        quality={10}
         className='inset-0 -z-10 opacity-80 absolute object-cover'
       />
       <div className='bg-gray-100/70 min-h-screen flex flex-col items-center justify-start py-20 px-4 sm:px-6 lg:px-8 '>
