@@ -5,17 +5,30 @@ import { useState, useEffect } from 'react'
 import { useGetUserID } from '../hooks/useGetUserId'
 import { useCookies } from 'react-cookie'
 import { RiHeartAddLine, RiHeartFill } from 'react-icons/ri'
-
+import { FaMapMarkerAlt } from 'react-icons/fa'
 import { FaBaby } from 'react-icons/fa'
 import dynamic from 'next/dynamic'
+import Swipe from 'react-easy-swipe'
+import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai'
 
 export default function Home() {
   const [photo, setPhoto] = useState([])
   const ReactPlayer = dynamic(() => import('react-player/lazy'), { ssr: false })
-
   const [savedPhotos, setSavedPhotos] = useState<string[]>([])
   const [cookies, _] = useCookies(['access_token'])
   const userID = useGetUserID()
+
+  const [currentSlide, setCurrentSlide] = useState(0)
+
+  const handleNextSlide = () => {
+    let newSlide = currentSlide === images.length - 1 ? 0 : currentSlide + 1
+    setCurrentSlide(newSlide)
+  }
+
+  const handlePrevSlide = () => {
+    let newSlide = currentSlide === 0 ? images.length - 1 : currentSlide - 1
+    setCurrentSlide(newSlide)
+  }
 
   useEffect(() => {
     const fetchPhoto = async () => {
@@ -95,10 +108,78 @@ export default function Home() {
 
   const reversedPhoto = photo.slice().reverse()
 
+  ///slideshow
+
+  const images = [
+    { id: 1, src: '/bao1.jpg', alt: 'bao1' },
+    { id: 2, src: '/bao2.jpg', alt: 'bao2' },
+    { id: 3, src: '/bao3.jpg', alt: 'bao3' },
+    { id: 4, src: '/bao4.jpg', alt: 'bao4' },
+    { id: 5, src: '/bao5.jpg', alt: 'bao5' },
+    { id: 6, src: '/bao6.jpg', alt: 'bao6' },
+    { id: 7, src: '/bao7.jpg', alt: 'bao7' },
+    { id: 8, src: '/bao8.jpg', alt: 'bao8' },
+    { id: 9, src: '/bao9.jpg', alt: 'bao9' },
+    { id: 10, src: '/bao10.jpg', alt: 'bao10' },
+  ]
+
   return (
     <main>
-      <div className='px-6 mx-auto mb-8 text-black'>
-        <div id='player'></div> {/* add a div for the YouTube player */}
+      <div className='relative bg-gradient-to-br from-neutral-800 to-neutral-500 '>
+        <AiOutlineLeft
+          onClick={handlePrevSlide}
+          className='absolute left-4 m-auto text-3xl md:text-6xl inset-y-1/2 cursor-pointer text-gray-500 md:text-gray-200 z-20'
+        />
+
+        <div className='w-full h-[85vh] flex overflow-hidden relative m-auto '>
+          <Swipe
+            onSwipeLeft={handleNextSlide}
+            onSwipeRight={handlePrevSlide}
+            className='absolute z-10 w-full h-full'
+          >
+            {images.map((image, index) => {
+              if (index === currentSlide) {
+                return (
+                  <Image
+                    key={image.id}
+                    src={image.src}
+                    alt={`Slide image ${index + 1}`}
+                    className='animate-fadeIn'
+                    priority={true}
+                    fill
+                    style={{ objectFit: 'contain' }}
+                    quality={50}
+                  />
+                )
+              }
+            })}
+          </Swipe>
+        </div>
+        <AiOutlineRight
+          onClick={handleNextSlide}
+          className='absolute right-4 m-auto text-3xl md:text-6xl inset-y-1/2 cursor-pointer text-gray-500 md:text-gray-300 z-20'
+        />
+
+        <div className='relative flex justify-center items-center p-6 bg-white '>
+          {images.map((_, index) => {
+            return (
+              <div
+                className={
+                  index === currentSlide
+                    ? 'h-4 w-4 bg-gray-700 rounded-full mx-2  cursor-pointer'
+                    : 'h-4 w-4 bg-gray-300 rounded-full mx-2  cursor-pointer'
+                }
+                key={index}
+                onClick={() => {
+                  setCurrentSlide(index)
+                }}
+              />
+            )
+          })}
+        </div>
+      </div>
+
+      <div className='px-2 md:px-6 mx-auto mb-8 text-black'>
         <ul className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8'>
           {reversedPhoto.map(
             (photo: {
@@ -110,7 +191,10 @@ export default function Home() {
               imageUrl: string
               growingTime: number
             }) => (
-              <li key={photo._id} className='border border-gray-200 rounded-lg'>
+              <li
+                key={photo._id}
+                className='border border-gray-300  bg-gray-100 rounded-lg'
+              >
                 <div className='relative w-full h-96 sm:h-[450px] lg:h-[600px]'>
                   {photo.imageUrl.endsWith('.jpg') ||
                   photo.imageUrl.endsWith('.png') ? (
@@ -144,16 +228,21 @@ export default function Home() {
                   <button
                     className='absolute top-2 right-2 bg-neutral-50 bg-opacity-30 text-red-500 rounded-full p-3'
                     onClick={() => toggleSavePhoto(photo._id)}
+                    style={{
+                      transform: isPhotosaved(photo._id)
+                        ? 'scale(1.1)'
+                        : 'scale(1)',
+                    }}
                   >
                     {isPhotosaved(photo._id) ? (
                       <RiHeartFill
                         size={40}
-                        className='text-red-500 text-base hover:scale-125'
+                        className='text-red-500 text-base hover:scale-125 transition-all'
                       />
                     ) : (
                       <RiHeartAddLine
                         size={40}
-                        className='text-base hover:scale-125'
+                        className='text-base hover:scale-125 transition-all'
                       />
                     )}
                   </button>
@@ -163,16 +252,16 @@ export default function Home() {
                     <h3 className='text-3xl font-bold pt-1 pb-3 mb-0'>
                       {photo.name}
                     </h3>
-                    <div className='flex space-x-1 items-center'>
-                      <FaBaby size={30} />
+                    <div className='flex gap-2 items-center'>
+                      <FaBaby size={25} />
                       {photo.growingTime} days
                     </div>
                   </div>
-                  <p className='text-gray-600 text-sm '>
-                    照片地點：{photo.location}
+                  <p className='text-gray-600 text-base flex gap-2 items-center'>
+                    <FaMapMarkerAlt size={25} />
+                    {photo.location}
                   </p>
-
-                  <p className='text-gray-600 text-sm my-4'>
+                  <p className='text-gray-600 text-base my-8'>
                     {photo.instructions}
                   </p>
                 </div>

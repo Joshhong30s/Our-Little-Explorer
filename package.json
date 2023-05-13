@@ -19,6 +19,7 @@
     "react": "18.2.0",
     "react-cookie": "^4.1.1",
     "react-dom": "18.2.0",
+    "react-easy-swipe": "^0.0.23",
     "react-icons": "^4.8.0",
     "react-player": "^2.12.0",
     "react-select": "^5.7.2",
@@ -26,9 +27,9 @@
     "tg-use-local-storage-state": "^16.0.3"
   },
   "devDependencies": {
+    "@babel/plugin-transform-typescript": "7.19.3",
     "@next/eslint-plugin-next": "^13.3.0",
     "@types/react-table": "^7.7.14",
-    "@babel/plugin-transform-typescript": "7.19.3",
     "autoprefixer": "^10.4.14",
     "eslint-config-next": "^13.4.1",
     "postcss": "^8.4.21",
