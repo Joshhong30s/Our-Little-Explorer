@@ -1,10 +1,13 @@
 import Head from 'next/head'
 import { google } from 'googleapis'
 import { GiWeightScale, GiBodyHeight, GiAges } from 'react-icons/gi'
+import { FaTint, FaPoop } from 'react-icons/fa'
+FaPoop
 
 type Daily = {
   Day: string
   Weight: number
+  Height: number
   Poopcolor: string
   Note: string
   '12AM': {
@@ -127,11 +130,9 @@ type Daily = {
     pee: number
     poop: number
   }
-  Total: {
-    feed: number
-    pee: number
-    poop: number
-  }
+  TotalFeed: number
+  TotalPee: number
+  TotalPoop: number
 }
 
 export async function getServerSideProps() {
@@ -203,17 +204,23 @@ export async function getServerSideProps() {
         const obj: any = {
           Day: row[0],
           Weight: Number(row[1]),
-          Poopcolor: row[2],
-          Note: row[3],
+          Height: Number(row[2]),
+          Poopcolor: row[3],
+          Note: row[4],
         }
 
         hours.forEach((hour, index) => {
           obj[hour] = {
-            feed: Number(row[4 + index * 3]),
-            pee: Number(row[5 + index * 3]),
-            poop: Number(row[6 + index * 3]),
+            feed: Number(row[5 + index * 3]),
+            pee: Number(row[6 + index * 3]),
+            poop: Number(row[7 + index * 3]),
           }
         })
+
+        // Add total feed, pee, and poop values
+        obj.TotalFeed = Number(row[row.length - 3]) // change to your actual column index
+        obj.TotalPee = Number(row[row.length - 2]) // change to your actual column index
+        obj.TotalPoop = Number(row[row.length - 1]) // change to your actual column index
 
         return obj
       })
@@ -229,10 +236,39 @@ export async function getServerSideProps() {
 }
 
 export default function Dashboard({ data }: { data: Daily[] }) {
+  // Get today's date
+  const today = new Date()
+  // Get baby's birthdate
+  const birthdate = new Date('2023-04-12')
+
+  // Calculate difference in months
+  const months =
+    (today.getFullYear() - birthdate.getFullYear()) * 12 +
+    today.getMonth() -
+    birthdate.getMonth()
+
+  // Get weight
   const latestWeightEntry = data.find((entry) => entry.Weight)
   const weight = latestWeightEntry
     ? latestWeightEntry.Weight
     : 'No data available'
+
+  const latestHeightEntry = data.find((entry) => entry.Height)
+  const height = latestHeightEntry
+    ? latestHeightEntry.Height
+    : 'No data available'
+
+  const latestNoteEntry = data.find((entry) => entry.Note)
+  const note = latestNoteEntry ? latestNoteEntry.Note : 'Nothing today'
+
+  const latestFeedEntry = data.find((entry) => entry.TotalFeed)
+  const feed = latestFeedEntry ? latestFeedEntry.TotalFeed : 'No data available'
+
+  const latestPeeEntry = data.find((entry) => entry.TotalPee)
+  const pee = latestPeeEntry ? latestPeeEntry.TotalPee : 'No data available'
+
+  const latestPoopEntry = data.find((entry) => entry.TotalPoop)
+  const poop = latestPoopEntry ? latestPoopEntry.TotalPoop : 'No data available'
 
   return (
     <div className='container mx-auto p-4'>
@@ -242,7 +278,7 @@ export default function Dashboard({ data }: { data: Daily[] }) {
       </Head>
 
       <div className='flex flex-col md:flex-row  h-[80vh]'>
-        <div className='md:w-1/3 flex flex-col md:pl-4'>
+        <div className='md:w-1/3 flex flex-col md:pr-4'>
           <div className='flex-1 bg-yellow-200 p-4 rounded-md mb-4'>
             {/* Avatar and infocards */}
             <div className='card bg-white shadow-md rounded p-4 mb-4'>
@@ -250,17 +286,19 @@ export default function Dashboard({ data }: { data: Daily[] }) {
             </div>
             <div className='flex justify-between gap-4'>
               <div className='card bg-white shadow-md rounded p-4 w-1/3'>
-                <GiWeightScale size={20} />
+                <GiAges size={20} />
                 <p>Age</p>
-                <p>g</p>
+                <p>{months}M</p>
               </div>
               <div className='card bg-white shadow-md rounded p-4 w-1/3'>
                 <GiWeightScale size={20} />
                 <p>Age</p>
-                <p>{weight}kg</p>
+                <p>{weight}g</p>
               </div>
               <div className='card bg-white shadow-md rounded p-4 w-1/3'>
-                <h2 className='text-lg font-semibold mb-2'>Info Card 3</h2>
+                <GiBodyHeight size={20} />
+                <p>Age</p>
+                <p>{height}cm</p>
               </div>
             </div>
           </div>
@@ -272,23 +310,27 @@ export default function Dashboard({ data }: { data: Daily[] }) {
           </div>
         </div>
 
-        <div className='md:w-2/3 flex flex-col md:pr-4'>
+        <div className='md:w-2/3 flex flex-col md:pl-4'>
           <div className='flex-1 flex justify-between gap-4 bg-blue-200 p-4 rounded-md mb-4'>
             {/* Health cards */}
             <div className='card bg-white shadow-md rounded p-4 w-1/3'>
-              <h2 className='text-lg font-semibold mb-2'>Health Card 1</h2>
+              <h2 className='text-lg font-semibold mb-2'>Total Feed</h2>
+              <p>{feed}</p>
             </div>
             <div className='card bg-white shadow-md rounded p-4 w-1/3'>
-              <h2 className='text-lg font-semibold mb-2'>Health Card 2</h2>
+              <h2 className='text-lg font-semibold mb-2'>Total Pee</h2>
+              <p>{pee} times</p>
             </div>
             <div className='card bg-white shadow-md rounded p-4 w-1/3'>
-              <h2 className='text-lg font-semibold mb-2'>Health Card 3</h2>
+              <h2 className='text-lg font-semibold mb-2'>Total Poop</h2>
+              <p>{poop} times</p>
             </div>
           </div>
           <div className='flex-1 bg-green-200 p-4 rounded-md mb-4'>
             {/* Simple card */}
             <div className='card bg-white shadow-md rounded p-4'>
-              <h2 className='text-lg font-semibold mb-2'>Simple Card</h2>
+              <h2 className='text-lg font-semibold mb-2'>本日記事</h2>
+              <h5 className='text-lg font-semibold mb-2'>{note}</h5>
             </div>
           </div>
           <div className='flex-1 bg-red-200 p-4 rounded-md'>
