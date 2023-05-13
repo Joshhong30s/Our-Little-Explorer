@@ -218,9 +218,9 @@ export async function getServerSideProps() {
         })
 
         // Add total feed, pee, and poop values
-        obj.TotalFeed = Number(row[row.length - 3]) // change to your actual column index
-        obj.TotalPee = Number(row[row.length - 2]) // change to your actual column index
-        obj.TotalPoop = Number(row[row.length - 1]) // change to your actual column index
+        obj.TotalFeed = Number(row.length - 3)
+        obj.TotalPee = Number(row.length - 2)
+        obj.TotalPoop = Number(row.length - 1)
 
         return obj
       })
@@ -258,8 +258,9 @@ export default function Dashboard({ data }: { data: Daily[] }) {
     ? latestHeightEntry.Height
     : 'No data available'
 
-  const latestNoteEntry = data.find((entry) => entry.Note)
-  const note = latestNoteEntry ? latestNoteEntry.Note : 'Nothing today'
+  const latestEntry = data[0]
+  const note =
+    latestEntry && latestEntry.Note ? latestEntry.Note : 'Nothing today'
 
   const latestFeedEntry = data.find((entry) => entry.TotalFeed)
   const feed = latestFeedEntry ? latestFeedEntry.TotalFeed : 'No data available'
