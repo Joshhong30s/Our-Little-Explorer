@@ -135,7 +135,7 @@ export default function Message() {
       className='mx-auto p-4 min-h-screen  bg-cover bg-center '
       style={{ backgroundImage: "url('bao12.jpeg')" }}
     >
-      <div className='flex flex-col md:flex-row gap-8 justify-center'>
+      <div className='flex flex-col md:flex-row md:justify-between gap-8 justify-center'>
         <div className='md:w-1/3 bg-white rounded-md shadow-md p-6'>
           <h2 className='text-2xl text-center font-medium mb-6'>
             我要留言給小寶
@@ -210,7 +210,7 @@ export default function Message() {
             </div>
           </form>
         </div>
-        <div className='md:w-1/2 bg-white rounded-md shadow-md p-6'>
+        <div className='md:w-1/3 bg-white rounded-md shadow-md p-6'>
           <h2 className='text-2xl text-center font-medium mb-6'>小寶留言板</h2>
           <div className='space-y-6 overflow-y-auto max-h-[600px]'>
             {loading ? (
