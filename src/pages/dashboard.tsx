@@ -487,19 +487,19 @@ export default function Dashboard({ data }: { data: Daily[] }) {
           </div>
         </div>
 
-        <div className='bg-green-200 p-4 rounded-md mb-4'>
-          {/* Simple card */}
-          <div className='card bg-white shadow-md rounded p-2 text-center'>
-            <h2 className='text-lg font-semibold mb-2'>
-              {todayString} 本日記事
-            </h2>
-            <h5 className='text-lg font-medium mb-1 text-gray-600'>
-              {dailyData ? note : 'No Note Today'}
-            </h5>
-          </div>
-        </div>
-
         <div className='md:w-2/3 flex flex-col md:pl-4'>
+          <div className='bg-green-200 p-4 rounded-md mb-4'>
+            {/* Simple card */}
+            <div className='card bg-white shadow-md rounded p-2 text-center'>
+              <h2 className='text-lg font-semibold mb-2'>
+                {todayString} 本日記事
+              </h2>
+              <h5 className='text-lg font-medium mb-1 text-gray-600'>
+                {dailyData ? note : 'No Note Today'}
+              </h5>
+            </div>
+          </div>
+
           <div className='flex-1 flex justify-between gap-4 bg-blue-200 p-4 rounded-md mb-4'>
             {/* Health cards */}
             <div className='card bg-white shadow-md rounded p-4 w-1/3 flex flex-col justify-center items-center space-y-2'>
