@@ -14,6 +14,7 @@ import {
   ZAxis,
   Tooltip,
   Legend,
+  ResponsiveContainer,
 } from 'recharts'
 
 type Daily = {
@@ -313,13 +314,13 @@ export default function Dashboard({ data }: { data: Daily[] }) {
       if (hour in dailyData) {
         return {
           hour: hour,
-          index: 1,
+          index: index,
           value: dailyData[hour]?.feed ?? 0,
         }
       }
       return {
         hour: hour,
-        index: 1,
+        index: index,
         value: 0,
       }
     })
@@ -436,48 +437,50 @@ export default function Dashboard({ data }: { data: Daily[] }) {
           <div className='flex-1 bg-red-200 p-4 rounded-md'>
             {/* Chart */}
             <div className='card bg-white shadow-md rounded p-4'>
-              <ScatterChart
-                width={850}
-                height={60}
-                margin={{
-                  top: 10,
-                  right: 0,
-                  bottom: 0,
-                  left: 0,
-                }}
-              >
-                <XAxis
-                  type='category'
-                  dataKey='hour'
-                  name='hour'
-                  interval={0}
-                  tick={{ fontSize: 0 }}
-                  tickLine={{ transform: 'translate(0, -6)' }}
-                />
-                <YAxis
-                  type='number'
-                  dataKey='index'
-                  name='奶量'
-                  height={10}
-                  width={80}
-                  tick={false}
-                  tickLine={false}
-                  axisLine={false}
-                  label={{ value: '奶量', position: 'insideCenter' }}
-                />
-                <ZAxis
-                  type='number'
-                  dataKey='value'
-                  domain={domain}
-                  range={range}
-                />
-                <Tooltip
-                  cursor={{ strokeDasharray: '3 3' }}
-                  wrapperStyle={{ zIndex: 100 }}
-                  content={renderTooltip}
-                />
-                <Scatter data={feedByHour()} fill='#8884d8' />
-              </ScatterChart>
+              <ResponsiveContainer width='100%' height={60}>
+                <ScatterChart
+                  width={850}
+                  height={60}
+                  margin={{
+                    top: 10,
+                    right: 0,
+                    bottom: 0,
+                    left: 0,
+                  }}
+                >
+                  <XAxis
+                    type='category'
+                    dataKey='hour'
+                    name='hour'
+                    interval={0}
+                    tick={{ fontSize: 12 }}
+                    tickLine={{ transform: 'translate(0, -6)' }}
+                  />
+                  <YAxis
+                    type='number'
+                    dataKey='index'
+                    name='奶量'
+                    height={10}
+                    width={80}
+                    tick={false}
+                    tickLine={false}
+                    axisLine={false}
+                    label={{ value: '奶量', position: 'insideCenter' }}
+                  />
+                  <ZAxis
+                    type='number'
+                    dataKey='value'
+                    domain={domain}
+                    range={range}
+                  />
+                  <Tooltip
+                    cursor={{ strokeDasharray: '3 3' }}
+                    wrapperStyle={{ zIndex: 100 }}
+                    content={renderTooltip}
+                  />
+                  <Scatter data={feedByHour()} fill='#8884d8' />
+                </ScatterChart>
+              </ResponsiveContainer>
             </div>
           </div>
         </div>
