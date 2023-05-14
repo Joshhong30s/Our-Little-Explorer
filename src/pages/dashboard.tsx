@@ -2,7 +2,7 @@ import Head from 'next/head'
 import { useState, useEffect } from 'react'
 import { google } from 'googleapis'
 import { GiWeightScale, GiBodyHeight, GiAges } from 'react-icons/gi'
-import { FaTint, FaPoop } from 'react-icons/fa'
+import { FaToilet, FaPoop } from 'react-icons/fa'
 import { DayPicker, SelectSingleEventHandler } from 'react-day-picker'
 import 'react-day-picker/dist/style.css'
 import React from 'react'
@@ -524,14 +524,14 @@ export default function Dashboard({ data }: { data: Daily[] }) {
               <p>喝奶量</p>
             </div>
             <div className='card bg-white shadow-md rounded p-4 w-1/3 flex flex-col justify-center items-center space-y-2'>
-              <FaTint size={80} className='mb-4 mx-auto' />
+              <FaToilet size={120} className='mb-4 mx-auto' />
               <h2 className='text-2xl font-semibold mb-2'>
                 {dailyData ? pee + ' 次' : 'N/A'}
               </h2>
               <p>小便次數</p>
             </div>
             <div className='card bg-white shadow-md rounded p-4 w-1/3 flex flex-col justify-center items-center space-y-2'>
-              <FaPoop size={80} className='mb-4 mx-auto' />
+              <FaPoop size={120} className='mb-4 mx-auto' />
               <h2 className='text-2xl font-semibold mb-2'>
                 {dailyData ? poop + ' 次' : 'N/A'}
               </h2>
