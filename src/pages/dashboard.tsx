@@ -436,7 +436,7 @@ export default function Dashboard({ data }: { data: Daily[] }) {
 
       <div className='flex flex-col md:flex-row min-h-screen'>
         <div className='md:w-1/3 flex flex-col md:pr-4'>
-          <div className='flex-1 bg-yellow-200 p-4 rounded-md mb-4 flex flex-col justify-between'>
+          <div className='flex-1 bg-yellow-200 p-4 rounded-md mb-4 flex flex-col justify-center items-center'>
             {/* Avatar and infocards */}
             <div className='card bg-white shadow-md rounded p-4 mb-4 flex flex-col justify-start items-center'>
               <Image
@@ -483,31 +483,38 @@ export default function Dashboard({ data }: { data: Daily[] }) {
         <div className='md:w-2/3 flex flex-col md:pl-4'>
           <div className='flex-1 flex justify-between gap-4 bg-blue-200 p-4 rounded-md mb-4'>
             {/* Health cards */}
-            <div className='card bg-white shadow-md rounded p-4 w-1/3 text-center'>
-              <img src='/feed.svg' width={50} height={50} className='mb-2' />
+            <div className='card bg-white shadow-md rounded p-4 w-1/3 flex flex-col justify-center items-center space-y-2'>
+              <img
+                src='/feed.svg'
+                width={60}
+                height={60}
+                className='mb-2 mx-auto'
+              />
               <h2 className='text-lg font-semibold mb-2'>Total Feed</h2>
               <p>{dailyData ? feed : 'N/A'}</p>
             </div>
-            <div className='card bg-white shadow-md rounded p-4 w-1/3 text-center'>
-              <FaTint size={40} className='mb-2' />
+            <div className='card bg-white shadow-md rounded p-4 w-1/3 flex flex-col justify-center items-center space-y-2'>
+              <FaTint size={50} className='mb-2 mx-auto' />
               <h2 className='text-lg font-semibold mb-2'>Total Pee</h2>
               <p>{dailyData ? pee + ' times' : 'N/A'}</p>
             </div>
-            <div className='card bg-white shadow-md rounded p-4 w-1/3 text-center'>
-              <FaPoop size={40} className='mb-2' />
+            <div className='card bg-white shadow-md rounded p-4 w-1/3 flex flex-col justify-center items-center space-y-2'>
+              <FaPoop size={50} className='mb-2 mx-auto' />
               <h2 className='text-lg font-semibold mb-2'>Total Poop</h2>
               <p>{dailyData ? poop + ' times' : 'N/A'}</p>
             </div>
           </div>
-          <div className='flex bg-green-200 p-4 rounded-md mb-4'>
+
+          <div className='flex-1 bg-green-200 p-4 rounded-md mb-4'>
             {/* Simple card */}
-            <div className='card bg-white shadow-md rounded p-4 text-center'>
-              <h2 className='text-lg font-semibold mb-4'>本日記事</h2>
-              <h5 className='text-lg font-medium mb-2 text-gray-600'>
+            <div className='card bg-white shadow-md rounded p-2 text-center'>
+              <h2 className='text-lg font-semibold mb-2'>本日記事</h2>
+              <h5 className='text-lg font-medium mb-1 text-gray-600'>
                 {dailyData ? note : 'No Note Today'}
               </h5>
             </div>
           </div>
+
           <div className='flex-1 bg-red-200 p-4 rounded-md'>
             {/* Chart */}
             <div className='card bg-white shadow-md rounded p-4 py-6'>
