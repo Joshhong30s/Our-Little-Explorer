@@ -415,7 +415,7 @@ export default function Dashboard({ data }: { data: Daily[] }) {
 
   const domain = parseDomain()
   const range = [0, 225]
-  const range2 = [0, 225]
+  const range2 = [100, 225]
 
   if (isLoading) {
     // This will be shown while the data is loading
