@@ -438,16 +438,16 @@ export default function Dashboard({ data }: { data: Daily[] }) {
         <div className='md:w-1/3 flex flex-col md:pr-4'>
           <div className='flex-1 h-1/2 bg-yellow-200 p-4 rounded-md mb-4 flex flex-col justify-center items-center'>
             {/* Avatar and infocards */}
-            <div className='card bg-white rounded p-4 mb-4 flex-1 w-full flex flex-col justify-between items-center'>
+            <div className='card bg-white rounded px-4 flex-1 w-full flex flex-col justify-between items-center'>
               <div className='card bg-white  rounded p-4 mb-4 flex-1 w-full flex flex-col justify-start items-center'>
                 <Image
                   src='/avatar.jpg'
                   alt='avatar.jpg'
-                  width={100}
-                  height={100}
+                  width={160}
+                  height={160}
                   className='mb-4 rounded-2xl'
                 />
-                <p className='text-center'>小寶</p>
+                <p className='text-center text-2xl'>小寶</p>
               </div>
 
               <div className='card  rounded mb-4 flex-1 w-full flex justify-between gap-4 items-center'>
