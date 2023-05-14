@@ -333,13 +333,54 @@ export default function Dashboard({ data }: { data: Daily[] }) {
     })
   }
 
+  const peeByHour = () => {
+    if (!dailyData) {
+      return []
+    }
+
+    return hours.map((hour: string, index: number) => {
+      if (hour in dailyData) {
+        return {
+          hour: hour,
+          index: 1,
+          value: dailyData[hour]?.pee ?? 0,
+        }
+      }
+      return {
+        hour: hour,
+        index: 1,
+        value: 0,
+      }
+    })
+  }
+
+  const poopByHour = () => {
+    if (!dailyData) {
+      return []
+    }
+
+    return hours.map((hour: string, index: number) => {
+      if (hour in dailyData) {
+        return {
+          hour: hour,
+          index: 1,
+          value: dailyData[hour]?.poop ?? 0,
+        }
+      }
+      return {
+        hour: hour,
+        index: 1,
+        value: 0,
+      }
+    })
+  }
+
   const parseDomain = () => [
     0,
     Math.max(
-      Math.max.apply(
-        null,
-        feedByHour().map((entry: any) => entry.value)
-      )
+      ...feedByHour().map((entry: any) => entry.value),
+      ...peeByHour().map((entry: any) => entry.value),
+      ...poopByHour().map((entry: any) => entry.value)
     ),
   ]
 
@@ -495,6 +536,98 @@ export default function Dashboard({ data }: { data: Daily[] }) {
                     content={renderTooltip}
                   />
                   <Scatter data={feedByHour()} fill='#8884d8' />
+                </ScatterChart>
+              </ResponsiveContainer>
+            </div>
+            <div className='card bg-white shadow-md rounded p-4'>
+              <ResponsiveContainer width='100%' height={60}>
+                <ScatterChart
+                  width={820}
+                  height={60}
+                  margin={{
+                    top: 10,
+                    right: 0,
+                    bottom: 0,
+                    left: 0,
+                  }}
+                >
+                  <XAxis
+                    type='category'
+                    dataKey='hour'
+                    name='pee'
+                    interval={0}
+                    tick={{ fontSize: 10 }}
+                    tickLine={{ transform: 'translate(0, -6)' }}
+                  />
+                  <YAxis
+                    type='number'
+                    dataKey='index'
+                    name='小便'
+                    height={10}
+                    width={80}
+                    tick={false}
+                    tickLine={false}
+                    axisLine={false}
+                    label={{ value: '小便', position: 'insideCenter' }}
+                  />
+                  <ZAxis
+                    type='number'
+                    dataKey='value'
+                    domain={domain}
+                    range={range}
+                  />
+                  <Tooltip
+                    cursor={{ strokeDasharray: '3 3' }}
+                    wrapperStyle={{ zIndex: 100 }}
+                    content={renderTooltip}
+                  />
+                  <Scatter data={peeByHour()} fill='#8884d8' />
+                </ScatterChart>
+              </ResponsiveContainer>
+            </div>
+            <div className='card bg-white shadow-md rounded p-4'>
+              <ResponsiveContainer width='100%' height={60}>
+                <ScatterChart
+                  width={820}
+                  height={60}
+                  margin={{
+                    top: 10,
+                    right: 0,
+                    bottom: 0,
+                    left: 0,
+                  }}
+                >
+                  <XAxis
+                    type='category'
+                    dataKey='hour'
+                    name='poop'
+                    interval={0}
+                    tick={{ fontSize: 10 }}
+                    tickLine={{ transform: 'translate(0, -6)' }}
+                  />
+                  <YAxis
+                    type='number'
+                    dataKey='index'
+                    name='大便'
+                    height={10}
+                    width={80}
+                    tick={false}
+                    tickLine={false}
+                    axisLine={false}
+                    label={{ value: '大便', position: 'insideCenter' }}
+                  />
+                  <ZAxis
+                    type='number'
+                    dataKey='value'
+                    domain={domain}
+                    range={range}
+                  />
+                  <Tooltip
+                    cursor={{ strokeDasharray: '3 3' }}
+                    wrapperStyle={{ zIndex: 100 }}
+                    content={renderTooltip}
+                  />
+                  <Scatter data={poopByHour()} fill='#8884d8' />
                 </ScatterChart>
               </ResponsiveContainer>
             </div>
