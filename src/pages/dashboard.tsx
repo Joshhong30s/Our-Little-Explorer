@@ -258,6 +258,20 @@ export default function Dashboard({ data }: { data: Daily[] }) {
     }
   }, [data])
 
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
+
+  useEffect(() => {
+    function handleResize() {
+      setIsMobile(window.innerWidth <= 768)
+    }
+
+    window.addEventListener('resize', handleResize)
+
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
+
   const latestData = data[0]
   const [selected, setSelected] = useState<Date | undefined>(
     latestData ? new Date(latestData.Day) : undefined
@@ -548,8 +562,8 @@ export default function Dashboard({ data }: { data: Daily[] }) {
                     type='category'
                     dataKey='hour'
                     name='hour'
-                    interval={0}
-                    tick={{ fontSize: 8 }}
+                    interval={isMobile ? 6 : 0}
+                    tick={{ fontSize: 10 }}
                     tickLine={{ transform: 'translate(0, -6)' }}
                   />
                   <YAxis
@@ -594,7 +608,7 @@ export default function Dashboard({ data }: { data: Daily[] }) {
                     type='category'
                     dataKey='hour'
                     name='pee'
-                    interval={0}
+                    interval={isMobile ? 6 : 0}
                     tick={{ fontSize: 10 }}
                     tickLine={{ transform: 'translate(0, -6)' }}
                   />
@@ -640,7 +654,7 @@ export default function Dashboard({ data }: { data: Daily[] }) {
                     type='category'
                     dataKey='hour'
                     name='poop'
-                    interval={0}
+                    interval={isMobile ? 6 : 0}
                     tick={{ fontSize: 10 }}
                     tickLine={{ transform: 'translate(0, -6)' }}
                   />
