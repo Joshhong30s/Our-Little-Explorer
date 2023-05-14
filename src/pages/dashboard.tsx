@@ -436,7 +436,7 @@ export default function Dashboard({ data }: { data: Daily[] }) {
 
       <div className='flex flex-col md:flex-row min-h-screen'>
         <div className='md:w-1/3 flex flex-col md:pr-4'>
-          <div className='flex-1 bg-yellow-200 p-4 rounded-md mb-4 flex flex-col justify-center items-center'>
+          <div className='flex-1 h-1/2 bg-yellow-200 p-4 rounded-md mb-4 flex flex-col justify-center items-center'>
             {/* Avatar and infocards */}
             <div className='card bg-white shadow-md rounded p-4 mb-4 flex flex-col justify-start items-center'>
               <Image
@@ -449,7 +449,7 @@ export default function Dashboard({ data }: { data: Daily[] }) {
               <p className='text-center'>小寶</p>
             </div>
 
-            <div className='flex justify-between gap-4'>
+            <div className='flex h-1/2 justify-between gap-4'>
               <div className='card bg-white shadow-md rounded p-4 w-1/3 text-center flex flex-col justify-center items-center'>
                 <GiAges size={40} className='mb-2' />
                 <p>Age</p>
