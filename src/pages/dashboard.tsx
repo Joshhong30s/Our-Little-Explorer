@@ -414,7 +414,8 @@ export default function Dashboard({ data }: { data: Daily[] }) {
   }
 
   const domain = parseDomain()
-  const range = [16, 225]
+  const range = [0, 225]
+  const range2 = [0, 225]
 
   if (isLoading) {
     // This will be shown while the data is loading
@@ -580,7 +581,7 @@ export default function Dashboard({ data }: { data: Daily[] }) {
                     type='number'
                     dataKey='value'
                     domain={domain}
-                    range={range}
+                    range={range2}
                   />
                   <Tooltip
                     cursor={{ strokeDasharray: '3 3' }}
@@ -626,7 +627,7 @@ export default function Dashboard({ data }: { data: Daily[] }) {
                     type='number'
                     dataKey='value'
                     domain={domain}
-                    range={range}
+                    range={range2}
                   />
                   <Tooltip
                     cursor={{ strokeDasharray: '3 3' }}
