@@ -439,7 +439,7 @@ export default function Dashboard({ data }: { data: Daily[] }) {
             <div className='card bg-white shadow-md rounded p-4'>
               <ResponsiveContainer width='100%' height={60}>
                 <ScatterChart
-                  width={850}
+                  width={820}
                   height={60}
                   margin={{
                     top: 10,
@@ -453,7 +453,7 @@ export default function Dashboard({ data }: { data: Daily[] }) {
                     dataKey='hour'
                     name='hour'
                     interval={0}
-                    tick={{ fontSize: 12 }}
+                    tick={{ fontSize: 10 }}
                     tickLine={{ transform: 'translate(0, -6)' }}
                   />
                   <YAxis
