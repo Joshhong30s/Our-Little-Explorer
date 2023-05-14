@@ -327,7 +327,7 @@ export default function Dashboard({ data }: { data: Daily[] }) {
           </div>
           <div className='flex-1 bg-purple-200 p-4 rounded-md'>
             {/* Calendar */}
-            <div className='card bg-white shadow-md rounded p-4'>
+            <div className='card bg-white shadow-md rounded p-4 flex justify-center items-center'>
               <DayPicker
                 mode='single'
                 selected={selected || undefined}
