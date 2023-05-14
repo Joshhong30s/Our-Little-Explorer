@@ -314,13 +314,13 @@ export default function Dashboard({ data }: { data: Daily[] }) {
       if (hour in dailyData) {
         return {
           hour: hour,
-          index: index,
+          index: 1,
           value: dailyData[hour]?.feed ?? 0,
         }
       }
       return {
         hour: hour,
-        index: index,
+        index: 1,
         value: 0,
       }
     })
