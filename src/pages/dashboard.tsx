@@ -297,11 +297,13 @@ export default function Dashboard({ data }: { data: Daily[] }) {
 
   // Get today's date
   const today = new Date()
-  const todayString = today.toLocaleDateString('zh-TW', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  })
+
+  // const todayString = today.toLocaleDateString('zh-TW', {
+  //   year: 'numeric',
+  //   month: 'long',
+  //   day: 'numeric',
+  // })
+
   // Get baby's birthdate
   const birthdate = new Date('2023-04-12')
 
@@ -323,6 +325,8 @@ export default function Dashboard({ data }: { data: Daily[] }) {
     : 'No data available'
 
   const latestEntry = data[0]
+
+  const day = dailyData?.Day ?? 'No data available'
 
   const note = dailyData?.Note ?? 'No data available'
 
@@ -489,7 +493,7 @@ export default function Dashboard({ data }: { data: Daily[] }) {
             {/* Simple card */}
             <div className='card bg-white shadow-md rounded p-2 text-center'>
               <h2 className='text-lg font-semibold mb-2'>
-                {todayString} 本日記事
+                {dailyData ? day : 'No Data Available'} 本日記事
               </h2>
               <h5 className='text-lg font-medium mb-1 text-gray-600'>
                 {dailyData ? note : 'No Note Today'}
