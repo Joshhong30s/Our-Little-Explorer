@@ -454,7 +454,7 @@ export default function Dashboard({ data }: { data: Daily[] }) {
           <div className='flex-1 h-1/2 bg-yellow-200 p-4 rounded-md mb-4 flex flex-col justify-center items-center'>
             {/* Avatar and infocards */}
             <div className='card bg-white rounded px-4 flex-1 w-full flex flex-col justify-between items-center'>
-              <div className='card bg-white  rounded p-4 mb-4 flex-1 w-full flex flex-col justify-start items-center'>
+              <div className='card bg-white  rounded p-4 flex-1 w-full flex flex-col justify-start items-center'>
                 <Image
                   src='/avatar.jpg'
                   alt='avatar.jpg'
@@ -468,18 +468,18 @@ export default function Dashboard({ data }: { data: Daily[] }) {
               <div className='card  rounded mb-4 flex-1 w-full flex justify-between gap-4 items-center'>
                 <div className='card bg-yellow-200  shadow-md rounded p-4 flex flex-1 flex-col justify-center items-center space-y-2'>
                   <GiAges size={40} className='mb-2' />
-                  <p>Age</p>
+                  <p>年齡</p>
                   <p>{months}M</p>
                 </div>
 
                 <div className='card bg-yellow-200  shadow-md rounded p-4 flex flex-1 flex-col justify-center items-center space-y-2'>
                   <GiWeightScale size={40} className='mb-2' />
-                  <p>Weight</p>
+                  <p>體重</p>
                   <p>{weight}g</p>
                 </div>
                 <div className='card bg-yellow-200  shadow-md rounded p-4 flex flex-1 flex-col justify-center items-center space-y-2'>
                   <GiBodyHeight size={40} className='mb-2' />
-                  <p>Height</p>
+                  <p>身高</p>
                   <p>{height}cm</p>
                 </div>
               </div>
