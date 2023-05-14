@@ -438,29 +438,31 @@ export default function Dashboard({ data }: { data: Daily[] }) {
         <div className='md:w-1/3 flex flex-col md:pr-4'>
           <div className='flex-1 h-1/2 bg-yellow-200 p-4 rounded-md mb-4 flex flex-col justify-center items-center'>
             {/* Avatar and infocards */}
-            <div className='card bg-white  rounded p-4 mb-4 flex-1 w-full flex flex-col justify-start items-center'>
-              <Image
-                src='/avatar.jpg'
-                alt='avatar.jpg'
-                width={100}
-                height={100}
-                className='mb-4 rounded-2xl'
-              />
-              <p className='text-center'>小寶</p>
+            <div className='card bg-white rounded p-4 mb-4 flex-1 w-full flex flex-col justify-between items-center'>
+              <div className='card bg-white  rounded p-4 mb-4 flex-1 w-full flex flex-col justify-start items-center'>
+                <Image
+                  src='/avatar.jpg'
+                  alt='avatar.jpg'
+                  width={100}
+                  height={100}
+                  className='mb-4 rounded-2xl'
+                />
+                <p className='text-center'>小寶</p>
+              </div>
 
               <div className='card  rounded mb-4 flex-1 w-full flex justify-between gap-4 items-center'>
-                <div className='card bg-white shadow-md rounded p-4 flex flex-1 flex-col justify-center items-center space-y-2'>
+                <div className='card bg-yellow-200  shadow-md rounded p-4 flex flex-1 flex-col justify-center items-center space-y-2'>
                   <GiAges size={40} className='mb-2' />
                   <p>Age</p>
                   <p>{months}M</p>
                 </div>
 
-                <div className='card bg-white shadow-md rounded p-4 flex flex-1 flex-col justify-center items-center space-y-2'>
+                <div className='card bg-yellow-200  shadow-md rounded p-4 flex flex-1 flex-col justify-center items-center space-y-2'>
                   <GiWeightScale size={40} className='mb-2' />
                   <p>Weight</p>
                   <p>{weight}g</p>
                 </div>
-                <div className='card bg-white shadow-md rounded p-4 flex flex-1 flex-col justify-center items-center space-y-2'>
+                <div className='card bg-yellow-200  shadow-md rounded p-4 flex flex-1 flex-col justify-center items-center space-y-2'>
                   <GiBodyHeight size={40} className='mb-2' />
                   <p>Height</p>
                   <p>{height}cm</p>
@@ -468,7 +470,7 @@ export default function Dashboard({ data }: { data: Daily[] }) {
               </div>
             </div>
           </div>
-          <div className='flex-1 bg-purple-200 p-4 rounded-md'>
+          <div className='flex-1  bg-purple-200 p-4 rounded-md'>
             {/* Calendar */}
             <div className='card bg-white shadow-md rounded p-4 flex justify-center items-center'>
               <DayPicker
