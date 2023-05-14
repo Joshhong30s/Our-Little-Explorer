@@ -317,18 +317,21 @@ export default function Dashboard({ data }: { data: Daily[] }) {
       return []
     }
 
-    let data: { hour: string; index: number; value: any }[] = []
-    hours.forEach((hour: string, index: number) => {
+    return hours.map((hour: string, index: number) => {
       if (hour in dailyData && dailyData[hour]?.feed > 0) {
-        data.push({
+        return {
           hour: hour,
           index: 1,
           value: dailyData[hour]?.feed,
-        })
+        }
+      } else {
+        return {
+          hour: hour,
+          index: 1,
+          value: null,
+        }
       }
     })
-
-    return data
   }
 
   const peeByHour = () => {
@@ -336,18 +339,21 @@ export default function Dashboard({ data }: { data: Daily[] }) {
       return []
     }
 
-    let data: { hour: string; index: number; value: any }[] = []
-    hours.forEach((hour: string, index: number) => {
+    return hours.map((hour: string, index: number) => {
       if (hour in dailyData && dailyData[hour]?.pee > 0) {
-        data.push({
+        return {
           hour: hour,
           index: 1,
           value: dailyData[hour]?.pee,
-        })
+        }
+      } else {
+        return {
+          hour: hour,
+          index: 1,
+          value: null,
+        }
       }
     })
-
-    return data
   }
 
   const poopByHour = () => {
