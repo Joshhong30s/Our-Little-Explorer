@@ -524,14 +524,14 @@ export default function Dashboard({ data }: { data: Daily[] }) {
               <p>喝奶量</p>
             </div>
             <div className='card bg-white shadow-md rounded p-4 w-1/3 flex flex-col justify-center items-center space-y-2'>
-              <FaToilet width={80} height={120} className='mb-4 mx-auto' />
+              <FaToilet className='mb-6 mx-auto w-20 h-28' />
               <h2 className='text-2xl font-semibold mb-2'>
                 {dailyData ? pee + ' 次' : 'N/A'}
               </h2>
               <p>小便次數</p>
             </div>
             <div className='card bg-white shadow-md rounded p-4 w-1/3 flex flex-col justify-center items-center space-y-2'>
-              <FaPoop width={80} height={120} className='mb-4 mx-auto' />
+              <FaPoop className='mb-6 mx-auto w-20 h-28' />
               <h2 className='text-2xl font-semibold mb-2'>
                 {dailyData ? poop + ' 次' : 'N/A'}
               </h2>
