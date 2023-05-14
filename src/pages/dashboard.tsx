@@ -16,6 +16,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts'
+import Image from 'next/image'
 
 type Daily = {
   Day: string
@@ -414,8 +415,8 @@ export default function Dashboard({ data }: { data: Daily[] }) {
   }
 
   const domain = parseDomain()
-  const range = [0, 225]
-  const range2 = [100, 225]
+  const range = [0, 500]
+  const range2 = [0, 50]
 
   if (isLoading) {
     // This will be shown while the data is loading
@@ -438,21 +439,26 @@ export default function Dashboard({ data }: { data: Daily[] }) {
           <div className='flex-1 bg-yellow-200 p-4 rounded-md mb-4'>
             {/* Avatar and infocards */}
             <div className='card bg-white shadow-md rounded p-4 mb-4'>
-              <h2 className='text-lg font-semibold mb-2'>Avatar</h2>
+              <Image
+                src='/avatar.jpg'
+                alt='avatar.jpg'
+                width={100}
+                height={100}
+              />
             </div>
             <div className='flex justify-between gap-4'>
               <div className='card bg-white shadow-md rounded p-4 w-1/3'>
-                <GiAges size={20} />
+                <GiAges size={40} />
                 <p>Age</p>
                 <p>{months}M</p>
               </div>
               <div className='card bg-white shadow-md rounded p-4 w-1/3'>
-                <GiWeightScale size={20} />
+                <GiWeightScale size={40} />
                 <p>Age</p>
                 <p>{weight}g</p>
               </div>
               <div className='card bg-white shadow-md rounded p-4 w-1/3'>
-                <GiBodyHeight size={20} />
+                <GiBodyHeight size={40} />
                 <p>Age</p>
                 <p>{height}cm</p>
               </div>
@@ -474,7 +480,7 @@ export default function Dashboard({ data }: { data: Daily[] }) {
           <div className='flex-1 flex justify-between gap-4 bg-blue-200 p-4 rounded-md mb-4'>
             {/* Health cards */}
             <div className='card bg-white shadow-md rounded p-4 w-1/3'>
-              <img src='/feed.svg' width={50} height={40} />
+              <img src='/feed.svg' width={50} height={50} />
               <h2 className='text-lg font-semibold mb-2'>Total Feed</h2>
               <p>{dailyData ? feed : 'N/A'}</p>
             </div>
