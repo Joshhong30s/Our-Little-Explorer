@@ -317,17 +317,21 @@ export default function Dashboard({ data }: { data: Daily[] }) {
       return []
     }
 
-    return hours
-      .map((hour: string, index: number) => {
-        if (hour in dailyData && dailyData[hour]?.feed > 0) {
-          return {
-            hour: hour,
-            index: 1,
-            value: dailyData[hour]?.feed,
-          }
+    return hours.map((hour: string, index: number) => {
+      if (hour in dailyData && dailyData[hour]?.feed > 0) {
+        return {
+          hour: hour,
+          index: 1,
+          value: dailyData[hour]?.feed,
         }
-      })
-      .filter(Boolean)
+      } else {
+        return {
+          hour: hour,
+          index: 1,
+          value: null,
+        }
+      }
+    })
   }
 
   const peeByHour = () => {
@@ -335,17 +339,21 @@ export default function Dashboard({ data }: { data: Daily[] }) {
       return []
     }
 
-    return hours
-      .map((hour: string, index: number) => {
-        if (hour in dailyData && dailyData[hour]?.pee > 0) {
-          return {
-            hour: hour,
-            index: 1,
-            value: dailyData[hour]?.pee,
-          }
+    return hours.map((hour: string, index: number) => {
+      if (hour in dailyData && dailyData[hour]?.pee > 0) {
+        return {
+          hour: hour,
+          index: 1,
+          value: dailyData[hour]?.pee,
         }
-      })
-      .filter(Boolean)
+      } else {
+        return {
+          hour: hour,
+          index: 1,
+          value: null,
+        }
+      }
+    })
   }
 
   const poopByHour = () => {
@@ -353,17 +361,21 @@ export default function Dashboard({ data }: { data: Daily[] }) {
       return []
     }
 
-    return hours
-      .map((hour: string, index: number) => {
-        if (hour in dailyData && dailyData[hour]?.poop > 0) {
-          return {
-            hour: hour,
-            index: 1,
-            value: dailyData[hour]?.poop,
-          }
+    return hours.map((hour: string, index: number) => {
+      if (hour in dailyData && dailyData[hour]?.poop > 0) {
+        return {
+          hour: hour,
+          index: 1,
+          value: dailyData[hour]?.poop,
         }
-      })
-      .filter(Boolean)
+      } else {
+        return {
+          hour: hour,
+          index: 1,
+          value: null,
+        }
+      }
+    })
   }
 
   const parseDomain = () => [
@@ -461,14 +473,17 @@ export default function Dashboard({ data }: { data: Daily[] }) {
           <div className='flex-1 flex justify-between gap-4 bg-blue-200 p-4 rounded-md mb-4'>
             {/* Health cards */}
             <div className='card bg-white shadow-md rounded p-4 w-1/3'>
+              <img src='/feed.svg' width={50} height={40} />
               <h2 className='text-lg font-semibold mb-2'>Total Feed</h2>
               <p>{dailyData ? feed : 'N/A'}</p>
             </div>
             <div className='card bg-white shadow-md rounded p-4 w-1/3'>
+              <FaTint size={40} />
               <h2 className='text-lg font-semibold mb-2'>Total Pee</h2>
               <p>{dailyData ? pee + ' times' : 'N/A'}</p>
             </div>
             <div className='card bg-white shadow-md rounded p-4 w-1/3'>
+              <FaPoop size={40} />
               <h2 className='text-lg font-semibold mb-2'>Total Poop</h2>
               <p>{dailyData ? poop + ' times' : 'N/A'}</p>
             </div>
@@ -476,8 +491,8 @@ export default function Dashboard({ data }: { data: Daily[] }) {
           <div className='flex-1 bg-green-200 p-4 rounded-md mb-4'>
             {/* Simple card */}
             <div className='card bg-white shadow-md rounded p-4'>
-              <h2 className='text-lg font-semibold mb-2'>本日記事</h2>
-              <h5 className='text-lg font-semibold mb-2'>
+              <h2 className='text-lg font-semibold mb-4'>本日記事</h2>
+              <h5 className='text-lg font-medium mb-2 text-gray-600'>
                 {dailyData ? note : 'No Note Today'}
               </h5>
             </div>
