@@ -415,8 +415,8 @@ export default function Dashboard({ data }: { data: Daily[] }) {
   }
 
   const domain = parseDomain()
-  const range = [0, 500]
-  const range2 = [0, 50]
+  const range = [0, 300]
+  const range2 = [16, 50]
 
   if (isLoading) {
     // This will be shown while the data is loading
@@ -438,28 +438,31 @@ export default function Dashboard({ data }: { data: Daily[] }) {
         <div className='md:w-1/3 flex flex-col md:pr-4'>
           <div className='flex-1 bg-yellow-200 p-4 rounded-md mb-4'>
             {/* Avatar and infocards */}
-            <div className='card bg-white shadow-md rounded p-4 mb-4'>
+            <div className='card bg-white shadow-md rounded p-4 mb-4 flex flex-col justify-start items-center'>
               <Image
                 src='/avatar.jpg'
                 alt='avatar.jpg'
                 width={100}
                 height={100}
+                className='mb-2'
               />
+              <p className='text-center'>小寶</p>
             </div>
+
             <div className='flex justify-between gap-4'>
               <div className='card bg-white shadow-md rounded p-4 w-1/3'>
                 <GiAges size={40} />
                 <p>Age</p>
                 <p>{months}M</p>
               </div>
-              <div className='card bg-white shadow-md rounded p-4 w-1/3'>
-                <GiWeightScale size={40} />
-                <p>Age</p>
+              <div className='card bg-white shadow-md rounded p-4 w-1/3 text-center'>
+                <GiWeightScale size={40} className='mb-2' />
+                <p>Weight</p>
                 <p>{weight}g</p>
               </div>
-              <div className='card bg-white shadow-md rounded p-4 w-1/3'>
-                <GiBodyHeight size={40} />
-                <p>Age</p>
+              <div className='card bg-white shadow-md rounded p-4 w-1/3 text-center'>
+                <GiBodyHeight size={40} className='mb-2' />
+                <p>Height</p>
                 <p>{height}cm</p>
               </div>
             </div>
@@ -479,25 +482,25 @@ export default function Dashboard({ data }: { data: Daily[] }) {
         <div className='md:w-2/3 flex flex-col md:pl-4'>
           <div className='flex-1 flex justify-between gap-4 bg-blue-200 p-4 rounded-md mb-4'>
             {/* Health cards */}
-            <div className='card bg-white shadow-md rounded p-4 w-1/3'>
-              <img src='/feed.svg' width={50} height={50} />
+            <div className='card bg-white shadow-md rounded p-4 w-1/3 text-center'>
+              <img src='/feed.svg' width={50} height={50} className='mb-2' />
               <h2 className='text-lg font-semibold mb-2'>Total Feed</h2>
               <p>{dailyData ? feed : 'N/A'}</p>
             </div>
-            <div className='card bg-white shadow-md rounded p-4 w-1/3'>
-              <FaTint size={40} />
+            <div className='card bg-white shadow-md rounded p-4 w-1/3 text-center'>
+              <FaTint size={40} className='mb-2' />
               <h2 className='text-lg font-semibold mb-2'>Total Pee</h2>
               <p>{dailyData ? pee + ' times' : 'N/A'}</p>
             </div>
-            <div className='card bg-white shadow-md rounded p-4 w-1/3'>
-              <FaPoop size={40} />
+            <div className='card bg-white shadow-md rounded p-4 w-1/3 text-center'>
+              <FaPoop size={40} className='mb-2' />
               <h2 className='text-lg font-semibold mb-2'>Total Poop</h2>
               <p>{dailyData ? poop + ' times' : 'N/A'}</p>
             </div>
           </div>
           <div className='flex-1 bg-green-200 p-4 rounded-md mb-4'>
             {/* Simple card */}
-            <div className='card bg-white shadow-md rounded p-4'>
+            <div className='card bg-white shadow-md rounded p-4 text-center'>
               <h2 className='text-lg font-semibold mb-4'>本日記事</h2>
               <h5 className='text-lg font-medium mb-2 text-gray-600'>
                 {dailyData ? note : 'No Note Today'}
@@ -506,7 +509,8 @@ export default function Dashboard({ data }: { data: Daily[] }) {
           </div>
           <div className='flex-1 bg-red-200 p-4 rounded-md'>
             {/* Chart */}
-            <div className='card bg-white shadow-md rounded p-4'>
+            <div className='card bg-white shadow-md rounded p-4 py-6'>
+              {' '}
               <ResponsiveContainer width='100%' height={60}>
                 <ScatterChart
                   width={820}
