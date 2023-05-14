@@ -132,7 +132,7 @@ export default function Message() {
 
   return (
     <div
-      className='container mx-auto p-4 min-h-screen bg-white'
+      className='mx-auto p-4 min-h-screen  bg-cover bg-center '
       style={{ backgroundImage: "url('bao12.jpeg')" }}
     >
       <div className='flex flex-col md:flex-row gap-8 justify-center'>
