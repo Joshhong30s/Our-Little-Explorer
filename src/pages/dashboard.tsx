@@ -499,7 +499,7 @@ export default function Dashboard({ data }: { data: Daily[] }) {
               <p>{dailyData ? poop + ' times' : 'N/A'}</p>
             </div>
           </div>
-          <div className='flex-1 bg-green-200 p-4 rounded-md mb-4'>
+          <div className='flex bg-green-200 p-4 rounded-md mb-4'>
             {/* Simple card */}
             <div className='card bg-white shadow-md rounded p-4 text-center'>
               <h2 className='text-lg font-semibold mb-4'>本日記事</h2>
