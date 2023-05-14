@@ -359,21 +359,19 @@ export default function Dashboard({ data }: { data: Daily[] }) {
       return []
     }
 
-    return hours.map((hour: string, index: number) => {
-      if (hour in dailyData && dailyData[hour]?.pee > 0) {
-        return {
-          hour: hour,
-          index: 1,
-          value: dailyData[hour]?.pee,
+    return hours
+      .map((hour: string, index: number) => {
+        if (hour in dailyData && dailyData[hour]?.pee > 0) {
+          return {
+            hour: hour,
+            index: 1,
+            value: dailyData[hour]?.pee,
+          }
+        } else {
+          return null
         }
-      } else {
-        return {
-          hour: hour,
-          index: 1,
-          value: null,
-        }
-      }
-    })
+      })
+      .filter((entry) => entry !== null)
   }
 
   const poopByHour = () => {
@@ -381,21 +379,19 @@ export default function Dashboard({ data }: { data: Daily[] }) {
       return []
     }
 
-    return hours.map((hour: string, index: number) => {
-      if (hour in dailyData && dailyData[hour]?.poop > 0) {
-        return {
-          hour: hour,
-          index: 1,
-          value: dailyData[hour]?.poop,
+    return hours
+      .map((hour: string, index: number) => {
+        if (hour in dailyData && dailyData[hour]?.poop > 0) {
+          return {
+            hour: hour,
+            index: 1,
+            value: dailyData[hour]?.poop,
+          }
+        } else {
+          return null
         }
-      } else {
-        return {
-          hour: hour,
-          index: 1,
-          value: null,
-        }
-      }
-    })
+      })
+      .filter((entry) => entry !== null)
   }
 
   const parseDomain = () => [
@@ -562,7 +558,7 @@ export default function Dashboard({ data }: { data: Daily[] }) {
                     type='category'
                     dataKey='hour'
                     name='hour'
-                    interval={isMobile ? 6 : 0}
+                    interval={isMobile ? 5 : 0}
                     tick={{ fontSize: 10 }}
                     tickLine={{ transform: 'translate(0, -6)' }}
                   />
@@ -608,7 +604,7 @@ export default function Dashboard({ data }: { data: Daily[] }) {
                     type='category'
                     dataKey='hour'
                     name='pee'
-                    interval={isMobile ? 6 : 0}
+                    interval={isMobile ? 5 : 0}
                     tick={{ fontSize: 10 }}
                     tickLine={{ transform: 'translate(0, -6)' }}
                   />
@@ -654,7 +650,7 @@ export default function Dashboard({ data }: { data: Daily[] }) {
                     type='category'
                     dataKey='hour'
                     name='poop'
-                    interval={isMobile ? 6 : 0}
+                    interval={isMobile ? 5 : 0}
                     tick={{ fontSize: 10 }}
                     tickLine={{ transform: 'translate(0, -6)' }}
                   />
