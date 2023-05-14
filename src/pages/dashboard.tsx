@@ -447,24 +447,24 @@ export default function Dashboard({ data }: { data: Daily[] }) {
                 className='mb-4 rounded-2xl'
               />
               <p className='text-center'>小寶</p>
-            </div>
 
-            <div className='card  rounded mb-4 flex-1 w-full flex justify-between gap-4 items-center'>
-              <div className='card bg-white shadow-md rounded p-4 flex flex-1 flex-col justify-center items-center space-y-2'>
-                <GiAges size={40} className='mb-2' />
-                <p>Age</p>
-                <p>{months}M</p>
-              </div>
+              <div className='card  rounded mb-4 flex-1 w-full flex justify-between gap-4 items-center'>
+                <div className='card bg-white shadow-md rounded p-4 flex flex-1 flex-col justify-center items-center space-y-2'>
+                  <GiAges size={40} className='mb-2' />
+                  <p>Age</p>
+                  <p>{months}M</p>
+                </div>
 
-              <div className='card bg-white shadow-md rounded p-4 flex flex-1 flex-col justify-center items-center space-y-2'>
-                <GiWeightScale size={40} className='mb-2' />
-                <p>Weight</p>
-                <p>{weight}g</p>
-              </div>
-              <div className='card bg-white shadow-md rounded p-4 flex flex-1 flex-col justify-center items-center space-y-2'>
-                <GiBodyHeight size={40} className='mb-2' />
-                <p>Height</p>
-                <p>{height}cm</p>
+                <div className='card bg-white shadow-md rounded p-4 flex flex-1 flex-col justify-center items-center space-y-2'>
+                  <GiWeightScale size={40} className='mb-2' />
+                  <p>Weight</p>
+                  <p>{weight}g</p>
+                </div>
+                <div className='card bg-white shadow-md rounded p-4 flex flex-1 flex-col justify-center items-center space-y-2'>
+                  <GiBodyHeight size={40} className='mb-2' />
+                  <p>Height</p>
+                  <p>{height}cm</p>
+                </div>
               </div>
             </div>
           </div>
@@ -511,7 +511,7 @@ export default function Dashboard({ data }: { data: Daily[] }) {
             </div>
           </div>
 
-          <div className='flex h-1/4 bg-green-200 p-4 rounded-md mb-4'>
+          <div className='bg-green-200 p-4 rounded-md mb-4'>
             {/* Simple card */}
             <div className='card bg-white shadow-md rounded p-2 text-center'>
               <h2 className='text-lg font-semibold mb-2'>本日記事</h2>
