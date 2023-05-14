@@ -250,6 +250,13 @@ export async function getServerSideProps() {
 }
 
 export default function Dashboard({ data }: { data: Daily[] }) {
+  const [isLoading, setIsLoading] = useState(true)
+  useEffect(() => {
+    if (data) {
+      setIsLoading(false) // Set loading to false when data is ready
+    }
+  }, [data])
+
   const latestData = data[0]
   const [selected, setSelected] = useState<Date | undefined>(
     latestData ? new Date(latestData.Day) : undefined
@@ -364,6 +371,15 @@ export default function Dashboard({ data }: { data: Daily[] }) {
 
   const domain = parseDomain()
   const range = [16, 225]
+
+  if (isLoading) {
+    // This will be shown while the data is loading
+    return (
+      <div className='container mx-auto p-4'>
+        <p>Loading...</p>
+      </div>
+    )
+  }
 
   return (
     <div className='container mx-auto p-4'>
