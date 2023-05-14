@@ -5,6 +5,16 @@ import { GiWeightScale, GiBodyHeight, GiAges } from 'react-icons/gi'
 import { FaTint, FaPoop } from 'react-icons/fa'
 import { DayPicker, SelectSingleEventHandler } from 'react-day-picker'
 import 'react-day-picker/dist/style.css'
+import React from 'react'
+import {
+  ScatterChart,
+  Scatter,
+  XAxis,
+  YAxis,
+  ZAxis,
+  Tooltip,
+  Legend,
+} from 'recharts'
 
 type Daily = {
   Day: string
@@ -12,6 +22,7 @@ type Daily = {
   Height: number
   Poopcolor: string
   Note: string
+  [hour: string]: any
   '12AM': {
     feed: number
     pee: number
@@ -137,6 +148,33 @@ type Daily = {
   TotalPoop: number
 }
 
+const hours = [
+  '12AM',
+  '1AM',
+  '2AM',
+  '3AM',
+  '4AM',
+  '5AM',
+  '6AM',
+  '7AM',
+  '8AM',
+  '9AM',
+  '10AM',
+  '11AM',
+  '12PM',
+  '1PM',
+  '2PM',
+  '3PM',
+  '4PM',
+  '5PM',
+  '6PM',
+  '7PM',
+  '8PM',
+  '9PM',
+  '10PM',
+  '11PM',
+]
+
 export async function getServerSideProps() {
   // check if base64 settled
   if (!process.env.NEXT_PUBLIC_GOOGLE_APPLICATION_CREDENTIALS_JSON_BASE64) {
@@ -170,33 +208,6 @@ export async function getServerSideProps() {
   })
 
   console.log(response)
-
-  const hours = [
-    '12AM',
-    '1AM',
-    '2AM',
-    '3AM',
-    '4AM',
-    '5AM',
-    '6AM',
-    '7AM',
-    '8AM',
-    '9AM',
-    '10AM',
-    '11AM',
-    '12PM',
-    '1PM',
-    '2PM',
-    '3PM',
-    '4PM',
-    '5PM',
-    '6PM',
-    '7PM',
-    '8PM',
-    '9PM',
-    '10PM',
-    '11PM',
-  ]
 
   //result
   const data =
@@ -293,6 +304,66 @@ export default function Dashboard({ data }: { data: Daily[] }) {
 
   const poop = dailyData?.TotalPoop ?? 'No data available'
 
+  const feedByHour = () => {
+    if (!dailyData) {
+      return []
+    }
+
+    return hours.map((hour: string, index: number) => {
+      if (hour in dailyData) {
+        return {
+          hour: hour,
+          index: 1,
+          value: dailyData[hour]?.feed ?? 0,
+        }
+      }
+      return {
+        hour: hour,
+        index: 1,
+        value: 0,
+      }
+    })
+  }
+
+  const parseDomain = () => [
+    0,
+    Math.max(
+      Math.max.apply(
+        null,
+        feedByHour().map((entry: any) => entry.value)
+      )
+    ),
+  ]
+
+  const renderTooltip = (props: any) => {
+    const { active, payload } = props
+
+    if (active && payload && payload.length) {
+      const data = payload[0] && payload[0].payload
+
+      return (
+        <div
+          style={{
+            backgroundColor: '#fff',
+            border: '1px solid #999',
+            margin: 0,
+            padding: 10,
+          }}
+        >
+          <p>{data.hour}</p>
+          <p>
+            <span>value: </span>
+            {data.value}
+          </p>
+        </div>
+      )
+    }
+    return null
+  }
+
+  const domain = parseDomain()
+  const range = [16, 225]
+
   return (
     <div className='container mx-auto p-4'>
       <Head>
@@ -365,7 +436,47 @@ export default function Dashboard({ data }: { data: Daily[] }) {
           <div className='flex-1 bg-red-200 p-4 rounded-md'>
             {/* Chart */}
             <div className='card bg-white shadow-md rounded p-4'>
-              <h2 className='text-lg font-semibold mb-2'>Chart</h2>
+              <ScatterChart
+                width={800}
+                height={60}
+                margin={{
+                  top: 10,
+                  right: 0,
+                  bottom: 0,
+                  left: 0,
+                }}
+              >
+                <XAxis
+                  type='category'
+                  dataKey='hour'
+                  interval={0}
+                  tick={{ fontSize: 0 }}
+                  tickLine={{ transform: 'translate(0, -6)' }}
+                />
+                <YAxis
+                  type='number'
+                  dataKey='index'
+                  name='sunday'
+                  height={10}
+                  width={80}
+                  tick={false}
+                  tickLine={false}
+                  axisLine={false}
+                  label={{ value: 'Sunday', position: 'insideRight' }}
+                />
+                <ZAxis
+                  type='number'
+                  dataKey='value'
+                  domain={domain}
+                  range={range}
+                />
+                <Tooltip
+                  cursor={{ strokeDasharray: '3 3' }}
+                  wrapperStyle={{ zIndex: 100 }}
+                  content={renderTooltip}
+                />
+                <Scatter data={feedByHour()} fill='#8884d8' />
+              </ScatterChart>
             </div>
           </div>
         </div>

@@ -26,6 +26,7 @@
     "react-player": "^2.12.0",
     "react-select": "^5.7.2",
     "react-table": "^7.8.0",
+    "recharts": "^2.6.2",
     "tg-use-local-storage-state": "^16.0.3"
   },
   "devDependencies": {
