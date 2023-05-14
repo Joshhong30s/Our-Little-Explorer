@@ -438,7 +438,7 @@ export default function Dashboard({ data }: { data: Daily[] }) {
         <div className='md:w-1/3 flex flex-col md:pr-4'>
           <div className='flex-1 h-1/2 bg-yellow-200 p-4 rounded-md mb-4 flex flex-col justify-center items-center'>
             {/* Avatar and infocards */}
-            <div className='card bg-white shadow-md rounded p-4 mb-4 flex-1 w-full flex flex-col justify-start items-center'>
+            <div className='card bg-white  rounded p-4 mb-4 flex-1 w-full flex flex-col justify-start items-center'>
               <Image
                 src='/avatar.jpg'
                 alt='avatar.jpg'
@@ -449,7 +449,7 @@ export default function Dashboard({ data }: { data: Daily[] }) {
               <p className='text-center'>小寶</p>
             </div>
 
-            <div className='card shadow-md rounded mb-4 flex-1 w-full flex justify-between gap-4 items-center'>
+            <div className='card  rounded mb-4 flex-1 w-full flex justify-between gap-4 items-center'>
               <div className='card bg-white shadow-md rounded p-4 flex flex-1 flex-col justify-center items-center space-y-2'>
                 <GiAges size={40} className='mb-2' />
                 <p>Age</p>
@@ -486,26 +486,32 @@ export default function Dashboard({ data }: { data: Daily[] }) {
             <div className='card bg-white shadow-md rounded p-4 w-1/3 flex flex-col justify-center items-center space-y-2'>
               <img
                 src='/feed.svg'
-                width={60}
-                height={60}
-                className='mb-2 mx-auto'
+                width={80}
+                height={80}
+                className='mb-4 mx-auto'
               />
-              <h2 className='text-lg font-semibold mb-2'>Total Feed</h2>
-              <p>{dailyData ? feed : 'N/A'}</p>
+              <h2 className='text-2xl font-semibold mb-2'>
+                {dailyData ? feed + ' ml' : 'N/A'}
+              </h2>
+              <p>喝奶量</p>
             </div>
             <div className='card bg-white shadow-md rounded p-4 w-1/3 flex flex-col justify-center items-center space-y-2'>
-              <FaTint size={50} className='mb-2 mx-auto' />
-              <h2 className='text-lg font-semibold mb-2'>Total Pee</h2>
-              <p>{dailyData ? pee + ' times' : 'N/A'}</p>
+              <FaTint size={80} className='mb-4 mx-auto' />
+              <h2 className='text-2xl font-semibold mb-2'>
+                {dailyData ? pee + ' 次' : 'N/A'}
+              </h2>
+              <p>小便次數</p>
             </div>
             <div className='card bg-white shadow-md rounded p-4 w-1/3 flex flex-col justify-center items-center space-y-2'>
-              <FaPoop size={50} className='mb-2 mx-auto' />
-              <h2 className='text-lg font-semibold mb-2'>Total Poop</h2>
-              <p>{dailyData ? poop + ' times' : 'N/A'}</p>
+              <FaPoop size={80} className='mb-4 mx-auto' />
+              <h2 className='text-2xl font-semibold mb-2'>
+                {dailyData ? poop + ' 次' : 'N/A'}
+              </h2>
+              <p>大便次數</p>
             </div>
           </div>
 
-          <div className='flex-1 bg-green-200 p-4 rounded-md mb-4'>
+          <div className='flex h-1/4 bg-green-200 p-4 rounded-md mb-4'>
             {/* Simple card */}
             <div className='card bg-white shadow-md rounded p-2 text-center'>
               <h2 className='text-lg font-semibold mb-2'>本日記事</h2>
@@ -541,13 +547,13 @@ export default function Dashboard({ data }: { data: Daily[] }) {
                   <YAxis
                     type='number'
                     dataKey='index'
-                    name='奶量'
+                    name='餵奶'
                     height={10}
                     width={80}
                     tick={false}
                     tickLine={false}
                     axisLine={false}
-                    label={{ value: '奶量', position: 'insideCenter' }}
+                    label={{ value: '餵奶', position: 'insideCenter' }}
                   />
                   <ZAxis
                     type='number'
