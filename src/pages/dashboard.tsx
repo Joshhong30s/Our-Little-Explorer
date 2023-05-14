@@ -312,7 +312,7 @@ export default function Dashboard({ data }: { data: Daily[] }) {
     return hours.map((hour: string, index: number) => {
       if (hour in dailyData) {
         return {
-          hour: dailyData[hour],
+          hour: hour,
           index: 1,
           value: dailyData[hour]?.feed ?? 0,
         }
