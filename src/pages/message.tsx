@@ -135,7 +135,7 @@ export default function Message() {
       className='mx-auto p-4 min-h-screen  bg-cover bg-center '
       style={{ backgroundImage: "url('bao12.jpeg')" }}
     >
-      <div className='flex flex-col md:flex-row md:justify-between gap-8 justify-center'>
+      <div className='flex flex-col md:flex-row md:justify-around gap-8 justify-center'>
         <div className='md:w-1/3 bg-white rounded-md shadow-md p-6'>
           <h2 className='text-2xl text-center font-medium mb-6'>
             我要留言給小寶
@@ -222,7 +222,7 @@ export default function Message() {
               messages.reverse().map(({ date, avatar, name, message }) => (
                 <div
                   key={`${date}-${name}`}
-                  className='bg-white p-4 rounded-md'
+                  className='bg-gray-100 p-4 rounded-md shadow-md border border-gray-200'
                 >
                   <div className='flex items-center justify-between mb-2'>
                     <div className='flex items-center'>
