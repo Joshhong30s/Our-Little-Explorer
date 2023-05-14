@@ -131,12 +131,9 @@ export default function Message() {
   }
 
   return (
-    <div
-      className='min-h-screen bg-gray-900/70 flex flex-col items-center bg-cover bg-center '
-      style={{ backgroundImage: "url('bao12.jpeg')" }}
-    >
-      <div className='w-full max-w-7xl mt-10 flex flex-col md:flex-row gap-8 justify-center'>
-        <div className='bg-white rounded-lg shadow-lg p-6 w-full max-w-lg h-full'>
+    <div className='container mx-auto p-4 min-h-screen bg-white'>
+      <div className='flex flex-col md:flex-row gap-8 justify-center'>
+        <div className='md:w-1/2 bg-white rounded-md shadow-md p-6'>
           <h2 className='text-2xl text-center font-medium mb-6'>
             我要留言給小寶
           </h2>
@@ -210,9 +207,9 @@ export default function Message() {
             </div>
           </form>
         </div>
-        <div className='bg-teal-980 rounded-lg shadow-lg p-6 w-full max-w-lg h-full'>
+        <div className='md:w-1/2 bg-white rounded-md shadow-md p-6'>
           <h2 className='text-2xl text-center font-medium mb-6'>小寶留言板</h2>
-          <div className='space-y-6 max-h-[600px] overflow-y-auto'>
+          <div className='space-y-6 overflow-y-auto max-h-[600px]'>
             {loading ? (
               <div className='flex justify-center items-center h-64'>
                 <span className='animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-gray-900'></span>
