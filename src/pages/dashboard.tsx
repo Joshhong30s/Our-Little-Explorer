@@ -416,7 +416,7 @@ export default function Dashboard({ data }: { data: Daily[] }) {
 
   const domain = parseDomain()
   const range = [0, 300]
-  const range2 = [16, 50]
+  const range2 = [100, 250]
 
   if (isLoading) {
     // This will be shown while the data is loading
@@ -436,7 +436,7 @@ export default function Dashboard({ data }: { data: Daily[] }) {
 
       <div className='flex flex-col md:flex-row min-h-screen'>
         <div className='md:w-1/3 flex flex-col md:pr-4'>
-          <div className='flex-1 bg-yellow-200 p-4 rounded-md mb-4'>
+          <div className='flex-1 bg-yellow-200 p-4 rounded-md mb-4 flex flex-col justify-between'>
             {/* Avatar and infocards */}
             <div className='card bg-white shadow-md rounded p-4 mb-4 flex flex-col justify-start items-center'>
               <Image
@@ -444,23 +444,24 @@ export default function Dashboard({ data }: { data: Daily[] }) {
                 alt='avatar.jpg'
                 width={100}
                 height={100}
-                className='mb-2'
+                className='mb-4 rounded-2xl'
               />
               <p className='text-center'>小寶</p>
             </div>
 
             <div className='flex justify-between gap-4'>
-              <div className='card bg-white shadow-md rounded p-4 w-1/3'>
-                <GiAges size={40} />
+              <div className='card bg-white shadow-md rounded p-4 w-1/3 text-center flex flex-col justify-center items-center'>
+                <GiAges size={40} className='mb-2' />
                 <p>Age</p>
                 <p>{months}M</p>
               </div>
-              <div className='card bg-white shadow-md rounded p-4 w-1/3 text-center'>
+
+              <div className='card bg-white shadow-md rounded p-4 w-1/3 text-center flex flex-col justify-center items-center'>
                 <GiWeightScale size={40} className='mb-2' />
                 <p>Weight</p>
                 <p>{weight}g</p>
               </div>
-              <div className='card bg-white shadow-md rounded p-4 w-1/3 text-center'>
+              <div className='card bg-white shadow-md rounded p-4 w-1/3 text-center flex flex-col justify-center items-center'>
                 <GiBodyHeight size={40} className='mb-2' />
                 <p>Height</p>
                 <p>{height}cm</p>
