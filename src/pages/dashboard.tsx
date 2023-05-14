@@ -449,19 +449,19 @@ export default function Dashboard({ data }: { data: Daily[] }) {
               <p className='text-center'>小寶</p>
             </div>
 
-            <div className='flex h-1/2 justify-between gap-4'>
-              <div className='card bg-white shadow-md rounded p-4 flex-grow text-center flex flex-col justify-center items-center'>
+            <div className='grid grid-cols-3 h-1/2 gap-4'>
+              <div className='card bg-white shadow-md rounded p-4 text-center flex flex-col justify-center items-center'>
                 <GiAges size={40} className='mb-2' />
                 <p>Age</p>
                 <p>{months}M</p>
               </div>
 
-              <div className='card bg-white shadow-md rounded p-4  flex-grow text-center flex flex-col justify-center items-center'>
+              <div className='card bg-white shadow-md rounded p-4 text-center flex flex-col justify-center items-center'>
                 <GiWeightScale size={40} className='mb-2' />
                 <p>Weight</p>
                 <p>{weight}g</p>
               </div>
-              <div className='card bg-white shadow-md rounded p-4  flex-grow text-center flex flex-col justify-center items-center'>
+              <div className='card bg-white shadow-md rounded p-4 text-center flex flex-col justify-center items-center'>
                 <GiBodyHeight size={40} className='mb-2' />
                 <p>Height</p>
                 <p>{height}cm</p>
