@@ -312,7 +312,7 @@ export default function Dashboard({ data }: { data: Daily[] }) {
     return hours.map((hour: string, index: number) => {
       if (hour in dailyData) {
         return {
-          hour: hour,
+          hour: hours,
           index: 1,
           value: dailyData[hour]?.feed ?? 0,
         }
@@ -437,8 +437,8 @@ export default function Dashboard({ data }: { data: Daily[] }) {
             {/* Chart */}
             <div className='card bg-white shadow-md rounded p-4'>
               <ScatterChart
-                width={800}
-                height={60}
+                width={1000}
+                height={100}
                 margin={{
                   top: 10,
                   right: 0,
@@ -456,13 +456,13 @@ export default function Dashboard({ data }: { data: Daily[] }) {
                 <YAxis
                   type='number'
                   dataKey='index'
-                  name='sunday'
+                  name='奶量'
                   height={10}
                   width={80}
                   tick={false}
                   tickLine={false}
                   axisLine={false}
-                  label={{ value: 'Sunday', position: 'insideRight' }}
+                  label={{ value: '奶量', position: 'insideCenter' }}
                 />
                 <ZAxis
                   type='number'
