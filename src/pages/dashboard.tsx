@@ -231,7 +231,10 @@ export default function Dashboard() {
 
               return obj
             })
-            ?.reverse() ?? []
+            ?.sort(
+              (a: { Day: string }, b: { Day: string }) =>
+                new Date(b.Day).getTime() - new Date(a.Day).getTime()
+            ) ?? [] // Sorting the data by date in descending order
 
         setData(formatteddata) // Store fetched data in the state
       } else {
@@ -249,6 +252,9 @@ export default function Dashboard() {
   useEffect(() => {
     if (data) {
       setIsLoading(false) // Set loading to false when data is ready
+      const latestData = data[0]
+      setSelected(new Date(latestData.Day)) // Setting the selected date as the latest date
+      setDailyData(latestData) // Setting the dailyData as the latest data
     }
   }, [data])
 
