@@ -522,21 +522,21 @@ export default function Dashboard() {
             {/* Health cards */}
             <div className='card bg-white shadow-md rounded p-4 w-full md:w-1/3 flex flex-col justify-center items-center space-y-2'>
               <GiBabyBottle className='mb-4 md:mb-8 mx-auto w-16 h-16 md:w-20 md:h-20' />
-              <h2 className='text-2xl font-semibold mb-2'>
+              <h2 className='text-xl font-semibold mb-2'>
                 {dailyData ? feed + ' ml' : 'N/A'}
               </h2>
               <p>喝奶量</p>
             </div>
             <div className='card bg-white shadow-md rounded p-4 w-full md:w-1/3 flex flex-col justify-center items-center space-y-2'>
               <GiWaterDrop className='mb-4 md:mb-8 mx-auto w-16 h-16 md:w-20 md:h-20' />
-              <h2 className='text-2xl font-semibold mb-2'>
+              <h2 className='text-xl font-semibold mb-2'>
                 {dailyData ? pee + ' 次' : 'N/A'}
               </h2>
               <p>小便次數</p>
             </div>
             <div className='card bg-white shadow-md rounded p-4 w-full md:w-1/3 flex flex-col justify-center items-center space-y-2'>
               <FaPoop className='mb-4 md:mb-8 mx-auto w-16 h-16 md:w-20 md:h-20' />
-              <h2 className='text-2xl font-semibold mb-2'>
+              <h2 className='text-xl font-semibold mb-2'>
                 {dailyData ? poop + ' 次' : 'N/A'}
               </h2>
               <p>大便次數</p>
