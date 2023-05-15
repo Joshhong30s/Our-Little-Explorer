@@ -490,7 +490,7 @@ export default function Dashboard() {
               </div>
             </div>
           </div>
-          <div className='bg-green-200 p-4 rounded-md mb-4'>
+          <div className='bg-green-200 flex-1 p-4 rounded-md mb-4'>
             {/* Simple card */}
             <div className='card bg-white shadow-md rounded p-2 text-center'>
               <h2 className='text-lg font-semibold mb-2'>本日記事</h2>
@@ -514,7 +514,7 @@ export default function Dashboard() {
         <div className='md:w-2/3 flex flex-col md:pl-4'>
           <div className='flex-1 flex justify-between gap-4 bg-blue-200 p-4 rounded-md mb-4'>
             {/* Health cards */}
-            <div className='card bg-white shadow-md rounded p-4 w-1/3 flex flex-col justify-center items-center space-y-2'>
+            <div className='card bg-white shadow-md rounded p-4 w-full md:w-1/3 flex flex-col justify-center items-center space-y-2'>
               <img
                 src='/feed.svg'
                 width={80}
@@ -526,15 +526,15 @@ export default function Dashboard() {
               </h2>
               <p>喝奶量</p>
             </div>
-            <div className='card bg-white shadow-md rounded p-4 w-1/3 flex flex-col justify-center items-center space-y-2'>
-              <FaToilet className='mb-6 mx-auto w-20 h-28' />
+            <div className='card bg-white shadow-md rounded p-4 w-full md:w-1/3 flex flex-col justify-center items-center space-y-2'>
+              <FaToilet className='mb-6 mx-auto w-16 md:w-20 h-28' />
               <h2 className='text-2xl font-semibold mb-2'>
                 {dailyData ? pee + ' 次' : 'N/A'}
               </h2>
               <p>小便次數</p>
             </div>
-            <div className='card bg-white shadow-md rounded p-4 w-1/3 flex flex-col justify-center items-center space-y-2'>
-              <FaPoop className='mb-6 mx-auto w-20 h-28' />
+            <div className='card bg-white shadow-md rounded p-4 w-full md:w-1/3 flex flex-col justify-center items-center space-y-2'>
+              <FaPoop className='mb-6 mx-auto w-16 md:w-20 h-28' />
               <h2 className='text-2xl font-semibold mb-2'>
                 {dailyData ? poop + ' 次' : 'N/A'}
               </h2>

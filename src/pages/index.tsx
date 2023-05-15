@@ -12,6 +12,7 @@ import Swipe from 'react-easy-swipe'
 import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai'
 
 export default function Home() {
+  const [isLoading, setIsLoading] = useState(true)
   const [photo, setPhoto] = useState([])
   const ReactPlayer = dynamic(() => import('react-player/lazy'), { ssr: false })
   const [savedPhotos, setSavedPhotos] = useState<string[]>([])
@@ -29,6 +30,14 @@ export default function Home() {
     let newSlide = currentSlide === 0 ? images.length - 1 : currentSlide - 1
     setCurrentSlide(newSlide)
   }
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 3000) // or however long you think it might take to load the images
+
+    return () => clearTimeout(timer) // cleanup on unmount
+  }, [])
 
   useEffect(() => {
     const fetchPhoto = async () => {
@@ -125,41 +134,48 @@ export default function Home() {
 
   return (
     <main>
-      <div className='relative bg-gradient-to-br from-neutral-800 to-neutral-500'>
-        <AiOutlineLeft
-          onClick={handlePrevSlide}
-          className='absolute left-4 m-auto text-3xl md:text-6xl inset-y-1/2 cursor-pointer text-white p-1 md:p-4 bg-black rounded-full z-20'
-        />
-
-        <div className='w-full h-[40vh] md:h-[75vh] flex overflow-hidden relative m-auto '>
-          <Swipe
-            onSwipeLeft={handleNextSlide}
-            onSwipeRight={handlePrevSlide}
-            className='absolute z-10 w-full h-full'
-          >
-            {images.map((image, index) => {
-              if (index === currentSlide) {
-                return (
-                  <Image
-                    key={image.id}
-                    src={image.src}
-                    alt={`Slide image ${index + 1}`}
-                    className='animate-fadeIn'
-                    priority={true}
-                    fill
-                    style={{ objectFit: 'contain' }}
-                    quality={20}
-                  />
-                )
-              }
-            })}
-          </Swipe>
+      {isLoading ? (
+        <div className='flex justify-center items-center min-h-screen'>
+          <div className='animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500'></div>
+          <p className='text-lg ml-4'>Loading...</p>
         </div>
-        <AiOutlineRight
-          onClick={handleNextSlide}
-          className='absolute right-4 m-auto text-3xl md:text-6xl inset-y-1/2 cursor-pointer text-white p-1 md:p-4 bg-black rounded-full z-20'
-        />
-      </div>
+      ) : (
+        <div className='relative bg-gradient-to-br from-neutral-800 to-neutral-500'>
+          <AiOutlineLeft
+            onClick={handlePrevSlide}
+            className='absolute left-4 m-auto text-3xl md:text-6xl inset-y-1/2 cursor-pointer text-white p-1 md:p-4 bg-black rounded-full z-20'
+          />
+
+          <div className='w-full h-[40vh] md:h-[75vh] flex overflow-hidden relative m-auto '>
+            <Swipe
+              onSwipeLeft={handleNextSlide}
+              onSwipeRight={handlePrevSlide}
+              className='absolute z-10 w-full h-full'
+            >
+              {images.map((image, index) => {
+                if (index === currentSlide) {
+                  return (
+                    <Image
+                      key={image.id}
+                      src={image.src}
+                      alt={`Slide image ${index + 1}`}
+                      className='animate-fadeIn'
+                      priority={true}
+                      fill
+                      style={{ objectFit: 'contain' }}
+                      quality={20}
+                    />
+                  )
+                }
+              })}
+            </Swipe>
+          </div>
+          <AiOutlineRight
+            onClick={handleNextSlide}
+            className='absolute right-4 m-auto text-3xl md:text-6xl inset-y-1/2 cursor-pointer text-white p-1 md:p-4 bg-black rounded-full z-20'
+          />
+        </div>
+      )}
       <div className='relative flex justify-center items-center p-6 bg-white'>
         {images.map((_, index) => {
           return (
