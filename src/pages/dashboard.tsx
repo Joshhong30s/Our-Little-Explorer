@@ -487,9 +487,7 @@ export default function Dashboard() {
           <div className='bg-green-200 p-4 rounded-md mb-4'>
             {/* Simple card */}
             <div className='card bg-white shadow-md rounded p-2 text-center'>
-              <h2 className='text-lg font-semibold mb-2'>
-                {dailyData ? day : 'No Data Available'} 本日記事
-              </h2>
+              <h2 className='text-lg font-semibold mb-2'>本日記事</h2>
               <h5 className='text-lg font-medium mb-1 text-gray-600'>
                 {dailyData ? note : 'No Note Today'}
               </h5>
@@ -541,54 +539,57 @@ export default function Dashboard() {
           <div className='flex-1 bg-red-200 p-4 rounded-md flex flex-col justify-between'>
             {/* Chart */}
             <div className='card bg-white shadow-md rounded p-4 py-6'>
-              {' '}
-              <ResponsiveContainer width='100%' height={60}>
-                <ScatterChart
-                  width={820}
-                  height={60}
-                  margin={{
-                    top: 10,
-                    right: 0,
-                    bottom: 0,
-                    left: 0,
-                  }}
-                >
-                  <XAxis
-                    type='category'
-                    dataKey='hour'
-                    name='hour'
-                    interval={isMobile ? 5 : 0}
-                    tick={{ fontSize: 10 }}
-                    tickLine={{ transform: 'translate(0, -6)' }}
-                  />
-                  <YAxis
-                    type='number'
-                    dataKey='index'
-                    name='餵奶'
-                    height={10}
-                    width={80}
-                    tick={false}
-                    tickLine={false}
-                    axisLine={false}
-                    label={{ value: '餵奶', position: 'insideCenter' }}
-                  />
-                  <ZAxis
-                    type='number'
-                    dataKey='value'
-                    domain={domain}
-                    range={range}
-                  />
-                  <Tooltip
-                    cursor={{ strokeDasharray: '3 3' }}
-                    wrapperStyle={{ zIndex: 100 }}
-                    content={renderTooltip}
-                  />
-                  <Scatter data={feedByHour()} fill='#8884d8' />
-                </ScatterChart>
-              </ResponsiveContainer>
+              {dailyData ? (
+                <ResponsiveContainer width='100%' height={60}>
+                  <ScatterChart
+                    width={820}
+                    height={60}
+                    margin={{
+                      top: 10,
+                      right: 0,
+                      bottom: 0,
+                      left: 0,
+                    }}
+                  >
+                    <XAxis
+                      type='category'
+                      dataKey='hour'
+                      name='hour'
+                      interval={isMobile ? 5 : 0}
+                      tick={{ fontSize: 10 }}
+                      tickLine={{ transform: 'translate(0, -6)' }}
+                    />
+                    <YAxis
+                      type='number'
+                      dataKey='index'
+                      name='餵奶'
+                      height={10}
+                      width={80}
+                      tick={false}
+                      tickLine={false}
+                      axisLine={false}
+                      label={{ value: '餵奶', position: 'insideCenter' }}
+                    />
+                    <ZAxis
+                      type='number'
+                      dataKey='value'
+                      domain={domain}
+                      range={range}
+                    />
+                    <Tooltip
+                      cursor={{ strokeDasharray: '3 3' }}
+                      wrapperStyle={{ zIndex: 100 }}
+                      content={renderTooltip}
+                    />
+                    <Scatter data={feedByHour()} fill='#8884d8' />
+                  </ScatterChart>
+                </ResponsiveContainer>
+              ) : (
+                'No Data Available'
+              )}
             </div>
             <div className='card bg-white shadow-md rounded p-4'>
-              {peeByHour() ? (
+              {dailyData ? (
                 <ResponsiveContainer width='100%' height={60}>
                   <ScatterChart
                     width={820}
@@ -638,50 +639,54 @@ export default function Dashboard() {
               )}
             </div>
             <div className='card bg-white shadow-md rounded p-4'>
-              <ResponsiveContainer width='100%' height={60}>
-                <ScatterChart
-                  width={820}
-                  height={60}
-                  margin={{
-                    top: 10,
-                    right: 0,
-                    bottom: 0,
-                    left: 0,
-                  }}
-                >
-                  <XAxis
-                    type='category'
-                    dataKey='hour'
-                    name='poop'
-                    interval={isMobile ? 5 : 0}
-                    tick={{ fontSize: 10 }}
-                    tickLine={{ transform: 'translate(0, -6)' }}
-                  />
-                  <YAxis
-                    type='number'
-                    dataKey='index'
-                    name='大便'
-                    height={10}
-                    width={80}
-                    tick={false}
-                    tickLine={false}
-                    axisLine={false}
-                    label={{ value: '大便', position: 'insideCenter' }}
-                  />
-                  <ZAxis
-                    type='number'
-                    dataKey='value'
-                    domain={domain}
-                    range={range2}
-                  />
-                  <Tooltip
-                    cursor={{ strokeDasharray: '3 3' }}
-                    wrapperStyle={{ zIndex: 100 }}
-                    content={renderTooltip}
-                  />
-                  <Scatter data={poopByHour()} fill='#8884d8' />
-                </ScatterChart>
-              </ResponsiveContainer>
+              {dailyData ? (
+                <ResponsiveContainer width='100%' height={60}>
+                  <ScatterChart
+                    width={820}
+                    height={60}
+                    margin={{
+                      top: 10,
+                      right: 0,
+                      bottom: 0,
+                      left: 0,
+                    }}
+                  >
+                    <XAxis
+                      type='category'
+                      dataKey='hour'
+                      name='poop'
+                      interval={isMobile ? 5 : 0}
+                      tick={{ fontSize: 10 }}
+                      tickLine={{ transform: 'translate(0, -6)' }}
+                    />
+                    <YAxis
+                      type='number'
+                      dataKey='index'
+                      name='大便'
+                      height={10}
+                      width={80}
+                      tick={false}
+                      tickLine={false}
+                      axisLine={false}
+                      label={{ value: '大便', position: 'insideCenter' }}
+                    />
+                    <ZAxis
+                      type='number'
+                      dataKey='value'
+                      domain={domain}
+                      range={range2}
+                    />
+                    <Tooltip
+                      cursor={{ strokeDasharray: '3 3' }}
+                      wrapperStyle={{ zIndex: 100 }}
+                      content={renderTooltip}
+                    />
+                    <Scatter data={poopByHour()} fill='#8884d8' />
+                  </ScatterChart>
+                </ResponsiveContainer>
+              ) : (
+                'No Data Available'
+              )}
             </div>
           </div>
         </div>
