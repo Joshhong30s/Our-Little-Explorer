@@ -1,7 +1,13 @@
 import Head from 'next/head'
 import { useState, useEffect } from 'react'
 import { google } from 'googleapis'
-import { GiWeightScale, GiBodyHeight, GiAges } from 'react-icons/gi'
+import {
+  GiWeightScale,
+  GiBodyHeight,
+  GiAges,
+  GiWaterDrop,
+  GiBabyBottle,
+} from 'react-icons/gi'
 import { FaToilet, FaPoop } from 'react-icons/fa'
 import { DayPicker, SelectSingleEventHandler } from 'react-day-picker'
 import 'react-day-picker/dist/style.css'
@@ -515,26 +521,21 @@ export default function Dashboard() {
           <div className='flex-1 flex justify-between gap-4 bg-blue-200 p-4 rounded-md mb-4'>
             {/* Health cards */}
             <div className='card bg-white shadow-md rounded p-4 w-full md:w-1/3 flex flex-col justify-center items-center space-y-2'>
-              <img
-                src='/feed.svg'
-                width={80}
-                height={80}
-                className='mb-4 mx-auto'
-              />
+              <GiBabyBottle className='mb-6 mx-auto w-16 h-16 md:w-20 md:h-20' />
               <h2 className='text-2xl font-semibold mb-2'>
                 {dailyData ? feed + ' ml' : 'N/A'}
               </h2>
               <p>喝奶量</p>
             </div>
             <div className='card bg-white shadow-md rounded p-4 w-full md:w-1/3 flex flex-col justify-center items-center space-y-2'>
-              <FaToilet className='mb-6 mx-auto w-16 md:w-20 h-28' />
+              <GiWaterDrop className='mb-6 mx-auto w-16 h-16 md:w-20 md:h-20' />
               <h2 className='text-2xl font-semibold mb-2'>
                 {dailyData ? pee + ' 次' : 'N/A'}
               </h2>
               <p>小便次數</p>
             </div>
             <div className='card bg-white shadow-md rounded p-4 w-full md:w-1/3 flex flex-col justify-center items-center space-y-2'>
-              <FaPoop className='mb-6 mx-auto w-16 md:w-20 h-28' />
+              <FaPoop className='mb-6 mx-auto w-16 h-16 md:w-20 md:h-20' />
               <h2 className='text-2xl font-semibold mb-2'>
                 {dailyData ? poop + ' 次' : 'N/A'}
               </h2>
