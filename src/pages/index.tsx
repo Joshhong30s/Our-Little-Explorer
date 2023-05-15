@@ -34,7 +34,7 @@ export default function Home() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false)
-    }, 3000) // or however long you think it might take to load the images
+    }, 2000) // or however long you think it might take to load the images
 
     return () => clearTimeout(timer) // cleanup on unmount
   }, [])
