@@ -177,80 +177,74 @@ const hours = [
   '11PM',
 ]
 
-export async function getServerSideProps() {
-  // check if base64 settled
-  if (!process.env.NEXT_PUBLIC_GOOGLE_APPLICATION_CREDENTIALS_JSON_BASE64) {
-    throw new Error(
-      'NEXT_PUBLIC_GOOGLE_APPLICATION_CREDENTIALS_JSON_BASE64 is not set in env variables'
-    )
-  }
+export default function Dashboard() {
+  const [data, setData] = useState<Daily[] | null>(null)
+  const [loading, setLoading] = useState(false)
+  const [refresh, setRefresh] = useState(0)
+  useEffect(() => {
+    fetchData()
+  }, [refresh])
 
-  // // decode base64 string
-  const credentialsJson = Buffer.from(
-    process.env.NEXT_PUBLIC_GOOGLE_APPLICATION_CREDENTIALS_JSON_BASE64,
-    'base64'
-  ).toString()
-
-  // pase the JSON string into an object
-  const credentials = JSON.parse(credentialsJson)
-
-  // create Google Auth Client
-  const auth = new google.auth.GoogleAuth({
-    credentials,
-    scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
-  })
-
-  const sheets = google.sheets({ version: 'v4', auth })
-
-  //query
-  const range = 'daily!A1:CB'
-  const response = await sheets.spreadsheets.values.get({
-    spreadsheetId: process.env.SHEET_ID,
-    range,
-  })
-
-  console.log(response)
-
-  //result
-  const data =
-    response.data.values
-      ?.slice(2)
-      .map((row: any[]) => {
-        const obj: any = {
-          Day: row[0],
-          Weight: Number(row[1]),
-          Height: Number(row[2]),
-          Poopcolor: row[3],
-          Note: row[4],
-        }
-
-        hours.forEach((hour, index) => {
-          obj[hour] = {
-            feed: Number(row[5 + index * 3]),
-            pee: Number(row[6 + index * 3]),
-            poop: Number(row[7 + index * 3]),
-          }
-        })
-
-        // Add total feed, pee, and poop values
-        obj.TotalFeed = Number(row[row.length - 3])
-        obj.TotalPee = Number(row[row.length - 2])
-        obj.TotalPoop = Number(row[row.length - 1])
-
-        return obj
+  const fetchData = async () => {
+    setLoading(true)
+    try {
+      const response = await fetch('/api/dash', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
       })
-      ?.reverse() ?? []
 
-  console.log('data', data)
+      if (response.ok) {
+        const data = await response.json()
+        console.log(data)
 
-  return {
-    props: {
-      data,
-    },
+        // Extract the values property from the fetched data
+        const values = data || []
+
+        console.log('values:', values)
+
+        const formatteddata =
+          values
+            ?.slice(2)
+            .map((row: any[]) => {
+              const obj: any = {
+                Day: row[0],
+                Weight: Number(row[1]),
+                Height: Number(row[2]),
+                Poopcolor: row[3],
+                Note: row[4],
+              }
+
+              hours.forEach((hour, index) => {
+                obj[hour] = {
+                  feed: Number(row[5 + index * 3]),
+                  pee: Number(row[6 + index * 3]),
+                  poop: Number(row[7 + index * 3]),
+                }
+              })
+
+              // Add total feed, pee, and poop values
+              obj.TotalFeed = Number(row[row.length - 3])
+              obj.TotalPee = Number(row[row.length - 2])
+              obj.TotalPoop = Number(row[row.length - 1])
+
+              return obj
+            })
+            ?.reverse() ?? []
+
+        setData(formatteddata) // Store fetched data in the state
+      } else {
+        throw new Error('Error loading data')
+      }
+    } catch (error) {
+      console.error('Error loading data:', error)
+      alert('Error loading data')
+    } finally {
+      setLoading(false)
+    }
   }
-}
 
-export default function Dashboard({ data }: { data: Daily[] }) {
   const [isLoading, setIsLoading] = useState(true)
   useEffect(() => {
     if (data) {
@@ -272,7 +266,7 @@ export default function Dashboard({ data }: { data: Daily[] }) {
     }
   }, [])
 
-  const latestData = data[0]
+  const latestData = data?.[0]
   const [selected, setSelected] = useState<Date | undefined>(
     latestData ? new Date(latestData.Day) : undefined
   )
@@ -280,7 +274,7 @@ export default function Dashboard({ data }: { data: Daily[] }) {
 
   useEffect(() => {
     if (selected) {
-      const foundData = data.find(
+      const foundData = data?.find(
         (d) => new Date(d.Day).toDateString() === selected.toDateString()
       )
       if (foundData) {
@@ -314,17 +308,17 @@ export default function Dashboard({ data }: { data: Daily[] }) {
     birthdate.getMonth()
 
   // Get weight
-  const latestWeightEntry = data.find((entry) => entry.Weight)
+  const latestWeightEntry = data?.find((entry) => entry.Weight)
   const weight = latestWeightEntry
     ? latestWeightEntry.Weight
     : 'No data available'
 
-  const latestHeightEntry = data.find((entry) => entry.Height)
+  const latestHeightEntry = data?.find((entry) => entry.Height)
   const height = latestHeightEntry
     ? latestHeightEntry.Height
     : 'No data available'
 
-  const latestEntry = data[0]
+  const latestEntry = data?.[0]
 
   const day = dailyData?.Day ?? 'No data available'
 
