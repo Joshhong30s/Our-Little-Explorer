@@ -434,8 +434,9 @@ export default function Dashboard() {
   if (isLoading) {
     // This will be shown while the data is loading
     return (
-      <div className='container mx-auto p-4'>
-        <p>Loading...</p>
+      <div className='flex justify-center items-center min-h-screen'>
+        <div className='animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500'></div>
+        <p className='text-lg ml-4'>Loading...</p>
       </div>
     )
   }
@@ -587,50 +588,54 @@ export default function Dashboard() {
               </ResponsiveContainer>
             </div>
             <div className='card bg-white shadow-md rounded p-4'>
-              <ResponsiveContainer width='100%' height={60}>
-                <ScatterChart
-                  width={820}
-                  height={60}
-                  margin={{
-                    top: 10,
-                    right: 0,
-                    bottom: 0,
-                    left: 0,
-                  }}
-                >
-                  <XAxis
-                    type='category'
-                    dataKey='hour'
-                    name='pee'
-                    interval={isMobile ? 5 : 0}
-                    tick={{ fontSize: 10 }}
-                    tickLine={{ transform: 'translate(0, -6)' }}
-                  />
-                  <YAxis
-                    type='number'
-                    dataKey='index'
-                    name='小便'
-                    height={10}
-                    width={80}
-                    tick={false}
-                    tickLine={false}
-                    axisLine={false}
-                    label={{ value: '小便', position: 'insideCenter' }}
-                  />
-                  <ZAxis
-                    type='number'
-                    dataKey='value'
-                    domain={domain}
-                    range={range2}
-                  />
-                  <Tooltip
-                    cursor={{ strokeDasharray: '3 3' }}
-                    wrapperStyle={{ zIndex: 100 }}
-                    content={renderTooltip}
-                  />
-                  <Scatter data={peeByHour()} fill='#8884d8' />
-                </ScatterChart>
-              </ResponsiveContainer>
+              {peeByHour() ? (
+                <ResponsiveContainer width='100%' height={60}>
+                  <ScatterChart
+                    width={820}
+                    height={60}
+                    margin={{
+                      top: 10,
+                      right: 0,
+                      bottom: 0,
+                      left: 0,
+                    }}
+                  >
+                    <XAxis
+                      type='category'
+                      dataKey='hour'
+                      name='pee'
+                      interval={isMobile ? 5 : 0}
+                      tick={{ fontSize: 10 }}
+                      tickLine={{ transform: 'translate(0, -6)' }}
+                    />
+                    <YAxis
+                      type='number'
+                      dataKey='index'
+                      name='小便'
+                      height={10}
+                      width={80}
+                      tick={false}
+                      tickLine={false}
+                      axisLine={false}
+                      label={{ value: '小便', position: 'insideCenter' }}
+                    />
+                    <ZAxis
+                      type='number'
+                      dataKey='value'
+                      domain={domain}
+                      range={range2}
+                    />
+                    <Tooltip
+                      cursor={{ strokeDasharray: '3 3' }}
+                      wrapperStyle={{ zIndex: 100 }}
+                      content={renderTooltip}
+                    />
+                    <Scatter data={peeByHour()} fill='#8884d8' />
+                  </ScatterChart>
+                </ResponsiveContainer>
+              ) : (
+                'No Data Available'
+              )}
             </div>
             <div className='card bg-white shadow-md rounded p-4'>
               <ResponsiveContainer width='100%' height={60}>
