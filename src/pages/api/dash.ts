@@ -38,7 +38,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
     console.log('Response data:', response.data)
 
-    res.status(200).json({ status: 'success' })
+    res.status(200).json(response.data)
   } catch (error) {
     console.error('Error getting data from GoogleSheet:', error)
     return new Response(JSON.stringify({ status: 'error' }), {

@@ -200,7 +200,7 @@ export default function Dashboard() {
         console.log(data)
 
         // Extract the values property from the fetched data
-        const values = data || []
+        const values = data.values || []
 
         console.log('values:', values)
 
