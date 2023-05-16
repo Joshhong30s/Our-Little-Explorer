@@ -163,7 +163,7 @@ export default function Home() {
                       priority={true}
                       fill
                       style={{ objectFit: 'contain' }}
-                      quality={20}
+                      quality={10}
                     />
                   )
                 }
