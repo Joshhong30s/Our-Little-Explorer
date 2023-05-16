@@ -6,7 +6,7 @@ import { useState } from 'react'
 import { useCookies } from 'react-cookie'
 
 import { IoMdMenu, IoMdClose, IoMdCloseCircle } from 'react-icons/io'
-import { FaBabyCarriage } from 'react-icons/fa'
+import { GiBabyBottle } from 'react-icons/gi'
 
 export default function Navbar() {
   const [cookies, setCookies] = useCookies(['access_token'])
@@ -83,7 +83,7 @@ export default function Navbar() {
             {isDatabarOpen ? (
               <IoMdCloseCircle size={30} />
             ) : (
-              <FaBabyCarriage size={30} />
+              <GiBabyBottle size={30} />
             )}
           </button>
         </div>
