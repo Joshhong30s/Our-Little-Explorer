@@ -242,7 +242,13 @@ export default function Home() {
                   )}
                   <button
                     className='absolute top-2 right-2 bg-neutral-50 bg-opacity-30 text-red-500 rounded-full p-3'
-                    onClick={() => toggleSavePhoto(photo._id)}
+                    onClick={() => {
+                      if (!cookies.access_token) {
+                        alert('請先登入才能使用我的最愛功能')
+                        return
+                      }
+                      toggleSavePhoto(photo._id)
+                    }}
                     style={{
                       transform: isPhotosaved(photo._id)
                         ? 'scale(1.1)'
@@ -269,7 +275,7 @@ export default function Home() {
                     </h3>
                     <div className='flex gap-2 items-center'>
                       <FaBaby size={25} />
-                      {photo.growingTime} days
+                      {photo.growingTime} month
                     </div>
                   </div>
                   <p className='text-gray-600 text-base flex gap-2 items-center'>

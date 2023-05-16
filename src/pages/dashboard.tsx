@@ -8,7 +8,7 @@ import {
   GiWaterDrop,
   GiBabyBottle,
 } from 'react-icons/gi'
-import { FaToilet, FaPoop } from 'react-icons/fa'
+import { FaPoop } from 'react-icons/fa'
 import { DayPicker, SelectSingleEventHandler } from 'react-day-picker'
 import 'react-day-picker/dist/style.css'
 import React from 'react'
