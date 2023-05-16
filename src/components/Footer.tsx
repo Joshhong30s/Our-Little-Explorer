@@ -1,18 +1,18 @@
-import { FaGithub, FaLinkedin } from 'react-icons/fa'
+import { FaGithub, FaLinkedin, FaHeart } from 'react-icons/fa'
 
 export default function Footer() {
   return (
-    <footer className='bg-white mx-auto text-lg text-black px-6 py-2 items-center'>
-      <div className='mx-auto p-4 flex text-black-900 justify-between md:max-w-full'>
-        <div className='text-black mb-2 md:my-1 '>@ 2023 Josh Hong</div>
-        <div className='flex flex-row items-center justify-center space-x-4 my-1'>
+    <footer className='bg-gradient-to-br from-neutral-800 to-neutral-500 mx-auto text-lg text-white px-6 py-4 items-center'>
+      <div className='mx-auto flex flex-col justify-center items-center md:max-w-full '>
+        <div className='text-white font-semibold mb-2 md:my-1 text-center flex justify-center items-center'>
+          © 2023 Josh Hong
           <a
             href='https://github.com/Joshhong30s/06baby'
             rel='noreferrer'
             target='_blank'
           >
             <FaGithub
-              className='hover:-translate-y-1 transition-transform cursor-pointer text-black-500 '
+              className='hover:-translate-y-1 transition-transform cursor-pointer text-black-500 ml-4 '
               size={30}
             />
           </a>
@@ -22,10 +22,17 @@ export default function Footer() {
             target='_blank'
           >
             <FaLinkedin
-              className='hover:-translate-y-1 transition-transform cursor-pointer text-black-500 '
+              className='hover:-translate-y-1 transition-transform cursor-pointer text-black-500 ml-2'
               size={30}
             />
           </a>
+        </div>
+        <div className='flex flex-row items-center justify-center space-x-4 my-1'>
+          <p className=' font-semibold mb-2 md:my-1 text-center text-black-500'>
+            <span className='text-red-500 text-lg'>❤</span>&nbsp; Made with Love
+            &nbsp;
+            <span className='text-red-500 text-lg'>❤</span>
+          </p>
         </div>
       </div>
     </footer>

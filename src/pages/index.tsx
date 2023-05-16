@@ -194,7 +194,7 @@ export default function Home() {
         })}
       </div>
 
-      <div className='px-2 md:px-6 mx-auto mb-8 text-black'>
+      <div className='px-2 md:px-6 mx-auto mb-6 text-black'>
         <ul className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8'>
           {reversedPhoto.map(
             (photo: {
