@@ -21,7 +21,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <div className={Noto.className}>
       <Head>
-        <link rel='apple-touch-icon' href='/baby1.jpg' />
+        <link rel='apple-touch-icon' href='/baby1.svg' />
         <title>小寶成長紀錄</title>
       </Head>
       <NoSSR>
