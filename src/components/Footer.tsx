@@ -4,7 +4,7 @@ export default function Footer() {
   return (
     <footer className='bg-gradient-to-br from-neutral-800 to-neutral-500 mx-auto text-lg text-white px-6 py-4 items-center'>
       <div className='mx-auto flex flex-col justify-center items-center md:max-w-full '>
-        <div className='text-white font-semibold mb-2 md:my-1 text-center flex justify-center items-center'>
+        <div className='text-white font-medium mb-2 md:my-1 text-center flex justify-center items-center'>
           © 2023 Josh Hong
           <a
             href='https://github.com/Joshhong30s/06baby'
@@ -28,7 +28,7 @@ export default function Footer() {
           </a>
         </div>
         <div className='flex flex-row items-center justify-center space-x-4 my-1'>
-          <p className=' font-semibold mb-2 md:my-1 text-center text-black-500'>
+          <p className=' font-medium mb-2 md:my-1 text-center text-black-500'>
             <span className='text-red-500 text-lg'>❤</span>&nbsp; Made with Love
             &nbsp;
             <span className='text-red-500 text-lg'>❤</span>

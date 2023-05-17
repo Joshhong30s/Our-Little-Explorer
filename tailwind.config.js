@@ -15,8 +15,8 @@ module.exports = {
         register: "url('/register.jpg')",
       },
       colors: {
-        orange: {
-          980: '#ffb254',
+        cyan: {
+          980: '#00bcd4',
         },
         teal: { 980: '#51a9dd' },
         blue: { 980: '#aad9f5' },

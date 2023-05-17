@@ -6,7 +6,7 @@ import { useState } from 'react'
 import { useCookies } from 'react-cookie'
 
 import { IoMdMenu, IoMdClose, IoMdCloseCircle } from 'react-icons/io'
-import { GiBabyBottle } from 'react-icons/gi'
+import { ImStatsDots } from 'react-icons/im'
 
 export default function Navbar() {
   const [cookies, setCookies] = useCookies(['access_token'])
@@ -57,7 +57,7 @@ export default function Navbar() {
 
         <div className=' order-1 md:order-2 flex justify-between items-center '>
           <button
-            className='md:hidden'
+            className='md:hidden text-neutral-800'
             aria-label='Toggle left'
             onClick={() => setIsNavbarOpen(!isNavbarOpen)}
           >
@@ -66,24 +66,24 @@ export default function Navbar() {
 
           <Link href='/'>
             <Image
-              className='rounded-full drop-shadow-xl mx-auto '
-              src='/baby.jpg'
+              className='rounded-full drop-shadow-xl mx-auto p-0 '
+              src='/baby1.svg'
               alt='baby'
-              width={70}
-              height={70}
+              width={100}
+              height={100}
               priority={true}
             />
           </Link>
 
           <button
-            className='md:hidden'
+            className='md:hidden text-neutral-800'
             aria-label='Toggle right'
             onClick={() => setIsDatabarOpen(!isDatabarOpen)}
           >
             {isDatabarOpen ? (
               <IoMdCloseCircle size={30} />
             ) : (
-              <GiBabyBottle size={30} />
+              <ImStatsDots size={30} />
             )}
           </button>
         </div>
