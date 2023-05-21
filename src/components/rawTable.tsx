@@ -82,12 +82,12 @@ export default function RawTable({ data }: RawTableProps) {
   const { pageIndex, pageSize } = state
 
   return (
-    <div className='bg-card overflow-x-auto mb-4'>
+    <div className='bg-card overflow-x-auto'>
       <table
         className='w-full text-center border-collapse'
         {...getTableProps()}
       >
-        <thead className='bg-teal-200'>
+        <thead className='bg-teal-980'>
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
@@ -110,7 +110,7 @@ export default function RawTable({ data }: RawTableProps) {
           {page.map((row: Row<Data>) => {
             prepareRow(row)
             return (
-              <tr {...row.getRowProps()} className='even:bg-blue-980'>
+              <tr {...row.getRowProps()} className='even:bg-gray-200'>
                 {row.cells.map((cell) => (
                   <td
                     className='px-4 py-3 border-b border-slate-300'
