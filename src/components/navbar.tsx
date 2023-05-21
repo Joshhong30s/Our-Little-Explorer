@@ -97,9 +97,6 @@ export default function Navbar() {
             <Link href='/dashboard'>成長圖表</Link>
           </div>
           <div className='mb-4 md:mb-0 md:ml-6 hover:bg-teal-980 hover:text-gray-50 hover:p-4 hover:rounded-md transition-colors duration-200 ease-in-out'>
-            <Link href='/table'>成長數據</Link>
-          </div>
-          <div className='mb-4 md:mb-0 md:ml-6 hover:bg-teal-980 hover:text-gray-50 hover:p-4 hover:rounded-md transition-colors duration-200 ease-in-out'>
             <Link href='/message'>留言小寶</Link>
           </div>
         </div>

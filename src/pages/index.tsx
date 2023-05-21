@@ -34,9 +34,9 @@ export default function Home() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false)
-    }, 1000) // or however long you think it might take to load the images
+    }, 1000)
 
-    return () => clearTimeout(timer) // cleanup on unmount
+    return () => clearTimeout(timer) // cleanup
   }, [])
 
   useEffect(() => {
@@ -69,7 +69,6 @@ export default function Home() {
     if (cookies.access_token) fetchSavedPhotos()
   }, [cookies.access_token, userID])
 
-  // send update request to backend and wait for response
   const savePhoto = async (photoID: string) => {
     try {
       const response = await axios.put(
@@ -163,7 +162,7 @@ export default function Home() {
                       priority={true}
                       fill
                       style={{ objectFit: 'contain' }}
-                      quality={10}
+                      quality={5}
                     />
                   )
                 }

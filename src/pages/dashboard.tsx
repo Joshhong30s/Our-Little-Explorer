@@ -23,6 +23,7 @@ import {
   ResponsiveContainer,
 } from 'recharts'
 import Image from 'next/image'
+import RawTable from '../components/rawTable'
 
 type Daily = {
   Day: string
@@ -301,16 +302,9 @@ export default function Dashboard() {
     setSelected(date)
   }
 
-  // Get today's date
+  // Get today & birthday date
   const today = new Date()
 
-  // const todayString = today.toLocaleDateString('zh-TW', {
-  //   year: 'numeric',
-  //   month: 'long',
-  //   day: 'numeric',
-  // })
-
-  // Get baby's birthdate
   const birthdate = new Date('2023-04-12')
 
   // Calculate difference in months
@@ -319,12 +313,13 @@ export default function Dashboard() {
     today.getMonth() -
     birthdate.getMonth()
 
-  // Get weight
+  // Get weight for last entry
   const latestWeightEntry = data?.find((entry) => entry.Weight)
   const weight = latestWeightEntry
     ? latestWeightEntry.Weight
     : 'No data available'
 
+  // Get height for last entry
   const latestHeightEntry = data?.find((entry) => entry.Height)
   const height = latestHeightEntry
     ? latestHeightEntry.Height
@@ -444,7 +439,7 @@ export default function Dashboard() {
   const range2 = [100, 250]
 
   if (isLoading) {
-    // This will be shown while the data is loading
+    // loading pic
     return (
       <div className='flex justify-center items-center min-h-screen'>
         <div className='animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500'></div>
@@ -696,6 +691,9 @@ export default function Dashboard() {
               )}
             </div>
           </div>
+
+          {/* table */}
+          {data && <RawTable data={data} />}
         </div>
       </div>
     </div>

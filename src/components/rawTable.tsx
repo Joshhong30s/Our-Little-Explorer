@@ -4,11 +4,10 @@ import { useTable, Column, useSortBy, usePagination, Row } from 'react-table'
 interface Data {
   Day: string | Date
   Weight: number
-  FeedingTime: string | Date
-  FeedingVolume: number
-  DiaperTime: string | Date
-  DiaperColor: string
-  Event: string
+  Height: number
+  TotalFeed: number
+  TotalPee: number
+  TotalPoop: number
 }
 
 interface RawTableProps {
@@ -27,24 +26,20 @@ export default function RawTable({ data }: RawTableProps) {
         accessor: 'Weight',
       },
       {
-        Header: '瓶餵時間',
-        accessor: 'FeedingTime',
+        Header: '身長',
+        accessor: 'Height',
       },
       {
-        Header: '瓶餵量(ml)',
-        accessor: 'FeedingVolume',
+        Header: '喝奶量',
+        accessor: 'TotalFeed',
       },
       {
-        Header: '尿布次數',
-        accessor: 'DiaperTime',
+        Header: '小便次數',
+        accessor: 'TotalPee',
       },
       {
-        Header: '尿布顏色',
-        accessor: 'DiaperColor',
-      },
-      {
-        Header: '事件',
-        accessor: 'Event',
+        Header: '大便次數',
+        accessor: 'TotalPoop',
       },
     ],
     []

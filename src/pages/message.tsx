@@ -53,7 +53,7 @@ export default function Message() {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault()
-    // send the formdata to Google Sheets
+
     try {
       const response = await fetch('/api/submit', {
         method: 'POST',
@@ -82,15 +82,15 @@ export default function Message() {
     }
   }
 
-  // Add a new state variable for storing messages
+  // Add state variable for storing messages
   const [messages, setMessages] = useState([])
   const [loading, setLoading] = useState(false)
   const [refresh, setRefresh] = useState(0)
   useEffect(() => {
     fetchMessages()
   }, [refresh])
-  // Fetch message board data from Google Sheets here
 
+  // Fetch message board data from Google Sheets
   const fetchMessages = async () => {
     setLoading(true)
     try {
