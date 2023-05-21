@@ -4,6 +4,7 @@ import Select from 'react-select'
 
 import { useState, useEffect } from 'react'
 import { components } from 'react-select'
+import Image from 'next/image'
 
 const MenuList = (props: any) => (
   <components.MenuList {...props} className='grid grid-cols-4 gap-2'>
@@ -131,10 +132,14 @@ export default function Message() {
   }
 
   return (
-    <div
-      className='mx-auto p-4 md:p-8 min-h-screen bg-cover bg-center opacity-20'
-      style={{ backgroundImage: "url('bao12.jpeg')" }}
-    >
+    <div className='relative'>
+      <Image
+        src='/bao12.jpeg'
+        alt='dashboard'
+        fill
+        quality={10}
+        className='inset-0 -z-10 opacity-20 absolute object-cover'
+      />
       <div className='flex flex-col md:flex-row gap-16 justify-center min-h-screen '>
         <div className='w-full  h-full md:w-1/3 bg-white rounded-md shadow-md p-6'>
           <h2 className='text-2xl text-center font-medium mb-6'>

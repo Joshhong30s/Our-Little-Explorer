@@ -449,7 +449,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className='relative '>
+    <div className='relative'>
       <Image
         src='/bao12.jpeg'
         alt='dashboard'
