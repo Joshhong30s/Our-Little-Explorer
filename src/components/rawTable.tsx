@@ -82,12 +82,12 @@ export default function RawTable({ data }: RawTableProps) {
   const { pageIndex, pageSize } = state
 
   return (
-    <div className='bg-teal-200 overflow-x-auto'>
+    <div className='border-teal-200 border-4 overflow-x-auto'>
       <table
         className='w-full text-center border-collapse bg-white'
         {...getTableProps()}
       >
-        <thead className='bg-teal-980'>
+        <thead className='bg-black'>
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
@@ -124,7 +124,7 @@ export default function RawTable({ data }: RawTableProps) {
           })}
         </tbody>
       </table>
-      <div className='text-center mt-4 space-x-4'>
+      <div className='text-center mt-4 space-x-4 bg-black text-white'>
         Page{' '}
         <span className='font-semibold'>
           {pageIndex + 1} of {pageOptions.length}{' '}
