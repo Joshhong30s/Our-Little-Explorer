@@ -87,7 +87,7 @@ export default function RawTable({ data }: RawTableProps) {
         className='w-full text-center border-collapse'
         {...getTableProps()}
       >
-        <thead className='bg-gray-300'>
+        <thead className='bg-teal-200'>
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
