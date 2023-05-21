@@ -455,245 +455,254 @@ export default function Dashboard() {
         <meta name='description' content='A baby health tracking dashboard' />
       </Head>
 
-      <div className='flex flex-col md:flex-row min-h-screen'>
-        <div className='md:w-1/3 flex flex-col md:pr-4'>
-          <div className='flex-1 h-1/2 bg-yellow-200 p-4 rounded-md mb-4 flex flex-col justify-center items-center'>
-            {/* Avatar and infocards */}
-            <div className='card bg-white rounded px-4 flex-1 w-full flex flex-col justify-between items-center'>
-              <div className='card bg-white  rounded p-4 flex-1 w-full flex flex-col justify-start items-center'>
-                <Image
-                  src='/avatar.jpg'
-                  alt='avatar.jpg'
-                  width={160}
-                  height={160}
-                  className='mb-4 rounded-2xl'
+      <div className='relative '>
+        <Image
+          src='/bao6.jpeg'
+          alt='register'
+          fill
+          quality={10}
+          className='inset-0 -z-10 opacity-80 absolute object-cover'
+        />
+        <div className='flex flex-col md:flex-row min-h-screen'>
+          <div className='md:w-1/3 flex flex-col md:pr-4'>
+            <div className='flex-1 h-1/2 bg-yellow-200 p-4 rounded-md mb-4 flex flex-col justify-center items-center'>
+              {/* Avatar and infocards */}
+              <div className='card bg-white rounded px-4 flex-1 w-full flex flex-col justify-between items-center'>
+                <div className='card bg-white  rounded p-4 flex-1 w-full flex flex-col justify-start items-center'>
+                  <Image
+                    src='/avatar.jpg'
+                    alt='avatar.jpg'
+                    width={160}
+                    height={160}
+                    className='mb-4 rounded-2xl'
+                  />
+                  <p className='text-center text-2xl'>小寶</p>
+                </div>
+
+                <div className='card  rounded mb-4 flex-1 w-full flex justify-between gap-4 items-center'>
+                  <div className='card bg-yellow-200  shadow-md rounded p-4 flex flex-1 flex-col justify-center items-center space-y-2'>
+                    <GiAges size={40} className='mb-2' />
+                    <p>年齡</p>
+                    <p>{months}M</p>
+                  </div>
+
+                  <div className='card bg-yellow-200  shadow-md rounded p-4 flex flex-1 flex-col justify-center items-center space-y-2'>
+                    <GiWeightScale size={40} className='mb-2' />
+                    <p>體重</p>
+                    <p>{weight}g</p>
+                  </div>
+                  <div className='card bg-yellow-200  shadow-md rounded p-4 flex flex-1 flex-col justify-center items-center space-y-2'>
+                    <GiBodyHeight size={40} className='mb-2' />
+                    <p>身高</p>
+                    <p>{height}cm</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className='bg-green-200 flex-1 p-4 rounded-md mb-4'>
+              {/* Simple card */}
+              <div className='card bg-white shadow-md rounded p-2 text-center'>
+                <h2 className='text-lg font-semibold mb-2'>本日記事</h2>
+                <h5 className='text-lg font-medium mb-1 text-gray-600'>
+                  {dailyData ? note : 'No Note Today'}
+                </h5>
+              </div>
+            </div>
+            <div className='flex-1  bg-purple-200 p-4 rounded-md'>
+              {/* Calendar */}
+              <div className='card bg-white shadow-md rounded p-4 flex justify-center items-center'>
+                <DayPicker
+                  mode='single'
+                  selected={selected || undefined}
+                  onSelect={handleSelect}
                 />
-                <p className='text-center text-2xl'>小寶</p>
-              </div>
-
-              <div className='card  rounded mb-4 flex-1 w-full flex justify-between gap-4 items-center'>
-                <div className='card bg-yellow-200  shadow-md rounded p-4 flex flex-1 flex-col justify-center items-center space-y-2'>
-                  <GiAges size={40} className='mb-2' />
-                  <p>年齡</p>
-                  <p>{months}M</p>
-                </div>
-
-                <div className='card bg-yellow-200  shadow-md rounded p-4 flex flex-1 flex-col justify-center items-center space-y-2'>
-                  <GiWeightScale size={40} className='mb-2' />
-                  <p>體重</p>
-                  <p>{weight}g</p>
-                </div>
-                <div className='card bg-yellow-200  shadow-md rounded p-4 flex flex-1 flex-col justify-center items-center space-y-2'>
-                  <GiBodyHeight size={40} className='mb-2' />
-                  <p>身高</p>
-                  <p>{height}cm</p>
-                </div>
               </div>
             </div>
           </div>
-          <div className='bg-green-200 flex-1 p-4 rounded-md mb-4'>
-            {/* Simple card */}
-            <div className='card bg-white shadow-md rounded p-2 text-center'>
-              <h2 className='text-lg font-semibold mb-2'>本日記事</h2>
-              <h5 className='text-lg font-medium mb-1 text-gray-600'>
-                {dailyData ? note : 'No Note Today'}
-              </h5>
-            </div>
-          </div>
-          <div className='flex-1  bg-purple-200 p-4 rounded-md'>
-            {/* Calendar */}
-            <div className='card bg-white shadow-md rounded p-4 flex justify-center items-center'>
-              <DayPicker
-                mode='single'
-                selected={selected || undefined}
-                onSelect={handleSelect}
-              />
-            </div>
-          </div>
-        </div>
 
-        <div className='md:w-2/3 flex flex-col md:pl-4'>
-          <div className='flex-1 flex justify-between gap-4 bg-blue-200 p-4 rounded-md mb-4'>
-            {/* Health cards */}
-            <div className='card bg-white shadow-md rounded p-4 w-full md:w-1/3 flex flex-col justify-center items-center space-y-2'>
-              <GiBabyBottle className='mb-4 md:mb-8 mx-auto w-16 h-16 md:w-20 md:h-20' />
-              <h2 className='text-xl font-semibold mb-2'>
-                {dailyData ? feed + ' ml' : 'N/A'}
-              </h2>
-              <p>喝奶量</p>
+          <div className='md:w-2/3 flex flex-col md:pl-4'>
+            <div className='flex-1 flex justify-between gap-4 bg-blue-200 p-4 rounded-md mb-4'>
+              {/* Health cards */}
+              <div className='card bg-white shadow-md rounded p-4 w-full md:w-1/3 flex flex-col justify-center items-center space-y-2'>
+                <GiBabyBottle className='mb-4 md:mb-8 mx-auto w-16 h-16 md:w-20 md:h-20' />
+                <h2 className='text-xl font-semibold mb-2'>
+                  {dailyData ? feed + ' ml' : 'N/A'}
+                </h2>
+                <p>喝奶量</p>
+              </div>
+              <div className='card bg-white shadow-md rounded p-4 w-full md:w-1/3 flex flex-col justify-center items-center space-y-2'>
+                <GiWaterDrop className='mb-4 md:mb-8 mx-auto w-16 h-16 md:w-20 md:h-20' />
+                <h2 className='text-xl font-semibold mb-2'>
+                  {dailyData ? pee + ' 次' : 'N/A'}
+                </h2>
+                <p>小便次數</p>
+              </div>
+              <div className='card bg-white shadow-md rounded p-4 w-full md:w-1/3 flex flex-col justify-center items-center space-y-2'>
+                <FaPoop className='mb-4 md:mb-8 mx-auto w-16 h-16 md:w-20 md:h-20' />
+                <h2 className='text-xl font-semibold mb-2'>
+                  {dailyData ? poop + ' 次' : 'N/A'}
+                </h2>
+                <p>大便次數</p>
+              </div>
             </div>
-            <div className='card bg-white shadow-md rounded p-4 w-full md:w-1/3 flex flex-col justify-center items-center space-y-2'>
-              <GiWaterDrop className='mb-4 md:mb-8 mx-auto w-16 h-16 md:w-20 md:h-20' />
-              <h2 className='text-xl font-semibold mb-2'>
-                {dailyData ? pee + ' 次' : 'N/A'}
-              </h2>
-              <p>小便次數</p>
-            </div>
-            <div className='card bg-white shadow-md rounded p-4 w-full md:w-1/3 flex flex-col justify-center items-center space-y-2'>
-              <FaPoop className='mb-4 md:mb-8 mx-auto w-16 h-16 md:w-20 md:h-20' />
-              <h2 className='text-xl font-semibold mb-2'>
-                {dailyData ? poop + ' 次' : 'N/A'}
-              </h2>
-              <p>大便次數</p>
-            </div>
-          </div>
 
-          <div className='flex-1 bg-red-200 p-4 rounded-md flex flex-col justify-between mb-4'>
-            {/* Chart */}
-            <div className='card bg-white shadow-md rounded p-4 py-6'>
-              {dailyData ? (
-                <ResponsiveContainer width='100%' height={60}>
-                  <ScatterChart
-                    width={820}
-                    height={60}
-                    margin={{
-                      top: 10,
-                      right: 0,
-                      bottom: 0,
-                      left: 0,
-                    }}
-                  >
-                    <XAxis
-                      type='category'
-                      dataKey='hour'
-                      name='hour'
-                      interval={isMobile ? 5 : 0}
-                      tick={{ fontSize: 10 }}
-                      tickLine={{ transform: 'translate(0, -6)' }}
-                    />
-                    <YAxis
-                      type='number'
-                      dataKey='index'
-                      name='餵奶'
-                      height={10}
-                      width={80}
-                      tick={false}
-                      tickLine={false}
-                      axisLine={false}
-                      label={{ value: '餵奶', position: 'insideCenter' }}
-                    />
-                    <ZAxis
-                      type='number'
-                      dataKey='value'
-                      domain={domain}
-                      range={range}
-                    />
-                    <Tooltip
-                      cursor={{ strokeDasharray: '3 3' }}
-                      wrapperStyle={{ zIndex: 100 }}
-                      content={renderTooltip}
-                    />
-                    <Scatter data={feedByHour()} fill='#8884d8' />
-                  </ScatterChart>
-                </ResponsiveContainer>
-              ) : (
-                'No Data Available'
-              )}
+            <div className='flex-1 bg-red-200 p-4 rounded-md flex flex-col justify-between mb-4'>
+              {/* Chart */}
+              <div className='card bg-white shadow-md rounded p-4 py-6'>
+                {dailyData ? (
+                  <ResponsiveContainer width='100%' height={60}>
+                    <ScatterChart
+                      width={820}
+                      height={60}
+                      margin={{
+                        top: 10,
+                        right: 0,
+                        bottom: 0,
+                        left: 0,
+                      }}
+                    >
+                      <XAxis
+                        type='category'
+                        dataKey='hour'
+                        name='hour'
+                        interval={isMobile ? 5 : 0}
+                        tick={{ fontSize: 10 }}
+                        tickLine={{ transform: 'translate(0, -6)' }}
+                      />
+                      <YAxis
+                        type='number'
+                        dataKey='index'
+                        name='餵奶'
+                        height={10}
+                        width={80}
+                        tick={false}
+                        tickLine={false}
+                        axisLine={false}
+                        label={{ value: '餵奶', position: 'insideCenter' }}
+                      />
+                      <ZAxis
+                        type='number'
+                        dataKey='value'
+                        domain={domain}
+                        range={range}
+                      />
+                      <Tooltip
+                        cursor={{ strokeDasharray: '3 3' }}
+                        wrapperStyle={{ zIndex: 100 }}
+                        content={renderTooltip}
+                      />
+                      <Scatter data={feedByHour()} fill='#8884d8' />
+                    </ScatterChart>
+                  </ResponsiveContainer>
+                ) : (
+                  'No Data Available'
+                )}
+              </div>
+              <div className='card bg-white shadow-md rounded p-4'>
+                {dailyData ? (
+                  <ResponsiveContainer width='100%' height={60}>
+                    <ScatterChart
+                      width={820}
+                      height={60}
+                      margin={{
+                        top: 10,
+                        right: 0,
+                        bottom: 0,
+                        left: 0,
+                      }}
+                    >
+                      <XAxis
+                        type='category'
+                        dataKey='hour'
+                        name='pee'
+                        interval={isMobile ? 5 : 0}
+                        tick={{ fontSize: 10 }}
+                        tickLine={{ transform: 'translate(0, -6)' }}
+                      />
+                      <YAxis
+                        type='number'
+                        dataKey='index'
+                        name='小便'
+                        height={10}
+                        width={80}
+                        tick={false}
+                        tickLine={false}
+                        axisLine={false}
+                        label={{ value: '小便', position: 'insideCenter' }}
+                      />
+                      <ZAxis
+                        type='number'
+                        dataKey='value'
+                        domain={domain}
+                        range={range2}
+                      />
+                      <Tooltip
+                        cursor={{ strokeDasharray: '3 3' }}
+                        wrapperStyle={{ zIndex: 100 }}
+                        content={renderTooltip}
+                      />
+                      <Scatter data={peeByHour()} fill='#8884d8' />
+                    </ScatterChart>
+                  </ResponsiveContainer>
+                ) : (
+                  'No Data Available'
+                )}
+              </div>
+              <div className='card bg-white shadow-md rounded p-4'>
+                {dailyData ? (
+                  <ResponsiveContainer width='100%' height={60}>
+                    <ScatterChart
+                      width={820}
+                      height={60}
+                      margin={{
+                        top: 10,
+                        right: 0,
+                        bottom: 0,
+                        left: 0,
+                      }}
+                    >
+                      <XAxis
+                        type='category'
+                        dataKey='hour'
+                        name='poop'
+                        interval={isMobile ? 5 : 0}
+                        tick={{ fontSize: 10 }}
+                        tickLine={{ transform: 'translate(0, -6)' }}
+                      />
+                      <YAxis
+                        type='number'
+                        dataKey='index'
+                        name='大便'
+                        height={10}
+                        width={80}
+                        tick={false}
+                        tickLine={false}
+                        axisLine={false}
+                        label={{ value: '大便', position: 'insideCenter' }}
+                      />
+                      <ZAxis
+                        type='number'
+                        dataKey='value'
+                        domain={domain}
+                        range={range2}
+                      />
+                      <Tooltip
+                        cursor={{ strokeDasharray: '3 3' }}
+                        wrapperStyle={{ zIndex: 100 }}
+                        content={renderTooltip}
+                      />
+                      <Scatter data={poopByHour()} fill='#8884d8' />
+                    </ScatterChart>
+                  </ResponsiveContainer>
+                ) : (
+                  'No Data Available'
+                )}
+              </div>
             </div>
-            <div className='card bg-white shadow-md rounded p-4'>
-              {dailyData ? (
-                <ResponsiveContainer width='100%' height={60}>
-                  <ScatterChart
-                    width={820}
-                    height={60}
-                    margin={{
-                      top: 10,
-                      right: 0,
-                      bottom: 0,
-                      left: 0,
-                    }}
-                  >
-                    <XAxis
-                      type='category'
-                      dataKey='hour'
-                      name='pee'
-                      interval={isMobile ? 5 : 0}
-                      tick={{ fontSize: 10 }}
-                      tickLine={{ transform: 'translate(0, -6)' }}
-                    />
-                    <YAxis
-                      type='number'
-                      dataKey='index'
-                      name='小便'
-                      height={10}
-                      width={80}
-                      tick={false}
-                      tickLine={false}
-                      axisLine={false}
-                      label={{ value: '小便', position: 'insideCenter' }}
-                    />
-                    <ZAxis
-                      type='number'
-                      dataKey='value'
-                      domain={domain}
-                      range={range2}
-                    />
-                    <Tooltip
-                      cursor={{ strokeDasharray: '3 3' }}
-                      wrapperStyle={{ zIndex: 100 }}
-                      content={renderTooltip}
-                    />
-                    <Scatter data={peeByHour()} fill='#8884d8' />
-                  </ScatterChart>
-                </ResponsiveContainer>
-              ) : (
-                'No Data Available'
-              )}
+            <div className='flex-1 p-4 bg-teal-200 rounded-md'>
+              {/* table */}
+              {data && <RawTable data={data} />}
             </div>
-            <div className='card bg-white shadow-md rounded p-4'>
-              {dailyData ? (
-                <ResponsiveContainer width='100%' height={60}>
-                  <ScatterChart
-                    width={820}
-                    height={60}
-                    margin={{
-                      top: 10,
-                      right: 0,
-                      bottom: 0,
-                      left: 0,
-                    }}
-                  >
-                    <XAxis
-                      type='category'
-                      dataKey='hour'
-                      name='poop'
-                      interval={isMobile ? 5 : 0}
-                      tick={{ fontSize: 10 }}
-                      tickLine={{ transform: 'translate(0, -6)' }}
-                    />
-                    <YAxis
-                      type='number'
-                      dataKey='index'
-                      name='大便'
-                      height={10}
-                      width={80}
-                      tick={false}
-                      tickLine={false}
-                      axisLine={false}
-                      label={{ value: '大便', position: 'insideCenter' }}
-                    />
-                    <ZAxis
-                      type='number'
-                      dataKey='value'
-                      domain={domain}
-                      range={range2}
-                    />
-                    <Tooltip
-                      cursor={{ strokeDasharray: '3 3' }}
-                      wrapperStyle={{ zIndex: 100 }}
-                      content={renderTooltip}
-                    />
-                    <Scatter data={poopByHour()} fill='#8884d8' />
-                  </ScatterChart>
-                </ResponsiveContainer>
-              ) : (
-                'No Data Available'
-              )}
-            </div>
-          </div>
-          <div className='flex-1 p-4 bg-teal-200 rounded-md'>
-            {/* table */}
-            {data && <RawTable data={data} />}
           </div>
         </div>
       </div>

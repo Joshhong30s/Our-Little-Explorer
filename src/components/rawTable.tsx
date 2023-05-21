@@ -144,13 +144,13 @@ export default function RawTable({ data }: RawTableProps) {
               const pageNumber = e.target.value ? Number(e.target.value) - 1 : 0
               gotoPage(pageNumber)
             }}
-            className='w-8 bg-transparent text-black'
+            className='w-8 bg-transparent text-white'
           ></input>
           頁
         </span>
         <select
           value={pageSize}
-          className='bg-transparent text-black'
+          className='bg-transparent text-white'
           onChange={(e) => setPageSize(Number(e.target.value))}
         >
           {[10, 30, 60].map((pageSize) => (
