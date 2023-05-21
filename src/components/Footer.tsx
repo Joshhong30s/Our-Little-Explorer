@@ -2,7 +2,7 @@ import { FaGithub, FaLinkedin } from 'react-icons/fa'
 
 export default function Footer() {
   return (
-    <footer className='bg-gray-100 mx-auto text-lg  px-6 py-4 items-center'>
+    <footer className='bg-transparent mx-auto text-lg  px-6 py-4 items-center'>
       <div className='mx-auto flex flex-col justify-center items-center md:max-w-full '>
         <div className='text-black font-medium mb-2 md:my-1 text-center flex justify-center items-center'>
           © 2023 Josh Hong

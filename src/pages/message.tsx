@@ -4,7 +4,6 @@ import Select from 'react-select'
 
 import { useState, useEffect } from 'react'
 import { components } from 'react-select'
-import Image from 'next/image'
 
 const MenuList = (props: any) => (
   <components.MenuList {...props} className='grid grid-cols-4 gap-2'>
@@ -132,16 +131,12 @@ export default function Message() {
   }
 
   return (
-    <div className='relative'>
-      <Image
-        src='/bao12.jpeg'
-        alt='dashboard'
-        fill
-        quality={10}
-        className='inset-0 -z-10 opacity-20 absolute object-cover'
-      />
-      <div className='flex flex-col md:flex-row gap-16 justify-center min-h-screen '>
-        <div className='w-full  h-full md:w-1/3 bg-white rounded-md shadow-md p-6'>
+    <div
+      className='min-h-screen bg-gray-900/70 flex flex-col items-center bg-cover bg-center '
+      style={{ backgroundImage: "url('bao12.jpeg')" }}
+    >
+      <div className='flex flex-col md:flex-row gap-16 justify-center bg-gray-100/70 min-h-screen mt-10 '>
+        <div className='w-full h-full md:w-1/3 bg-white rounded-md shadow-md p-6'>
           <h2 className='text-2xl text-center font-medium mb-6'>
             我要留言給小寶
           </h2>
