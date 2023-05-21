@@ -452,12 +452,12 @@ export default function Dashboard() {
     <div className='relative '>
       <Image
         src='/bao6.jpeg'
-        alt='register'
+        alt='dashboard'
         fill
         quality={10}
         className='inset-0 -z-10 opacity-80 absolute object-cover'
       />
-      <div className='relative container mx-auto p-4'>
+      <div className='container mx-auto p-4'>
         <Head>
           <title>Baby Health Tracker</title>
           <meta name='description' content='A baby health tracking dashboard' />
