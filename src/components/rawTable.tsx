@@ -92,7 +92,7 @@ export default function RawTable({ data }: RawTableProps) {
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
                 <th
-                  className='px-4 py-3 text-white font-semibold border-b-2 border-slate-400'
+                  className='px-4 py-3 text-white font-semibold '
                   // @ts-expect-error getSortByToggleProps is not in type def
                   {...column.getHeaderProps(column.getSortByToggleProps())}
                 >
@@ -124,7 +124,7 @@ export default function RawTable({ data }: RawTableProps) {
           })}
         </tbody>
       </table>
-      <div className='text-center mt-4 space-x-4 bg-black text-white'>
+      <div className='text-center space-x-4 bg-black text-white px-4 py-3 font-semibold '>
         Page{' '}
         <span className='font-semibold'>
           {pageIndex + 1} of {pageOptions.length}{' '}
