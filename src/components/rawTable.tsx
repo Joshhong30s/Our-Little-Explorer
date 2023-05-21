@@ -82,7 +82,7 @@ export default function RawTable({ data }: RawTableProps) {
   const { pageIndex, pageSize } = state
 
   return (
-    <div className='border-teal-200 border-4 overflow-x-auto'>
+    <div className='bg-white overflow-x-auto'>
       <table
         className='w-full text-center border-collapse bg-white'
         {...getTableProps()}
@@ -144,12 +144,13 @@ export default function RawTable({ data }: RawTableProps) {
               const pageNumber = e.target.value ? Number(e.target.value) - 1 : 0
               gotoPage(pageNumber)
             }}
-            className='w-8'
+            className='w-8 bg-transparent text-black'
           ></input>
           頁
         </span>
         <select
           value={pageSize}
+          className='bg-transparent text-black'
           onChange={(e) => setPageSize(Number(e.target.value))}
         >
           {[10, 30, 60].map((pageSize) => (

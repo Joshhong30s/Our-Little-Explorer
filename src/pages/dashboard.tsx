@@ -691,7 +691,7 @@ export default function Dashboard() {
               )}
             </div>
           </div>
-          <div className='flex-1 p-4 rounded-md'>
+          <div className='flex-1 p-4 bg-teal-200 rounded-md'>
             {/* table */}
             {data && <RawTable data={data} />}
           </div>
