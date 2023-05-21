@@ -455,14 +455,14 @@ export default function Dashboard() {
         alt='dashboard'
         fill
         quality={10}
-        className='inset-0 -z-10 opacity-80 absolute object-cover'
+        className='inset-0 -z-10 opacity-20 absolute object-cover'
       />
       <div className='container mx-auto p-4 '>
         <Head>
           <title>Baby Health Tracker</title>
           <meta name='description' content='A baby health tracking dashboard' />
         </Head>
-        <div className='flex flex-col md:flex-row min-h-screen bg-gray-100/70'>
+        <div className='flex flex-col md:flex-row min-h-screen'>
           <div className='md:w-1/3 flex flex-col md:pr-4'>
             <div className='flex-1 h-1/2 bg-yellow-200 p-4 rounded-md mb-4 flex flex-col justify-center items-center'>
               {/* Avatar and infocards */}
