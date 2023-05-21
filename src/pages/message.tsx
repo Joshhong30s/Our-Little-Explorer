@@ -132,10 +132,10 @@ export default function Message() {
 
   return (
     <div
-      className='mx-auto p-4 md:p-8 min-h-screen bg-cover bg-center opacity-80'
+      className='mx-auto p-4 md:p-8 min-h-screen bg-cover bg-center opacity-20'
       style={{ backgroundImage: "url('bao12.jpeg')" }}
     >
-      <div className='flex flex-col md:flex-row gap-16 justify-center bg-gray-100/70 min-h-screen '>
+      <div className='flex flex-col md:flex-row gap-16 justify-center min-h-screen '>
         <div className='w-full  h-full md:w-1/3 bg-white rounded-md shadow-md p-6'>
           <h2 className='text-2xl text-center font-medium mb-6'>
             我要留言給小寶

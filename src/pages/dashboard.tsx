@@ -451,7 +451,7 @@ export default function Dashboard() {
   return (
     <div className='relative '>
       <Image
-        src='/bao6.jpeg'
+        src='/bao12.jpeg'
         alt='dashboard'
         fill
         quality={10}
