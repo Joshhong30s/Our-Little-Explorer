@@ -691,9 +691,10 @@ export default function Dashboard() {
               )}
             </div>
           </div>
-
-          {/* table */}
-          {data && <RawTable data={data} />}
+          <div className='flex-1 bg-teal-200 p-4 rounded-md'>
+            {/* table */}
+            {data && <RawTable data={data} />}
+          </div>
         </div>
       </div>
     </div>
