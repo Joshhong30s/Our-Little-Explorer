@@ -457,17 +457,17 @@ export default function Dashboard() {
         quality={10}
         className='inset-0 -z-10 opacity-80 absolute object-cover'
       />
-      <div className='container mx-auto p-4 bg-gray-100/70 min-h-screen'>
+      <div className='container mx-auto p-4 '>
         <Head>
           <title>Baby Health Tracker</title>
           <meta name='description' content='A baby health tracking dashboard' />
         </Head>
-        <div className='flex flex-col md:flex-row min-h-screen'>
+        <div className='flex flex-col md:flex-row min-h-screen bg-gray-100/70'>
           <div className='md:w-1/3 flex flex-col md:pr-4'>
             <div className='flex-1 h-1/2 bg-yellow-200 p-4 rounded-md mb-4 flex flex-col justify-center items-center'>
               {/* Avatar and infocards */}
               <div className='card bg-white rounded px-4 flex-1 w-full flex flex-col justify-between items-center'>
-                <div className='card bg-white  rounded p-4 flex-1 w-full flex flex-col justify-start items-center'>
+                <div className='card bg-white rounded p-4 flex-1 w-full flex flex-col justify-start items-center'>
                   <Image
                     src='/avatar.jpg'
                     alt='avatar.jpg'
