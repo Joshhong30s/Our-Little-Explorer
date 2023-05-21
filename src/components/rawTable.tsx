@@ -82,9 +82,9 @@ export default function RawTable({ data }: RawTableProps) {
   const { pageIndex, pageSize } = state
 
   return (
-    <div className='bg-card overflow-x-auto'>
+    <div className='bg-teal-200 overflow-x-auto'>
       <table
-        className='w-full text-center border-collapse'
+        className='w-full text-center border-collapse bg-white'
         {...getTableProps()}
       >
         <thead className='bg-teal-980'>
