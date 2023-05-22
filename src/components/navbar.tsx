@@ -26,7 +26,7 @@ export default function Navbar() {
           }`}
         >
           <div className='xl:text-xl'>
-            <ul className='xl:flex items-center md:space-x-10'>
+            <ul className='xl:flex items-center xl:space-x-10'>
               <li className='block mb-4 md:mb-0 md:ml-6 hover:bg-teal-980 hover:text-gray-50 hover:p-4 hover:rounded-md transition-colors duration-200 ease-in-out'>
                 {!cookies.access_token ? (
                   <Link href='/login'>登入</Link>
