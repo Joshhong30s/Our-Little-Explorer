@@ -1,38 +1,82 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+# Baby Photo Album Guestbook / 小寶成長日記 
 
-First, run the development server:
+Welcome! This is a project made for my newborn son and my family. 
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+
+## Folder Structure
+
 ```
+┣ 📂src
+ ┃ ┣ 📂components
+ ┃ ┃ ┣ 📜Footer.tsx
+ ┃ ┃ ┣ 📜navbar.tsx
+ ┃ ┃ ┣ 📜NoSSR.tsx
+ ┃ ┃ ┗ 📜rawTable.tsx
+ ┃ ┣ 📂hooks
+ ┃ ┃ ┗ 📜useGetUserId.tsx
+ ┃ ┣ 📂pages
+ ┃ ┃ ┣ 📂api
+ ┃ ┃ ┃ ┣ 📜dash.ts
+ ┃ ┃ ┃ ┣ 📜loading.ts
+ ┃ ┃ ┃ ┗ 📜submit.ts
+ ┃ ┃ ┣ 📜dashboard.tsx
+ ┃ ┃ ┣ 📜index.tsx
+ ┃ ┃ ┣ 📜login.tsx
+ ┃ ┃ ┣ 📜message.tsx
+ ┃ ┃ ┣ 📜register.tsx
+ ┃ ┃ ┣ 📜savedPhoto.tsx
+ ┃ ┃ ┣ 📜writePhoto.tsx
+ ┃ ┃ ┣ 📜_app.tsx
+ ┃ ┃ ┗ 📜_document.tsx
+ ┃ ┗ 📂styles
+ ┃ ┃ ┗ 📜globals.css
+ ┣ 📜.eslintrc.json
+ ┣ 📜.gitignore
+ ┣ 📜next-env.d.ts
+ ┣ 📜next.config.js
+ ┣ 📜package-lock.json
+ ┣ 📜package.json
+ ┣ 📜postcss.config.js
+ ┣ 📜README.md
+ ┣ 📜tailwind.config.js
+ ┗ 📜tsconfig.json
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+ ```
+## Tech Stack
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+Next.js 13.2, React, Typescript, TailwindCSS, MongoDB, React Recharts, React table, Googlesheets API. 
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Features
 
-## Learn More
+- Photo gallery 
+- Image slides
+- Login and Registration
+- Save photos to MyFavorite
+- Upload photos, title, descriptions with Imgur API
+- Dynamic dashboard and table data
+- Dynamic message board for visitors
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Screenshots
 
-## Deploy on Vercel
+![App Screenshot](https://i.imgur.com/IDPSJGE.png)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Feedback
+
+If you are interested in me or have comments for my projects, feel free to send me an email 30sboynote@gmail.com
+
+## 🚀 About Me
+- Currently a frontend developer.
+- Aim to evolve into a fullstack developer.
+- 10 years experience in B2B software sales role in multinational corporations and rising startups. 
+
+
+## 🔗 Links
+[![portfolio](https://img.shields.io/badge/my_portfolio-000?style=for-the-badge&logo=ko-fi&logoColor=white)](https://joshhong.vercel.app/)
+[![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/josh-hong-163644102/)
+
