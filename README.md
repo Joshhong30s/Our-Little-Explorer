@@ -7,40 +7,30 @@ Welcome! This is a project made for my newborn son and my family.
 ## Folder Structure
 
 ```
-┣ 📂src
- ┃ ┣ 📂components
- ┃ ┃ ┣ 📜Footer.tsx
- ┃ ┃ ┣ 📜navbar.tsx
- ┃ ┃ ┣ 📜NoSSR.tsx
- ┃ ┃ ┗ 📜rawTable.tsx
- ┃ ┣ 📂hooks
- ┃ ┃ ┗ 📜useGetUserId.tsx
- ┃ ┣ 📂pages
- ┃ ┃ ┣ 📂api
- ┃ ┃ ┃ ┣ 📜dash.ts
- ┃ ┃ ┃ ┣ 📜loading.ts
- ┃ ┃ ┃ ┗ 📜submit.ts
- ┃ ┃ ┣ 📜dashboard.tsx
- ┃ ┃ ┣ 📜index.tsx
- ┃ ┃ ┣ 📜login.tsx
- ┃ ┃ ┣ 📜message.tsx
- ┃ ┃ ┣ 📜register.tsx
- ┃ ┃ ┣ 📜savedPhoto.tsx
- ┃ ┃ ┣ 📜writePhoto.tsx
- ┃ ┃ ┣ 📜_app.tsx
- ┃ ┃ ┗ 📜_document.tsx
- ┃ ┗ 📂styles
- ┃ ┃ ┗ 📜globals.css
- ┣ 📜.eslintrc.json
- ┣ 📜.gitignore
- ┣ 📜next-env.d.ts
- ┣ 📜next.config.js
- ┣ 📜package-lock.json
- ┣ 📜package.json
- ┣ 📜postcss.config.js
- ┣ 📜README.md
- ┣ 📜tailwind.config.js
- ┗ 📜tsconfig.json
+src
+ ┣ components
+ ┃ ┣ Footer.tsx
+ ┃ ┣ navbar.tsx
+ ┃ ┣ NoSSR.tsx
+ ┃ ┗ rawTable.tsx
+ ┣ hooks
+ ┃ ┗ useGetUserId.tsx
+ ┣ pages
+ ┃ ┣ api
+ ┃ ┃ ┣ dash.ts
+ ┃ ┃ ┣ loading.ts
+ ┃ ┃ ┗ submit.ts
+ ┃ ┣ dashboard.tsx
+ ┃ ┣ index.tsx
+ ┃ ┣ login.tsx
+ ┃ ┣ message.tsx
+ ┃ ┣ register.tsx
+ ┃ ┣ savedPhoto.tsx
+ ┃ ┣ writePhoto.tsx
+ ┃ ┣ _app.tsx
+ ┃ ┗ _document.tsx
+ ┗ styles
+ ┃ ┗ globals.css
 
  ```
 ## Tech Stack
