@@ -86,7 +86,7 @@ export default function WritePhoto() {
     e.preventDefault()
     try {
       await axios.post('https://zero6babyserver.onrender.com/photos', photo, {
-        headers: { authorization: cookies.access_token },
+        headers: { authorization: cookies.access_token }, // must verify token first
       })
       console.log('photo created')
       window.location.replace('/')

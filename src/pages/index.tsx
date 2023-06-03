@@ -77,7 +77,7 @@ export default function Home() {
           photoID,
           userID,
         },
-        { headers: { authorization: cookies.access_token } }
+        { headers: { authorization: cookies.access_token } } // must verify token
       )
       setSavedPhotos(response.data.savedPhotos)
     } catch (err) {
@@ -94,7 +94,7 @@ export default function Home() {
             photoID,
             userID,
           },
-          headers: { authorization: cookies.access_token },
+          headers: { authorization: cookies.access_token }, // must verify token
         }
       )
       setSavedPhotos(response.data.savedPhotos || [])

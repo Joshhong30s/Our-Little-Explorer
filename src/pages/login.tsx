@@ -8,10 +8,10 @@ export default function Login() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState(false)
-  const [_, setCookies] = useCookies(['access_token'])
+  const [_, setCookies] = useCookies(['access_token']) // first element is an object containing the cookie values, and the second element is a function to update the cookies. But here only needs the setCookies function to update the access_token
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
-    e.preventDefault()
+    e.preventDefault() // prevent page refresh to interrupt the login process
     try {
       const res = await axios.post(
         'https://zero6babyserver.onrender.com/auth/login',
@@ -21,8 +21,8 @@ export default function Login() {
         }
       )
       console.log(res.data, res.data.message)
-      setCookies('access_token', res.data.token)
-      window.localStorage.setItem('userID', res.data.userID)
+      setCookies('access_token', res.data.token) // token stored in a cookie named 'access_token'
+      window.localStorage.setItem('userID', res.data.userID) // userId stored in window.localstorage
       window.location.replace('/')
     } catch (err) {
       console.log(err)
