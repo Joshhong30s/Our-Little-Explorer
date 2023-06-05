@@ -30,12 +30,16 @@ export default function App({ Component, pageProps }: AppProps) {
         <link rel='icon' href='/baby1.svg' />
         <link rel='apple-touch-icon' href='/baby1.svg' />
       </Head>
-      <Script src='https://www.googletagmanager.com/gtag/js?id=G-7EJ6PKSZ6R'>
+      <Script
+        async
+        src='https://www.googletagmanager.com/gtag/js?id=G-GLENJJ7YR4'
+      ></Script>
+      <Script>
         {`
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'G-7EJ6PKSZ6R');
+  gtag('config', 'G-GLENJJ7YR4');
       `}
       </Script>
       <NoSSR>
