@@ -10,6 +10,8 @@ import { FaBaby } from 'react-icons/fa'
 import dynamic from 'next/dynamic'
 import Swipe from 'react-easy-swipe'
 import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai'
+import Head from 'next/head'
+import Script from 'next/script'
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true)
