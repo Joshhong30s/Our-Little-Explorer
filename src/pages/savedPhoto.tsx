@@ -48,7 +48,8 @@ export default function savedPhotos() {
               <li className='border border-gray-200 rounded-lg' key={photo._id}>
                 <div className='relative w-full h-96 sm:h-[450px] lg:h-[600px]'>
                   {photo.imageUrl.endsWith('.jpg') ||
-                  photo.imageUrl.endsWith('.png') ? (
+                  photo.imageUrl.endsWith('.png') ||
+                  photo.imageUrl.endsWith('.jpeg') ? (
                     <Link
                       href={photo.imageUrl}
                       target='_blank'
