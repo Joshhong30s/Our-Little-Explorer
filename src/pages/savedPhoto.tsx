@@ -1,64 +1,64 @@
-'use client'
+"use client";
 
-import axios from 'axios'
-import Image from 'next/image'
-import { useState, useEffect } from 'react'
-import { useGetUserID } from '../hooks/useGetUserId'
-import { FaBaby } from 'react-icons/fa'
-import Link from 'next/link'
-import ReactPlayer from 'react-player'
+import axios from "axios";
+import Image from "next/image";
+import { useState, useEffect } from "react";
+import { useGetUserID } from "../hooks/useGetUserId";
+import { FaBaby } from "react-icons/fa";
+import Link from "next/link";
+import ReactPlayer from "react-player";
 
 export default function savedPhotos() {
-  const [savedPhotos, setsavedPhotos] = useState([])
+  const [savedPhotos, setsavedPhotos] = useState([]);
 
-  const userID = useGetUserID()
+  const userID = useGetUserID();
   useEffect(() => {
     const fetchsavedPhotos = async () => {
       try {
-        const response = await axios.get(
-          `https://zero6babyserver.onrender.com/photos/savedPhotos/${userID}`
-        )
-        setsavedPhotos(response.data.savedPhotos)
-        console.log('Response data:', response.data)
+        const response = await axios.get(`/api/photo/photo`, {
+          params: { action: "savedPhotos", userID },
+        });
+        setsavedPhotos(response.data.savedPhotos);
+        console.log("Response data:", response.data);
       } catch (err) {
-        console.log(err)
+        console.log(err);
       }
-    }
+    };
 
-    fetchsavedPhotos()
-  }, [userID])
+    fetchsavedPhotos();
+  }, [userID]);
 
   const reversedSavedPhotos = Array.isArray(savedPhotos)
     ? savedPhotos.slice().reverse()
-    : []
+    : [];
 
   return (
     <main>
-      <div className='px-6 mx-auto mb-8 text-black'>
-        <ul className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8'>
+      <div className="px-6 mx-auto mb-8 text-black">
+        <ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
           {reversedSavedPhotos.map(
             (photo: {
-              _id: string
-              name: string
-              location: string
-              instructions: string
-              imageUrl: string
-              growingTime: number
+              _id: string;
+              name: string;
+              location: string;
+              instructions: string;
+              imageUrl: string;
+              growingTime: number;
             }) => (
-              <li className='border border-gray-200 rounded-lg' key={photo._id}>
-                <div className='relative w-full h-96 sm:h-[450px] lg:h-[600px]'>
-                  {photo.imageUrl.endsWith('.jpg') ||
-                  photo.imageUrl.endsWith('.png') ||
-                  photo.imageUrl.endsWith('.jpeg') ? (
+              <li className="border border-gray-200 rounded-lg" key={photo._id}>
+                <div className="relative w-full h-96 sm:h-[450px] lg:h-[600px]">
+                  {photo.imageUrl.endsWith(".jpg") ||
+                  photo.imageUrl.endsWith(".png") ||
+                  photo.imageUrl.endsWith(".jpeg") ? (
                     <Link
                       href={photo.imageUrl}
-                      target='_blank'
-                      rel='noopener noreferrer'
+                      target="_blank"
+                      rel="noopener noreferrer"
                     >
                       <Image
                         src={photo.imageUrl}
                         alt={photo.name}
-                        className='object-cover'
+                        className="object-cover"
                         fill
                       />
                     </Link>
@@ -66,35 +66,35 @@ export default function savedPhotos() {
                     <ReactPlayer
                       url={photo.imageUrl}
                       controls={false}
-                      width='100%'
-                      height='100%'
+                      width="100%"
+                      height="100%"
                       config={{
                         youtube: {
                           playerVars: {
-                            origin: 'https://www.youtube.com',
+                            origin: "https://www.youtube.com",
                           },
                         },
                       }}
-                      allow='fullscreen; autoplay'
+                      allow="fullscreen; autoplay"
                     />
                   )}
                 </div>
-                <div className='p-4'>
-                  <div className='flex justify-between items-center mb-4'>
-                    <h3 className='text-3xl font-bold pt-1 pb-3 mb-0'>
+                <div className="p-4">
+                  <div className="flex justify-between items-center mb-4">
+                    <h3 className="text-3xl font-bold pt-1 pb-3 mb-0">
                       {photo.name}
                     </h3>
-                    <div className='flex space-x-1 items-center'>
+                    <div className="flex space-x-1 items-center">
                       <FaBaby size={30} />
-                      <p className=' text-gray-800 text-sm'>
+                      <p className=" text-gray-800 text-sm">
                         {photo.growingTime} days
                       </p>
                     </div>
                   </div>
-                  <p className='text-gray-600 text-sm '>
+                  <p className="text-gray-600 text-sm ">
                     照片地點：{photo.location}
                   </p>
-                  <p className='text-gray-600 text-sm my-4'>
+                  <p className="text-gray-600 text-sm my-4">
                     {photo.instructions}
                   </p>
                 </div>
@@ -104,5 +104,5 @@ export default function savedPhotos() {
         </ul>
       </div>
     </main>
-  )
+  );
 }
