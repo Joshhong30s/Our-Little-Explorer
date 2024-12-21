@@ -34,13 +34,13 @@ function App({ Component, pageProps }: AppProps) {
         async
         src="https://www.googletagmanager.com/gtag/js?id=G-GLENJJ7YR4"
       ></Script>
-      <Script>
+      <Script id="gtag-script">
         {`
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-GLENJJ7YR4');
-      `}
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-GLENJJ7YR4');
+        `}
       </Script>
       <NoSSR>
         <Navbar />

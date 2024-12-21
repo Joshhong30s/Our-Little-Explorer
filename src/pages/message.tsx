@@ -6,12 +6,9 @@ import { useState, useEffect } from 'react';
 import { components } from 'react-select';
 import Image from 'next/image';
 
-const MenuList = (props: any) => (
-  <components.MenuList {...props} className="grid grid-cols-4 gap-2">
-    {props.children}
-  </components.MenuList>
-);
-
+const MenuList = (props: any) => {
+  return <div className="grid grid-cols-4 gap-2">{props.children}</div>;
+};
 export default function Message() {
   const [formData, setFormData] = useState({
     avatar: '',
