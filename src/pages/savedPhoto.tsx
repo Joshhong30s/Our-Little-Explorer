@@ -1,31 +1,31 @@
-"use client";
+'use client';
 
-import axios from "axios";
-import Image from "next/image";
-import { useState, useEffect } from "react";
-import { useGetUserID } from "../hooks/useGetUserId";
-import { FaBaby } from "react-icons/fa";
-import Link from "next/link";
-import ReactPlayer from "react-player";
+import axios from 'axios';
+import Image from 'next/image';
+import { useState, useEffect } from 'react';
+import { useGetUserID } from '../hooks/useGetUserId';
+import { FaBaby } from 'react-icons/fa';
+import Link from 'next/link';
+import ReactPlayer from 'react-player';
 
-export default function savedPhotos() {
-  const [savedPhotos, setsavedPhotos] = useState([]);
+export default function SavedPhotos() {
+  const [savedPhotos, setSavedPhotos] = useState([]);
 
   const userID = useGetUserID();
   useEffect(() => {
-    const fetchsavedPhotos = async () => {
+    const fetchSavedPhotos = async () => {
       try {
         const response = await axios.get(`/api/photo/photo`, {
-          params: { action: "savedPhotos", userID },
+          params: { action: 'savedPhotos', userID },
         });
-        setsavedPhotos(response.data.savedPhotos);
-        console.log("Response data:", response.data);
+        setSavedPhotos(response.data.savedPhotos);
+        console.log('Response data:', response.data);
       } catch (err) {
         console.log(err);
       }
     };
 
-    fetchsavedPhotos();
+    fetchSavedPhotos();
   }, [userID]);
 
   const reversedSavedPhotos = Array.isArray(savedPhotos)
@@ -47,9 +47,9 @@ export default function savedPhotos() {
             }) => (
               <li className="border border-gray-200 rounded-lg" key={photo._id}>
                 <div className="relative w-full h-96 sm:h-[450px] lg:h-[600px]">
-                  {photo.imageUrl.endsWith(".jpg") ||
-                  photo.imageUrl.endsWith(".png") ||
-                  photo.imageUrl.endsWith(".jpeg") ? (
+                  {photo.imageUrl.endsWith('.jpg') ||
+                  photo.imageUrl.endsWith('.png') ||
+                  photo.imageUrl.endsWith('.jpeg') ? (
                     <Link
                       href={photo.imageUrl}
                       target="_blank"
@@ -71,7 +71,7 @@ export default function savedPhotos() {
                       config={{
                         youtube: {
                           playerVars: {
-                            origin: "https://www.youtube.com",
+                            origin: 'https://www.youtube.com',
                           },
                         },
                       }}

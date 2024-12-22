@@ -1,60 +1,56 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
-import { google } from 'googleapis'
-import { GoogleAuth } from 'google-auth-library'
+import type { NextApiRequest, NextApiResponse } from 'next';
+import { google } from 'googleapis';
+import { GoogleAuth } from 'google-auth-library';
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
-  // check if base64 settled
   if (!process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON_BASE64) {
-    throw new Error(
-      'GOOGLE APPLICATION CREDENTIALS JSON BASE64 is not set in env variables'
-    )
+    return res.status(500).json({
+      status: 'error',
+      message: 'GOOGLE_APPLICATION_CREDENTIALS_JSON_BASE64 is not set',
+    });
   }
 
-  // decode base64 string
   const credentialsJson = Buffer.from(
     process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON_BASE64,
     'base64'
-  ).toString()
+  ).toString();
 
-  // parse the JSON string into an object
-  const credentials = JSON.parse(credentialsJson)
+  const credentials = JSON.parse(credentialsJson);
 
-  // create Google Auth Client
   const auth = new GoogleAuth({
     credentials,
     scopes: ['https://www.googleapis.com/auth/spreadsheets'],
-  })
+  });
 
-  const sheets = google.sheets({ version: 'v4', auth })
-
-  // query
-  const range = 'message!A:D'
+  const sheets = google.sheets({ version: 'v4', auth });
+  const range = 'message!A:D';
 
   try {
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId: process.env.SHEET_ID,
       range,
-    })
+    });
 
-    console.log('Response data:', response.data)
+    const rows = response.data.values || [];
+    console.log('Raw rows from Google Sheets:', rows);
 
-    const messages =
-      response.data.values ??
-      [].map(([date, avatar, name, message]) => ({
-        date,
-        avatar,
-        name,
-        message,
-      }))
+    const messages = rows.slice(1).map(row => ({
+      date: row[0] || '',
+      avatar: row[1] || '',
+      name: row[2] || '',
+      message: row[3] || '',
+    }));
 
-    res.status(200).json({ status: 'success', messages })
+    console.log('Formatted messages:', messages);
+
+    res.status(200).json({ status: 'success', messages });
   } catch (error) {
-    console.error('Error getting data from GoogleSheet:', error)
-    return new Response(JSON.stringify({ status: 'error' }), {
-      headers: { 'Content-Type': 'application/json' },
-      status: 500,
-    })
+    console.error('Error fetching messages:', error);
+    res.status(500).json({
+      status: 'error',
+      message: 'Failed to fetch messages',
+    });
   }
 }
 
-export default handler
+export default handler;
