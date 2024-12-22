@@ -1,14 +1,15 @@
-import { useState } from "react";
-import Link from "next/link";
-import axios from "axios";
-import { useCookies } from "react-cookie";
-import Image from "next/image";
-
+import { useState } from 'react';
+import Link from 'next/link';
+import axios from 'axios';
+import { useCookies } from 'react-cookie';
+import Image from 'next/image';
+import { useTranslation } from 'react-i18next';
 export default function Login() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const { t } = useTranslation('common');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState(false);
-  const [_, setCookies] = useCookies(["access_token"]); // first element is an object containing the cookie values, and the second element is a function to update the cookies. But here only needs the setCookies function to update the access_token
+  const [_, setCookies] = useCookies(['access_token']); // first element is an object containing the cookie values, and the second element is a function to update the cookies. But here only needs the setCookies function to update the access_token
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault(); // prevent page refresh to interrupt the login process
@@ -18,13 +19,13 @@ export default function Login() {
         password,
       });
       console.log(res.data, res.data.message);
-      setCookies("access_token", res.data.token); // token stored in a cookie named 'access_token'
-      window.localStorage.setItem("userID", res.data.userID); // userId stored in window.localstorage
-      window.location.replace("/");
+      setCookies('access_token', res.data.token); // token stored in a cookie named 'access_token'
+      window.localStorage.setItem('userID', res.data.userID); // userId stored in window.localstorage
+      window.location.replace('/');
     } catch (err) {
       console.log(err);
       setError(true);
-      alert("Something went wrong. Please try again.");
+      alert('Something went wrong. Please try again.');
     }
   };
 
@@ -49,14 +50,14 @@ export default function Login() {
                   htmlFor="username"
                   className="block text-gray-700 font-bold mb-2 "
                 >
-                  帳號名稱(全小寫)
+                  {t('user.username')}
                 </label>
                 <input
                   type="text"
                   id="username"
                   name="username"
                   value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  onChange={e => setUsername(e.target.value)}
                   className="border border-gray-400 p-2 w-full rounded-lg focus:outline-none focus:border-blue-400"
                   placeholder="Your username.."
                 />
@@ -66,14 +67,14 @@ export default function Login() {
                   htmlFor="password"
                   className="block text-gray-700 font-bold mb-2"
                 >
-                  密碼
+                  {t('common:user.password')}
                 </label>
                 <input
                   type="password"
                   id="password"
                   name="password"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={e => setPassword(e.target.value)}
                   className="border border-gray-400 p-2 w-full rounded-lg focus:outline-none focus:border-blue-400"
                   placeholder="Your password.."
                 />
@@ -83,7 +84,7 @@ export default function Login() {
                   type="submit"
                   className="mt-12 group relative w-full flex justify-center py-2 px-4 border border-transparent text-lg font-medium rounded-full hover:bg-teal-980 hover:text-gray-100 text-slate-600 bg-blue-980 focus:outline-none "
                 >
-                  點我登入
+                  {t('common:user.login')}
                 </button>
               </div>
 

@@ -1,24 +1,24 @@
-import { useMemo } from 'react'
-import { useTable, Column, useSortBy, usePagination, Row } from 'react-table'
+import { useMemo } from 'react';
+import { useTable, Column, useSortBy, usePagination, Row } from 'react-table';
 
 interface Data {
-  Day: string | Date
-  Weight: number
-  Height: number
-  TotalFeed: number
-  TotalPee: number
-  TotalPoop: number
+  Day: string | Date;
+  Weight: number;
+  Height: number;
+  TotalFeed: number;
+  TotalPee: number;
+  TotalPoop: number;
 }
 
 interface RawTableProps {
-  data: Data[]
+  data: Data[];
 }
 
 export default function RawTable({ data }: RawTableProps) {
   const columns: Column<Data>[] = useMemo(
     () => [
       {
-        Header: ' 日期',
+        Header: ' 日期',
         accessor: 'Day',
       },
       {
@@ -43,62 +43,51 @@ export default function RawTable({ data }: RawTableProps) {
       },
     ],
     []
-  )
+  );
 
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
-    // @ts-expect-error page is not in type def
     page,
-    // @ts-expect-error nextPage is not in type def
     nextPage,
-    // @ts-expect-error previosPage is not in type def
     previousPage,
-    // @ts-expect-error previosPage is not in type def
     canNextPage,
-    // @ts-expect-error previosPage is not in type def
     canPreviousPage,
-    // @ts-expect-error previosPage is not in type def
     pageOptions,
-    // @ts-expect-error
     gotoPage,
-    // @ts-expect-error
     pageCount,
-    // @ts-expect-error
     setPageSize,
     state,
     prepareRow,
   } = useTable(
     {
       columns,
-      data: data,
+      data,
     },
     useSortBy,
     usePagination
-  )
+  ) as any;
 
-  // @ts-expect-error is not in type def
-  const { pageIndex, pageSize } = state
+  const { pageIndex, pageSize } = state;
 
   return (
-    <div className='bg-white overflow-x-auto'>
+    <div className="bg-white overflow-x-auto">
       <table
-        className='w-full text-center border-collapse bg-white'
+        className="w-full text-center border-collapse bg-white"
         {...getTableProps()}
       >
-        <thead className='bg-black'>
-          {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
+        <thead className="bg-black">
+          {headerGroups.map((headerGroup: any) => (
+            <tr {...headerGroup.getHeaderGroupProps()} key={headerGroup.id}>
+              {headerGroup.headers.map((column: any) => (
                 <th
-                  className='px-4 py-3 text-white font-semibold '
-                  // @ts-expect-error getSortByToggleProps is not in type def
                   {...column.getHeaderProps(column.getSortByToggleProps())}
+                  key={column.id}
+                  className="px-4 py-3 text-white font-semibold"
                 >
                   {column.render('Header')}
                   <span>
-                    {/* @ts-expect-error property isSorted is not in type def */}
                     {column.isSorted ? (column.isSortedDesc ? ' ▽' : ' △') : ''}
                   </span>
                 </th>
@@ -106,30 +95,36 @@ export default function RawTable({ data }: RawTableProps) {
             </tr>
           ))}
         </thead>
+
         <tbody {...getTableBodyProps()}>
           {page.map((row: Row<Data>) => {
-            prepareRow(row)
+            prepareRow(row);
             return (
-              <tr {...row.getRowProps()} className='even:bg-gray-200'>
-                {row.cells.map((cell) => (
+              <tr
+                {...row.getRowProps()}
+                key={row.id}
+                className="even:bg-gray-200"
+              >
+                {row.cells.map(cell => (
                   <td
-                    className='px-4 py-3 border-b border-slate-300'
                     {...cell.getCellProps()}
+                    key={cell.column.id}
+                    className="px-4 py-3 border-b border-slate-300"
                   >
                     {cell.render('Cell')}
                   </td>
                 ))}
               </tr>
-            )
+            );
           })}
         </tbody>
       </table>
-      <div className='text-center space-x-4 bg-black text-white px-4 py-3 font-semibold '>
+      <div className="text-center space-x-4 bg-black text-white px-4 py-3 font-semibold">
         Page{' '}
-        <span className='font-semibold'>
+        <span className="font-semibold">
           {pageIndex + 1} of {pageOptions.length}{' '}
         </span>
-        <button onClick={() => gotoPage(0)} disabled={!previousPage}>
+        <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
           {' << '}
         </button>
         <button onClick={() => previousPage()} disabled={!canPreviousPage}>
@@ -138,22 +133,27 @@ export default function RawTable({ data }: RawTableProps) {
         <span>
           | 跳到{' '}
           <input
-            type='number'
-            defaultValue={' '}
-            onChange={(e) => {
-              const pageNumber = e.target.value ? Number(e.target.value) - 1 : 0
-              gotoPage(pageNumber)
+            type="number"
+            min="1"
+            max={pageCount}
+            defaultValue={pageIndex + 1}
+            onChange={e => {
+              const pageNumber = Math.min(
+                Math.max(Number(e.target.value) - 1, 0),
+                pageCount - 1
+              );
+              gotoPage(pageNumber);
             }}
-            className='w-8 bg-transparent text-white'
-          ></input>
+            className="w-8 bg-transparent text-white"
+          />
           頁
         </span>
         <select
           value={pageSize}
-          className='bg-transparent text-white'
-          onChange={(e) => setPageSize(Number(e.target.value))}
+          className="bg-transparent text-white"
+          onChange={e => setPageSize(Number(e.target.value))}
         >
-          {[10, 30, 60].map((pageSize) => (
+          {[10, 30, 60].map(pageSize => (
             <option key={pageSize} value={pageSize}>
               Show {pageSize}
             </option>
@@ -167,5 +167,5 @@ export default function RawTable({ data }: RawTableProps) {
         </button>
       </div>
     </div>
-  )
+  );
 }
