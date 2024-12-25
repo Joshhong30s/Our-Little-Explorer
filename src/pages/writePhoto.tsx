@@ -1,38 +1,46 @@
-"use client";
-
-import { useState } from "react";
-import axios from "axios";
-import { useGetUserID } from "../hooks/useGetUserId";
-import { useCookies } from "react-cookie";
-import Image from "next/image";
+'use client';
+import dayjs from 'dayjs';
+import { useState } from 'react';
+import axios from 'axios';
+import { useGetUserID } from '../hooks/useGetUserId';
+import { useCookies } from 'react-cookie';
+import Image from 'next/image';
 
 type PhotoType = {
   name: string;
   location: string;
   instructions: string;
   imageUrl: string;
-  growingTime: number;
+  growingTime: string;
   userOwner: string;
 };
 
 export default function WritePhoto() {
   const userID = useGetUserID();
   const [file, setFile] = useState(null);
-  const [cookies, _] = useCookies(["access_token"]);
+  const [cookies, _] = useCookies(['access_token']);
   const [allowYoutubeUrl, setAllowYoutubeUrl] = useState(false);
   const [photo, setPhoto] = useState<PhotoType>({
-    name: "",
-    location: "",
-    instructions: "",
-    imageUrl: "",
-    growingTime: 0,
-    userOwner: userID ?? "",
+    name: '',
+    location: '',
+    instructions: '',
+    imageUrl: '',
+    growingTime: '',
+    userOwner: userID ?? '',
   });
 
   const handleChange = (e: any) => {
     setPhoto({
       ...photo,
       [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedDate = e.target.value;
+    setPhoto({
+      ...photo,
+      growingTime: dayjs(selectedDate).toISOString(),
     });
   };
 
@@ -48,36 +56,36 @@ export default function WritePhoto() {
       setFile(file);
 
       if (file) {
-        const clientId = "204e2ddd7271745";
-        const auth = "Client-ID " + clientId;
+        const clientId = '204e2ddd7271745';
+        const auth = 'Client-ID ' + clientId;
         const data = new FormData();
         const filename = file.name;
-        data.append("name", filename);
-        data.append("image", file);
+        data.append('name', filename);
+        data.append('image', file);
 
         try {
           const response = await axios.post(
-            "https://api.imgur.com/3/image",
+            'https://api.imgur.com/3/image',
             data,
             {
               headers: {
                 Authorization: auth,
-                Accept: "application/json",
+                Accept: 'application/json',
               },
             }
           );
 
-          alert("相片上傳成功，可以送出");
+          alert('相片上傳成功，可以送出');
           setPhoto({
             ...photo,
             imageUrl: response.data.data.link,
           });
         } catch (err) {
           console.log(err);
-          alert("相片上傳失敗");
+          alert('相片上傳失敗');
         }
       } else {
-        alert("請上傳相片");
+        alert('請上傳相片');
       }
     }
   };
@@ -85,14 +93,14 @@ export default function WritePhoto() {
   const onSubmit = async (e: any) => {
     e.preventDefault();
     try {
-      await axios.post("/api/photo/photo", photo, {
+      await axios.post('/api/photo/photo', photo, {
         headers: { authorization: cookies.access_token }, // must verify token first
       });
-      console.log("photo created");
-      window.location.replace("/");
+      console.log('photo created');
+      window.location.replace('/');
     } catch (error) {
       console.log(error);
-      alert("Failed to upload image");
+      alert('Failed to upload image');
     }
   };
 
@@ -162,11 +170,11 @@ export default function WritePhoto() {
               相片年齡
             </label>
             <input
-              type="number"
+              type="date"
               id="growingTime"
               name="growingTime"
               placeholder="...照片裡的年齡"
-              onChange={handleChange}
+              onChange={handleDateChange}
               className="mt-1 block w-full h-8 border-b-2 border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:ring-opacity-50"
             />
           </div>
