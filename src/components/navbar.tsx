@@ -67,7 +67,7 @@ export default function Navbar() {
           <Link href='/'>
             <Image
               className='rounded-full drop-shadow-xl mx-auto p-0 '
-              src='/baby1.svg'
+              src='/assets/baby1.svg'
               alt='baby'
               width={100}
               height={100}

@@ -451,7 +451,7 @@ export default function Dashboard() {
   return (
     <div className='relative'>
       <Image
-        src='/bao12.jpeg'
+        src='/assets/bao12.jpeg'
         alt='dashboard'
         fill
         quality={10}
@@ -469,8 +469,8 @@ export default function Dashboard() {
               <div className='card bg-white rounded px-4 flex-1 w-full flex flex-col justify-between items-center'>
                 <div className='card bg-white rounded p-4 flex-1 w-full flex flex-col justify-start items-center'>
                   <Image
-                    src='/avatar.jpg'
-                    alt='avatar.jpg'
+                    src='/assets/avatar.jpg'
+                    alt='/assets/avatar.jpg'
                     width={160}
                     height={160}
                     className='mb-4 rounded-2xl'
