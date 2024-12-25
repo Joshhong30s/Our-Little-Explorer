@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import axios from 'axios';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -22,6 +23,24 @@ export default function Home() {
   const [savedPhotos, setSavedPhotos] = useState<string[]>([]);
   const [cookies, _] = useCookies(['access_token']);
   const userID = useGetUserID();
+  const babyBirthday = dayjs('2023-04-12T00:00:00+08:00');
+  const calculateAge = (growingTime: number | string) => {
+    if (typeof growingTime === 'number') {
+      const diffYears = Math.floor(growingTime / 12);
+      const diffMonths = Math.floor(growingTime % 12);
+      console.log('diffYears:', diffYears, 'diffMonths:', diffMonths);
+
+      return `${diffYears}Y${diffMonths}M`;
+    } else {
+      const date = dayjs(growingTime);
+      const diffYears = date.diff(babyBirthday, 'year');
+      const diffMonths = date.diff(
+        babyBirthday.add(diffYears, 'year'),
+        'month'
+      );
+      return `${diffYears}Y${diffMonths}M`;
+    }
+  };
 
   const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -202,7 +221,7 @@ export default function Home() {
               location: string;
               instructions: string;
               imageUrl: string;
-              growingTime: number;
+              growingTime: number | string;
             }) => (
               <li
                 key={photo._id}
@@ -274,7 +293,7 @@ export default function Home() {
                     </h3>
                     <div className="flex gap-2 items-center">
                       <FaBaby size={25} />
-                      {photo.growingTime} month
+                      {calculateAge(photo.growingTime)}
                     </div>
                   </div>
                   <p className="text-gray-600 text-base flex gap-2 items-center">

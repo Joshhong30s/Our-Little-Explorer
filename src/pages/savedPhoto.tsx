@@ -7,6 +7,7 @@ import { useGetUserID } from '../hooks/useGetUserId';
 import { FaBaby } from 'react-icons/fa';
 import Link from 'next/link';
 import ReactPlayer from 'react-player';
+import dayjs from 'dayjs';
 
 export default function SavedPhotos() {
   const [savedPhotos, setSavedPhotos] = useState([]);
@@ -28,6 +29,25 @@ export default function SavedPhotos() {
     fetchSavedPhotos();
   }, [userID]);
 
+  const babyBirthday = dayjs('2023-04-12T00:00:00+08:00');
+  const calculateAge = (growingTime: number | string) => {
+    if (typeof growingTime === 'number') {
+      const diffYears = Math.floor(growingTime / 12);
+      const diffMonths = Math.floor(growingTime % 12);
+      console.log('diffYears:', diffYears, 'diffMonths:', diffMonths);
+
+      return `${diffYears}Y${diffMonths}M`;
+    } else {
+      const date = dayjs(growingTime);
+      const diffYears = date.diff(babyBirthday, 'year');
+      const diffMonths = date.diff(
+        babyBirthday.add(diffYears, 'year'),
+        'month'
+      );
+      return `${diffYears}Y${diffMonths}M`;
+    }
+  };
+
   const reversedSavedPhotos = Array.isArray(savedPhotos)
     ? savedPhotos.slice().reverse()
     : [];
@@ -43,7 +63,7 @@ export default function SavedPhotos() {
               location: string;
               instructions: string;
               imageUrl: string;
-              growingTime: number;
+              growingTime: number | string;
             }) => (
               <li className="border border-gray-200 rounded-lg" key={photo._id}>
                 <div className="relative w-full h-96 sm:h-[450px] lg:h-[600px]">
@@ -87,7 +107,7 @@ export default function SavedPhotos() {
                     <div className="flex space-x-1 items-center">
                       <FaBaby size={30} />
                       <p className=" text-gray-800 text-sm">
-                        {photo.growingTime} days
+                        {calculateAge(photo.growingTime)}
                       </p>
                     </div>
                   </div>
