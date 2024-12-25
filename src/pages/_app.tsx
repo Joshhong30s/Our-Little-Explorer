@@ -28,8 +28,8 @@ function App({ Component, pageProps }: AppProps) {
         <meta name="keywords" content="baby, infant, baby products" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta charSet="utf-8" />
-        <link rel="icon" href="/baby1.svg" />
-        <link rel="apple-touch-icon" href="/baby1.svg" />
+        <link rel="icon" href="/assets/baby1.svg" />
+        <link rel="apple-touch-icon" href="/assets/baby1.svg" />
       </Head>
       <Script
         async

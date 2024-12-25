@@ -16,7 +16,7 @@ export default function Message() {
   });
 
   const avatarOptions = Array.from({ length: 16 }, (_, i) => ({
-    value: `/${String(i + 1).padStart(2, '0')}.svg`,
+    value: `/assets/${String(i + 1).padStart(2, '0')}.svg`,
     label: `Avatar ${i + 1}`,
   }));
 
@@ -98,7 +98,7 @@ export default function Message() {
   return (
     <div className="relative">
       <Image
-        src="/bao12.jpeg"
+        src="/assets/bao12.jpeg"
         alt="message background"
         fill
         quality={10}

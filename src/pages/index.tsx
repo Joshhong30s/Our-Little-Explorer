@@ -1,26 +1,26 @@
-import axios from "axios";
-import Link from "next/link";
-import Image from "next/image";
-import { useState, useEffect } from "react";
-import { useGetUserID } from "../hooks/useGetUserId";
-import { useCookies } from "react-cookie";
-import { RiHeartAddLine, RiHeartFill } from "react-icons/ri";
-import { FaMapMarkerAlt } from "react-icons/fa";
-import { FaBaby } from "react-icons/fa";
-import dynamic from "next/dynamic";
-import Swipe from "react-easy-swipe";
-import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
-import Head from "next/head";
-import Script from "next/script";
+import axios from 'axios';
+import Link from 'next/link';
+import Image from 'next/image';
+import { useState, useEffect } from 'react';
+import { useGetUserID } from '../hooks/useGetUserId';
+import { useCookies } from 'react-cookie';
+import { RiHeartAddLine, RiHeartFill } from 'react-icons/ri';
+import { FaMapMarkerAlt } from 'react-icons/fa';
+import { FaBaby } from 'react-icons/fa';
+import dynamic from 'next/dynamic';
+import Swipe from 'react-easy-swipe';
+import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai';
+import Head from 'next/head';
+import Script from 'next/script';
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [photo, setPhoto] = useState([]);
-  const ReactPlayer = dynamic(() => import("react-player/lazy"), {
+  const ReactPlayer = dynamic(() => import('react-player/lazy'), {
     ssr: false,
   });
   const [savedPhotos, setSavedPhotos] = useState<string[]>([]);
-  const [cookies, _] = useCookies(["access_token"]);
+  const [cookies, _] = useCookies(['access_token']);
   const userID = useGetUserID();
 
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -46,7 +46,7 @@ export default function Home() {
   useEffect(() => {
     const fetchPhoto = async () => {
       try {
-        const response = await axios.get("/api/photo/photo");
+        const response = await axios.get('/api/photo/photo');
         setPhoto(response.data);
         console.log(response.data);
       } catch (err) {
@@ -57,10 +57,10 @@ export default function Home() {
     const fetchSavedPhotos = async () => {
       try {
         const response = await axios.get(`/api/photo/photo`, {
-          params: { action: "savedPhotos", userID },
+          params: { action: 'savedPhotos', userID },
         });
         setSavedPhotos(response.data.savedPhotos);
-        console.log("Response data:", response.data);
+        console.log('Response data:', response.data);
       } catch (err) {
         console.log(err);
       }
@@ -74,7 +74,7 @@ export default function Home() {
   const savePhoto = async (photoID: string) => {
     try {
       const response = await axios.put(
-        "/api/photo/photo",
+        '/api/photo/photo',
         {
           photoID,
           userID,
@@ -89,7 +89,7 @@ export default function Home() {
 
   const unsavePhoto = async (photoID: string) => {
     try {
-      const response = await axios.delete("/api/photo/photo", {
+      const response = await axios.delete('/api/photo/photo', {
         data: {
           photoID,
           userID,
@@ -118,16 +118,16 @@ export default function Home() {
   ///slideshow
 
   const images = [
-    { id: 1, src: "/bao1.jpeg", alt: "bao1" },
-    { id: 2, src: "/bao2.jpeg", alt: "bao2" },
-    { id: 3, src: "/bao3.jpeg", alt: "bao3" },
-    { id: 4, src: "/bao4.jpeg", alt: "bao4" },
-    { id: 5, src: "/bao5.jpeg", alt: "bao5" },
-    { id: 6, src: "/bao6.jpeg", alt: "bao6" },
-    { id: 7, src: "/bao7.jpeg", alt: "bao7" },
-    { id: 8, src: "/bao8.jpeg", alt: "bao8" },
-    { id: 9, src: "/bao9.jpeg", alt: "bao9" },
-    { id: 10, src: "/bao10.jpeg", alt: "bao10" },
+    { id: 1, src: '/assets/bao1.jpeg', alt: 'bao1' },
+    { id: 2, src: '/assets/bao2.jpeg', alt: 'bao2' },
+    { id: 3, src: '/assets/bao3.jpeg', alt: 'bao3' },
+    { id: 4, src: '/assets/bao4.jpeg', alt: 'bao4' },
+    { id: 5, src: '/assets/bao5.jpeg', alt: 'bao5' },
+    { id: 6, src: '/assets/bao6.jpeg', alt: 'bao6' },
+    { id: 7, src: '/assets/bao7.jpeg', alt: 'bao7' },
+    { id: 8, src: '/assets/bao8.jpeg', alt: 'bao8' },
+    { id: 9, src: '/assets/bao9.jpeg', alt: 'bao9' },
+    { id: 10, src: '/assets/bao10.jpeg', alt: 'bao10' },
   ];
 
   return (
@@ -160,7 +160,7 @@ export default function Home() {
                       className="animate-fadeIn"
                       priority={true}
                       fill
-                      style={{ objectFit: "contain" }}
+                      style={{ objectFit: 'contain' }}
                       quality={5}
                     />
                   );
@@ -180,8 +180,8 @@ export default function Home() {
             <div
               className={
                 index === currentSlide
-                  ? "h-4 w-4 bg-gray-700 rounded-full mx-2  cursor-pointer"
-                  : "h-4 w-4 bg-gray-300 rounded-full mx-2  cursor-pointer"
+                  ? 'h-4 w-4 bg-gray-700 rounded-full mx-2  cursor-pointer'
+                  : 'h-4 w-4 bg-gray-300 rounded-full mx-2  cursor-pointer'
               }
               key={index}
               onClick={() => {
@@ -209,9 +209,9 @@ export default function Home() {
                 className="border border-gray-300  bg-gray-100 rounded-lg"
               >
                 <div className="relative w-full h-96 sm:h-[450px] lg:h-[600px]">
-                  {photo.imageUrl.endsWith(".jpg") ||
-                  photo.imageUrl.endsWith(".png") ||
-                  photo.imageUrl.endsWith(".jpeg") ? (
+                  {photo.imageUrl.endsWith('.jpg') ||
+                  photo.imageUrl.endsWith('.png') ||
+                  photo.imageUrl.endsWith('.jpeg') ? (
                     <Link
                       href={photo.imageUrl}
                       target="_blank"
@@ -233,7 +233,7 @@ export default function Home() {
                       config={{
                         youtube: {
                           playerVars: {
-                            origin: "https://www.youtube.com",
+                            origin: 'https://www.youtube.com',
                           },
                         },
                       }}
@@ -243,15 +243,15 @@ export default function Home() {
                     className="absolute top-2 right-2 bg-neutral-50 bg-opacity-30 text-red-500 rounded-full p-3"
                     onClick={() => {
                       if (!cookies.access_token) {
-                        alert("請先登入才能使用我的最愛功能");
+                        alert('請先登入才能使用我的最愛功能');
                         return;
                       }
                       toggleSavePhoto(photo._id);
                     }}
                     style={{
                       transform: isPhotosaved(photo._id)
-                        ? "scale(1.1)"
-                        : "scale(1)",
+                        ? 'scale(1.1)'
+                        : 'scale(1)',
                     }}
                   >
                     {isPhotosaved(photo._id) ? (
