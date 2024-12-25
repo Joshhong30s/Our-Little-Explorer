@@ -205,7 +205,11 @@ export default function Message() {
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center">
                           <Image
-                            src={avatar}
+                            src={
+                              avatar.startsWith('/assets/')
+                                ? avatar
+                                : `/assets${avatar}`
+                            }
                             alt={name}
                             width={40}
                             height={40}
