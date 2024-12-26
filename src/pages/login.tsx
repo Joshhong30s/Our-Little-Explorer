@@ -1,36 +1,33 @@
 import { useState } from 'react';
 import Link from 'next/link';
-import axios from 'axios';
-import { useCookies } from 'react-cookie';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
+import { signIn, signOut } from 'next-auth/react';
+
 export default function Login() {
   const { t } = useTranslation('common');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(false);
-  const [_, setCookies] = useCookies(['access_token']); // first element is an object containing the cookie values, and the second element is a function to update the cookies. But here only needs the setCookies function to update the access_token
 
-  const handleSubmit = async (e: { preventDefault: () => void }) => {
-    e.preventDefault(); // prevent page refresh to interrupt the login process
-    try {
-      const res = await axios.post("/api/auth/auth?action=login", {
-        username,
-        password,
-      });
-      console.log(res.data, res.data.message);
-      setCookies('access_token', res.data.token); // token stored in a cookie named 'access_token'
-      window.localStorage.setItem('userID', res.data.userID); // userId stored in window.localstorage
-      window.location.replace('/');
-    } catch (err) {
-      console.log(err);
+  const handleCredentialsSignIn = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    const result = await signIn('credentials', {
+      redirect: false,
+      username,
+      password,
+    });
+
+    if (result?.error) {
+      console.log('Error:', result.error);
       setError(true);
-      alert('Something went wrong. Please try again.');
+    } else {
+      window.location.replace('/');
     }
   };
 
   return (
-    <div className="relative ">
+    <div className="relative">
       <Image
         src="/assets/bao6.jpeg"
         alt="login"
@@ -43,7 +40,7 @@ export default function Login() {
           <div className="text-center font-medium text-3xl mb-4 md:mt-20">
             <h1 className="text-gray-900">登入帳號</h1>
           </div>
-          <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+          <form className="mt-8 space-y-6" onSubmit={handleCredentialsSignIn}>
             <div className="bg-white rounded-lg shadow-lg px-4 py-6">
               <div className="mb-4">
                 <label
@@ -97,6 +94,36 @@ export default function Login() {
               )}
             </div>
           </form>
+
+          <div className="mt-8 space-y-4 text-center">
+            <button
+              className="w-full py-2 px-4 rounded-lg"
+              onClick={() => signIn('google', { callbackUrl: '/' })}
+            >
+              <Image
+                src="/assets/google-logo.svg"
+                alt="Login with Google"
+                width={500}
+                height={500}
+                style={{ width: '100%', height: 'auto' }}
+              />
+            </button>
+            <button
+              onClick={() => signIn('line', { callbackUrl: '/' })}
+              className="flex items-center justify-center w-full bg-green-500 text-white hover:bg-green-600 rounded-full"
+              style={{
+                width: '100%',
+                height: 'auto',
+                aspectRatio: '180 / 40',
+                padding: 0,
+              }}
+            >
+              <span style={{ fontSize: '2rem', fontWeight: 'bold' }}>
+                Login with Line
+              </span>
+            </button>
+          </div>
+
           <div className="mt-12 text-xl text-center">
             <span className="text-gray-500">如果你還沒有帳號 </span>
             <Link href="/register">

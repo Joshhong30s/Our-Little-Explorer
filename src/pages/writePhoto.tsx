@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useGetUserID } from '../hooks/useGetUserId';
 import { useCookies } from 'react-cookie';
 import Image from 'next/image';
+import { useSession } from 'next-auth/react';
 
 type PhotoType = {
   name: string;
@@ -17,8 +18,8 @@ type PhotoType = {
 
 export default function WritePhoto() {
   const userID = useGetUserID();
+  const { data: session } = useSession();
   const [file, setFile] = useState(null);
-  const [cookies, _] = useCookies(['access_token']);
   const [allowYoutubeUrl, setAllowYoutubeUrl] = useState(false);
   const [photo, setPhoto] = useState<PhotoType>({
     name: '',
@@ -90,11 +91,26 @@ export default function WritePhoto() {
     }
   };
 
-  const onSubmit = async (e: any) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!session || !session.user) {
+      alert('用戶未登入，請先登入');
+      return;
+    }
+    console.log('session', session);
+    const token = session.user.accessToken || session?.user?.id;
+    console.log('token', token);
+
+    if (!token) {
+      alert('Access token 未找到，請重新登入');
+      return;
+    }
     try {
       await axios.post('/api/photo/photo', photo, {
-        headers: { authorization: cookies.access_token }, // must verify token first
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
       console.log('photo created');
       window.location.replace('/');
