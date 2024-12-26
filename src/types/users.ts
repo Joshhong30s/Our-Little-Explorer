@@ -1,11 +1,14 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema } from 'mongoose';
 
-// Define userSchema for MongoDB
 const UserSchema = new Schema({
-  username: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  savedPhotos: [{ type: mongoose.Schema.Types.ObjectId, ref: "Photo" }],
+  username: { type: String, required: false, unique: true },
+  password: { type: String, required: false },
+  email: { type: String, required: false, unique: true },
+  image: { type: String, required: false },
+  providers: { type: [String], default: [] },
+  createdAt: { type: Date, default: Date.now },
+  savedPhotos: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Photo' }],
 });
 
 export const UserModel =
-  mongoose.models.users || mongoose.model("users", UserSchema);
+  mongoose.models.users || mongoose.model('users', UserSchema);

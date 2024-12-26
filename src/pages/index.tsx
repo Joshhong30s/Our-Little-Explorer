@@ -11,10 +11,13 @@ import { FaBaby } from 'react-icons/fa';
 import dynamic from 'next/dynamic';
 import Swipe from 'react-easy-swipe';
 import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai';
+import { useSession } from 'next-auth/react';
+
 import Head from 'next/head';
 import Script from 'next/script';
 
 export default function Home() {
+  const { data: session } = useSession();
   const [isLoading, setIsLoading] = useState(true);
   const [photo, setPhoto] = useState([]);
   const ReactPlayer = dynamic(() => import('react-player/lazy'), {
@@ -87,8 +90,8 @@ export default function Home() {
 
     fetchPhoto();
 
-    if (cookies.access_token) fetchSavedPhotos();
-  }, [cookies.access_token, userID]);
+    if (session) fetchSavedPhotos();
+  }, [session, userID]);
 
   const savePhoto = async (photoID: string) => {
     try {
@@ -261,7 +264,7 @@ export default function Home() {
                   <button
                     className="absolute top-2 right-2 bg-neutral-50 bg-opacity-30 text-red-500 rounded-full p-3"
                     onClick={() => {
-                      if (!cookies.access_token) {
+                      if (!session) {
                         alert('請先登入才能使用我的最愛功能');
                         return;
                       }

@@ -67,7 +67,6 @@ export default function Message() {
         const data = await response.json();
         console.log('Fetched data:', data);
 
-        // 確保 messages 是 array，且符合預期結構
         const formattedMessages = (data.messages || []).map(
           (message: {
             date: string;
