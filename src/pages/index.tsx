@@ -78,13 +78,14 @@ export default function Home() {
 
     const fetchSavedPhotos = async () => {
       try {
-        const response = await axios.get(`/api/photo/photo`, {
+        if (!session) return;
+
+        const response = await axios.get('/api/photo/photo', {
           params: { action: 'savedPhotos', userID },
         });
         setSavedPhotos(response.data.savedPhotos);
-        console.log('Response data:', response.data);
       } catch (err) {
-        console.log(err);
+        console.error('Error fetching saved photos:', err);
       }
     };
 
