@@ -12,14 +12,12 @@ import dynamic from 'next/dynamic';
 import Swipe from 'react-easy-swipe';
 import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai';
 import { useSession } from 'next-auth/react';
-
-import Head from 'next/head';
-import Script from 'next/script';
+import { Photo } from '@/types/photos';
 
 export default function Home() {
   const { data: session } = useSession();
   const [isLoading, setIsLoading] = useState(true);
-  const [photo, setPhoto] = useState([]);
+  const [photo, setPhoto] = useState<Photo[]>([]);
   const ReactPlayer = dynamic(() => import('react-player/lazy'), {
     ssr: false,
   });
@@ -136,7 +134,21 @@ export default function Home() {
     }
   };
 
-  const reversedPhoto = photo.slice().reverse();
+  const reversedPhoto = photo.slice().sort((a, b) => {
+  
+    const ageA = parseInt(calculateAge(a.growingTime).replace(/Y|M/g, '')) || 0;
+    const ageB = parseInt(calculateAge(b.growingTime).replace(/Y|M/g, '')) || 0;
+
+    if (ageB !== ageA) {
+      return ageB - ageA; 
+    }
+
+    
+    const timestampA = parseInt(a._id.substring(0, 8), 16);
+    const timestampB = parseInt(b._id.substring(0, 8), 16);
+
+    return timestampB - timestampA;
+  });
 
   ///slideshow
 
@@ -219,24 +231,24 @@ export default function Home() {
         <ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
           {reversedPhoto.map(
             (photo: {
-              birthday: string;
               _id: string;
               name: string;
               location: string;
               instructions: string;
-              imageUrl: string;
+              imageUrl?: string;
               growingTime: number | string;
+              userOwner: string;
             }) => (
               <li
                 key={photo._id}
                 className="border border-gray-300  bg-gray-100 rounded-lg"
               >
                 <div className="relative w-full h-96 sm:h-[450px] lg:h-[600px]">
-                  {photo.imageUrl.endsWith('.jpg') ||
-                  photo.imageUrl.endsWith('.png') ||
-                  photo.imageUrl.endsWith('.jpeg') ? (
+                  {photo?.imageUrl?.endsWith('.jpg') ||
+                  photo?.imageUrl?.endsWith('.png') ||
+                  photo?.imageUrl?.endsWith('.jpeg') ? (
                     <Link
-                      href={photo.imageUrl}
+                      href={photo?.imageUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                     >

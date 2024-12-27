@@ -15,3 +15,13 @@ const PhotoSchema = new Schema({
 
 export const PhotoModel =
   mongoose.models.photos || mongoose.model('photos', PhotoSchema);
+
+export interface Photo {
+  _id: string;
+  name: string;
+  location: string;
+  instructions: string;
+  imageUrl?: string;
+  growingTime: number | string;
+  userOwner: string;
+}
