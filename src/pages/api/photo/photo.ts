@@ -22,14 +22,13 @@ export default async function handler(
     user = await UserModel.findOne({ email: token.email });
   }
 
-  if (!user) {
-    return res.status(404).json({ message: 'User not found' });
-  }
-  console.log('user', user);
   if (method === 'GET') {
     const { action } = req.query;
 
     if (action === 'savedPhotos') {
+      if (!user) {
+        return res.status(401).json({ message: 'Unauthorized' });
+      }
       const savedPhotos = await PhotoModel.find({
         _id: { $in: user.savedPhotos },
       });
