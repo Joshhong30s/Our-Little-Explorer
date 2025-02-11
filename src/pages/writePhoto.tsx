@@ -6,6 +6,7 @@ import { useGetUserID } from '../hooks/useGetUserId';
 import { useCookies } from 'react-cookie';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
+import { useTranslation } from 'react-i18next';
 
 type PhotoType = {
   name: string;
@@ -17,9 +18,10 @@ type PhotoType = {
 };
 
 export default function WritePhoto() {
+  const { t } = useTranslation('common');
   const userID = useGetUserID();
   const { data: session } = useSession();
-  const [file, setFile] = useState(null);
+  const [file, setFile] = useState<File | null>(null);
   const [allowYoutubeUrl, setAllowYoutubeUrl] = useState(false);
   const [photo, setPhoto] = useState<PhotoType>({
     name: '',
@@ -30,7 +32,9 @@ export default function WritePhoto() {
     userOwner: userID ?? '',
   });
 
-  const handleChange = (e: any) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setPhoto({
       ...photo,
       [e.target.name]: e.target.value,
@@ -76,17 +80,17 @@ export default function WritePhoto() {
             }
           );
 
-          alert('相片上傳成功，可以送出');
+          alert(t('photo.uploadSuccess'));
           setPhoto({
             ...photo,
             imageUrl: response.data.data.link,
           });
         } catch (err) {
           console.log(err);
-          alert('相片上傳失敗');
+          alert(t('photo.uploadFail'));
         }
       } else {
-        alert('請上傳相片');
+        alert(t('photo.noPhoto'));
       }
     }
   };
@@ -95,7 +99,7 @@ export default function WritePhoto() {
     e.preventDefault();
 
     if (!session || !session.user) {
-      alert('用戶未登入，請先登入');
+      alert(t('photo.notLoggedIn'));
       return;
     }
     console.log('session', session);
@@ -103,7 +107,7 @@ export default function WritePhoto() {
     console.log('token', token);
 
     if (!token) {
-      alert('Access token 未找到，請重新登入');
+      alert(t('photo.noAccessToken'));
       return;
     }
     try {
@@ -116,30 +120,32 @@ export default function WritePhoto() {
       window.location.replace('/');
     } catch (error) {
       console.log(error);
-      alert('Failed to upload image');
+      alert(t('photo.failedUpload'));
     }
   };
 
   return (
     <div
-      className="min-h-screen bg-gray-900/70 flex flex-col items-center bg-cover bg-center "
+      className="min-h-screen bg-gray-900/70 flex flex-col items-center bg-cover bg-center"
       style={{ backgroundImage: "url('bao6.jpeg')" }}
     >
       <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-lg mt-10">
-        <h2 className="text-2xl text-center font-medium mb-6">小寶日誌..</h2>
+        <h2 className="text-2xl text-center font-medium mb-6">
+          {t('photo.diaryTitle')}
+        </h2>
         <form className="space-y-4" onSubmit={onSubmit}>
           <div>
             <label
               htmlFor="name"
               className="block text-gray-700 font-medium text-lg"
             >
-              相片標題
+              {t('photo.photoTitleLabel')}
             </label>
             <input
               type="text"
               id="name"
               name="name"
-              placeholder="...這張照片是"
+              placeholder={t('photo.photoTitlePlaceholder')}
               onChange={handleChange}
               className="mt-1 block w-full h-8 border-b-2 border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:ring-opacity-50"
             />
@@ -149,33 +155,30 @@ export default function WritePhoto() {
               htmlFor="location"
               className="block text-gray-700 font-medium text-lg"
             >
-              相片地點
+              {t('photo.photoLocationLabel')}
             </label>
-
-            <div>
-              <input
-                type="text"
-                id="location"
-                name="location"
-                placeholder="...照片拍攝地點"
-                onChange={handleChange}
-                className="mt-1 block w-full  h-8 border-b-2 border-gray-300  focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:ring-opacity-50"
-              />
-            </div>
+            <input
+              type="text"
+              id="location"
+              name="location"
+              placeholder={t('photo.photoLocationPlaceholder')}
+              onChange={handleChange}
+              className="mt-1 block w-full h-8 border-b-2 border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:ring-opacity-50"
+            />
           </div>
           <div className="whitespace-pre-wrap">
             <label
               htmlFor="instructions"
               className="block text-gray-700 font-medium text-lg"
             >
-              照片描述
+              {t('photo.photoDescriptionLabel')}
             </label>
             <textarea
               id="instructions"
               name="instructions"
               onChange={handleChange}
-              className="mt-1 block w-full resize-none md:h-48 border-b-2 border-gray-300  focus:outline-none whitespace-pre-wrap"
-              placeholder="...寫下照片描述"
+              className="mt-1 block w-full resize-none md:h-48 border-b-2 border-gray-300 focus:outline-none whitespace-pre-wrap"
+              placeholder={t('photo.photoDescriptionPlaceholder')}
             ></textarea>
           </div>
           <div>
@@ -183,13 +186,13 @@ export default function WritePhoto() {
               htmlFor="growingTime"
               className="block text-gray-700 font-medium text-lg"
             >
-              相片年齡
+              {t('photo.photoAgeLabel')}
             </label>
             <input
               type="date"
               id="growingTime"
               name="growingTime"
-              placeholder="...照片裡的年齡"
+              placeholder={t('photo.photoAgePlaceholder')}
               onChange={handleDateChange}
               className="mt-1 block w-full h-8 border-b-2 border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:ring-opacity-50"
             />
@@ -197,34 +200,33 @@ export default function WritePhoto() {
           <div>
             <input
               type="radio"
-              id="image"
+              id="youtube"
               name="image"
               onChange={() => setAllowYoutubeUrl(true)}
               className="mr-2"
             />
-            <label htmlFor="image">貼上 YouTube 影片連結</label>
+            <label htmlFor="youtube">{t('photo.youtubeOptionLabel')}</label>
             <br />
             <input
               type="radio"
-              id="image"
+              id="upload"
               name="image"
               onChange={() => setAllowYoutubeUrl(false)}
               className="mr-2"
             />
-            <label htmlFor="image">上傳小寶照片</label>
+            <label htmlFor="upload">{t('photo.uploadOptionLabel')}</label>
           </div>
           <div>
-            {allowYoutubeUrl && (
+            {allowYoutubeUrl ? (
               <input
                 type="text"
                 id="youtubeUrl"
                 name="youtubeUrl"
-                placeholder="貼上 YouTube 連結"
+                placeholder={t('photo.youtubeUrlPlaceholder')}
                 onChange={handleImageChange}
                 className="mt-1 block w-full h-8 border-b-2 border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:ring-opacity-50"
               />
-            )}
-            {!allowYoutubeUrl && (
+            ) : (
               <input
                 type="file"
                 id="image"
@@ -233,15 +235,19 @@ export default function WritePhoto() {
                 className="mt-1 block w-full h-8 border-b-2 border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:ring-opacity-50"
               />
             )}
-            {file && <img src={URL.createObjectURL(file)} alt="" />}
+            {file && (
+              <img
+                src={URL.createObjectURL(file)}
+                alt={t('photo.uploadedPhotoAlt')}
+              />
+            )}
           </div>
-
           <div className="py-4 text-center">
             <button
               type="submit"
-              className=" py-2 px-4 rounded-lg transition-colors duration-300 hover:bg-teal-980 hover:text-gray-100 text-slate-600 bg-blue-980  "
+              className="py-2 px-4 rounded-lg transition-colors duration-300 hover:bg-teal-980 hover:text-gray-100 text-slate-600 bg-blue-980"
             >
-              確認送出
+              {t('photo.submit')}
             </button>
           </div>
         </form>

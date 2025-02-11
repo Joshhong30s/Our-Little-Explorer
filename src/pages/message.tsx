@@ -3,12 +3,15 @@
 import Select from 'react-select';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { useTranslation } from 'react-i18next';
 
 const MenuList = (props: any) => (
   <div className="grid grid-cols-4 gap-2">{props.children}</div>
 );
 
 export default function Message() {
+  const { t } = useTranslation('common');
+
   const [formData, setFormData] = useState({
     avatar: '',
     name: '',
@@ -17,7 +20,7 @@ export default function Message() {
 
   const avatarOptions = Array.from({ length: 16 }, (_, i) => ({
     value: `/assets/${String(i + 1).padStart(2, '0')}.svg`,
-    label: `Avatar ${i + 1}`,
+    label: t('message.avatar', { number: i + 1 }),
   }));
 
   const handleAvatarChange = (selectedOption: any) => {
@@ -42,12 +45,12 @@ export default function Message() {
 
       if (!response.ok) throw new Error('Error submitting data');
 
-      alert('留言成功!');
+      alert(t('message.submitSuccess'));
       setFormData({ avatar: '', name: '', message: '' });
       setRefresh(refresh + 1);
     } catch (error) {
       console.error('Submission Error:', error);
-      alert('提交失敗，請稍後重試。');
+      alert(t('message.submitFail'));
     }
   };
 
@@ -65,7 +68,6 @@ export default function Message() {
         if (!response.ok) throw new Error('Failed to fetch messages');
 
         const data = await response.json();
-        console.log('Fetched data:', data);
 
         const formattedMessages = (data.messages || []).map(
           (message: {
@@ -74,18 +76,17 @@ export default function Message() {
             name: string;
             message: string;
           }) => ({
-            date: message.date || '未知日期',
+            date: message.date || t('message.unknownDate'),
             avatar: message.avatar || '/default.svg',
-            name: message.name || '匿名',
-            message: message.message || '無留言內容',
+            name: message.name || t('message.anonymous'),
+            message: message.message || t('message.noContent'),
           })
         );
 
-        console.log('Formatted messages for display:', formattedMessages);
         setMessages(formattedMessages);
       } catch (error) {
         console.error('Error loading messages:', error);
-        alert('無法載入留言，請稍後再試。');
+        alert(t('message.loadFail'));
       } finally {
         setLoading(false);
       }
@@ -98,7 +99,7 @@ export default function Message() {
     <div className="relative">
       <Image
         src="/assets/bao12.jpeg"
-        alt="message background"
+        alt={t('message.backgroundAlt')}
         fill
         quality={10}
         className="inset-0 -z-10 opacity-20 absolute object-cover"
@@ -108,14 +109,14 @@ export default function Message() {
           {/* Form Section */}
           <div className="w-full md:w-1/3 bg-white rounded-md shadow-md p-6">
             <h2 className="text-2xl text-center font-medium mb-6">
-              我要留言給小寶
+              {t('message.leaveMessage')}
             </h2>
             <form className="space-y-6" onSubmit={handleSubmit}>
               <label
                 htmlFor="avatar"
                 className="block text-gray-700 font-medium text-lg"
               >
-                我的頭像
+                {t('message.avatarLabel')}
               </label>
               <Select
                 name="avatar"
@@ -125,7 +126,7 @@ export default function Message() {
                 )}
                 onChange={handleAvatarChange}
                 options={avatarOptions}
-                placeholder="請選擇一個頭像"
+                placeholder={t('message.avatarPlaceholder')}
                 formatOptionLabel={option => (
                   <div>
                     <img
@@ -142,13 +143,13 @@ export default function Message() {
                   htmlFor="name"
                   className="block text-gray-700 font-medium text-lg"
                 >
-                  我的稱呼
+                  {t('message.nameLabel')}
                 </label>
                 <input
                   type="text"
                   id="name"
                   name="name"
-                  placeholder="我是誰.."
+                  placeholder={t('message.namePlaceholder')}
                   onChange={handleChange}
                   value={formData.name}
                   className="mt-1 block w-full h-8 border-b-2 border-gray-300 focus:border-blue-500 focus:ring"
@@ -159,14 +160,14 @@ export default function Message() {
                   htmlFor="message"
                   className="block text-gray-700 font-medium text-lg"
                 >
-                  我的留言
+                  {t('message.messageLabel')}
                 </label>
                 <textarea
                   id="message"
                   name="message"
                   onChange={handleChange}
                   value={formData.message}
-                  placeholder="請寫下你的留言..."
+                  placeholder={t('message.messagePlaceholder')}
                   className="mt-1 block w-full h-24 resize-none border-b-2 border-gray-300 focus:border-blue-500 focus:ring"
                 ></textarea>
               </div>
@@ -175,7 +176,7 @@ export default function Message() {
                   type="submit"
                   className="px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
                 >
-                  送出
+                  {t('message.submit')}
                 </button>
               </div>
             </form>
@@ -184,13 +185,13 @@ export default function Message() {
           {/* Messages Section */}
           <div className="w-full md:w-1/3 bg-white rounded-md shadow-md p-6">
             <h2 className="text-2xl text-center font-medium mb-6">
-              小寶留言板
+              {t('message.boardTitle')}
             </h2>
             <div className="space-y-6 overflow-y-auto max-h-[600px]">
               {loading ? (
                 <div className="flex justify-center items-center h-64">
                   <span className="animate-spin rounded-full h-16 w-16 border-t-2 border-gray-900"></span>
-                  <span className="sr-only">讀取留言中 ...</span>
+                  <span className="sr-only">{t('message.loading')}</span>
                 </div>
               ) : messages.length > 0 ? (
                 messages
@@ -224,7 +225,9 @@ export default function Message() {
                     </div>
                   ))
               ) : (
-                <div className="text-center text-gray-500">目前沒有留言</div>
+                <div className="text-center text-gray-500">
+                  {t('message.noMessages')}
+                </div>
               )}
             </div>
           </div>
