@@ -4,12 +4,12 @@ import Image from 'next/image';
 import { signOut } from 'next-auth/react';
 import { useSession } from 'next-auth/react';
 import { useState } from 'react';
-// import { useCookies } from 'react-cookie';
-
 import { IoMdMenu, IoMdClose, IoMdCloseCircle } from 'react-icons/io';
 import { ImStatsDots } from 'react-icons/im';
+import { useTranslation } from 'react-i18next';
 
 export default function Navbar() {
+  const { t } = useTranslation('common');
   const [isNavbarOpen, setIsNavbarOpen] = useState(false);
   const [isDatabarOpen, setIsDatabarOpen] = useState(false);
   const { data: session } = useSession();
@@ -30,36 +30,37 @@ export default function Navbar() {
             <ul className="xl:flex items-center xl:space-x-10">
               <li className="block mb-4 md:mb-0 md:ml-6 hover:bg-teal-980 hover:text-gray-50 hover:p-4 hover:rounded-md transition-colors duration-200 ease-in-out">
                 {!session ? (
-                  <Link href="/login">登入</Link>
+                  <Link href="/login">{t('navbar.login')}</Link>
                 ) : (
-                  <button onClick={logout}>登出</button>
+                  <button onClick={logout}>{t('navbar.logout')}</button>
                 )}
               </li>
               <li className="block mb-4 md:mb-0 md:ml-6 hover:bg-teal-980 hover:text-gray-50 hover:p-4 hover:rounded-md transition-colors duration-200 ease-in-out">
                 {!session ? (
-                  <Link href="/register">註冊</Link>
+                  <Link href="/register">{t('navbar.register')}</Link>
                 ) : (
-                  <Link href="/savedPhoto">我的最愛</Link>
+                  <Link href="/savedPhoto">{t('navbar.favorites')}</Link>
                 )}
               </li>
               <li className="block mb-4 md:mb-0 md:ml-6 hover:bg-teal-980 hover:text-gray-50 hover:p-4 hover:rounded-md transition-colors duration-200 ease-in-out">
                 {!session ? (
-                  <Link href="/login">上傳相片</Link>
+                  <Link href="/login">{t('navbar.uploadPhoto')}</Link>
                 ) : (
-                  <Link href="/writePhoto">上傳相片</Link>
+                  <Link href="/writePhoto">{t('navbar.uploadPhoto')}</Link>
                 )}
               </li>
               <li className="block mb-4 md:mb-0 md:ml-6 hover:bg-teal-980 hover:text-gray-50 hover:p-4 hover:rounded-md transition-colors duration-200 ease-in-out">
-                <Link href="/">所有相片</Link>
+                <Link href="/">{t('navbar.allPhotos')}</Link>
               </li>
             </ul>
           </div>
         </div>
 
-        <div className=" order-1 md:order-2 flex justify-between items-center ">
+        {/* 中間 logo 與手機版的左右切換按鈕 */}
+        <div className="order-1 md:order-2 flex justify-between items-center">
           <button
             className="md:hidden text-neutral-800"
-            aria-label="Toggle left"
+            aria-label={t('navbar.toggleLeft')}
             onClick={() => setIsNavbarOpen(!isNavbarOpen)}
           >
             {isNavbarOpen ? <IoMdClose size={30} /> : <IoMdMenu size={30} />}
@@ -67,9 +68,9 @@ export default function Navbar() {
 
           <Link href="/">
             <Image
-              className="rounded-full drop-shadow-xl mx-auto p-0 "
+              className="rounded-full drop-shadow-xl mx-auto p-0"
               src="/assets/baby1.svg"
-              alt="baby"
+              alt={t('navbar.logoAlt')}
               width={100}
               height={100}
               priority={true}
@@ -78,7 +79,7 @@ export default function Navbar() {
 
           <button
             className="md:hidden text-neutral-800"
-            aria-label="Toggle right"
+            aria-label={t('navbar.toggleRight')}
             onClick={() => setIsDatabarOpen(!isDatabarOpen)}
           >
             {isDatabarOpen ? (
@@ -95,10 +96,10 @@ export default function Navbar() {
           }`}
         >
           <div className="mb-4 md:mb-0 md:ml-6 hover:bg-teal-980 hover:text-gray-50 hover:p-4 hover:rounded-md transition-colors duration-200 ease-in-out">
-            <Link href="/dashboard">成長圖表</Link>
+            <Link href="/dashboard">{t('navbar.growthChart')}</Link>
           </div>
           <div className="mb-4 md:mb-0 md:ml-6 hover:bg-teal-980 hover:text-gray-50 hover:p-4 hover:rounded-md transition-colors duration-200 ease-in-out">
-            <Link href="/message">留言小寶</Link>
+            <Link href="/message">{t('navbar.leaveMessage')}</Link>
           </div>
         </div>
       </div>

@@ -30,7 +30,7 @@ export default function Login() {
     <div className="relative">
       <Image
         src="/assets/bao6.jpeg"
-        alt="login"
+        alt={t('user.login')}
         fill
         quality={10}
         className="inset-0 -z-10 opacity-80 absolute object-cover"
@@ -38,7 +38,7 @@ export default function Login() {
       <div className="bg-gray-100/70 min-h-screen flex flex-col justify-start py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full mx-auto">
           <div className="text-center font-medium text-3xl mb-4 md:mt-20">
-            <h1 className="text-gray-900">登入帳號</h1>
+            <h1 className="text-gray-900">{t('user.login')}</h1>
           </div>
           <form className="mt-8 space-y-6" onSubmit={handleCredentialsSignIn}>
             <div className="bg-white rounded-lg shadow-lg px-4 py-6">
@@ -56,7 +56,7 @@ export default function Login() {
                   value={username}
                   onChange={e => setUsername(e.target.value)}
                   className="border border-gray-400 p-2 w-full rounded-lg focus:outline-none focus:border-blue-400"
-                  placeholder="Your username.."
+                  placeholder={t('user.userName')}
                 />
               </div>
               <div className="mb-6">
@@ -64,7 +64,7 @@ export default function Login() {
                   htmlFor="password"
                   className="block text-gray-700 font-bold mb-2"
                 >
-                  {t('common:user.password')}
+                  {t('common:user.passWord')}
                 </label>
                 <input
                   type="password"
@@ -73,7 +73,7 @@ export default function Login() {
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                   className="border border-gray-400 p-2 w-full rounded-lg focus:outline-none focus:border-blue-400"
-                  placeholder="Your password.."
+                  placeholder={t('user.passWord')}
                 />
               </div>
               <div className="text-center">
@@ -87,9 +87,7 @@ export default function Login() {
 
               {error && (
                 <div className="mt-4 text-center">
-                  <span className="text-red-500">
-                    Something went wrong. Please try again.
-                  </span>
+                  <span className="text-red-500">{t('user.errorMessage')}</span>
                 </div>
               )}
             </div>
@@ -102,7 +100,7 @@ export default function Login() {
             >
               <Image
                 src="/assets/google-logo.svg"
-                alt="Login with Google"
+                alt={t('user.loginWithGoogle')}
                 width={500}
                 height={500}
                 style={{ width: '100%', height: 'auto' }}
@@ -119,16 +117,16 @@ export default function Login() {
               }}
             >
               <span style={{ fontSize: '2rem', fontWeight: 'bold' }}>
-                Login with Line
+                {t('user.loginWithLine')}
               </span>
             </button>
           </div>
 
           <div className="mt-12 text-xl text-center">
-            <span className="text-gray-500">如果你還沒有帳號 </span>
+            <span className="text-gray-500">{t('user.noAccountMessage')}</span>
             <Link href="/register">
               <p className="text-blue-500 hover:text-blue-700 hover:text-2xl mt-4">
-                點這裡註冊
+                {t('user.registerHere')}
               </p>
             </Link>
           </div>
