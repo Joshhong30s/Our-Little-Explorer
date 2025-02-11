@@ -56,7 +56,7 @@ export default function Login() {
                   value={username}
                   onChange={e => setUsername(e.target.value)}
                   className="border border-gray-400 p-2 w-full rounded-lg focus:outline-none focus:border-blue-400"
-                  placeholder={t('user.username')}
+                  placeholder={t('user.userName')}
                 />
               </div>
               <div className="mb-6">
@@ -64,7 +64,7 @@ export default function Login() {
                   htmlFor="password"
                   className="block text-gray-700 font-bold mb-2"
                 >
-                  {t('common:user.password')}
+                  {t('common:user.passWord')}
                 </label>
                 <input
                   type="password"
@@ -73,7 +73,7 @@ export default function Login() {
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                   className="border border-gray-400 p-2 w-full rounded-lg focus:outline-none focus:border-blue-400"
-                  placeholder={t('user.password')}
+                  placeholder={t('user.passWord')}
                 />
               </div>
               <div className="text-center">
@@ -87,9 +87,7 @@ export default function Login() {
 
               {error && (
                 <div className="mt-4 text-center">
-                  <span className="text-red-500">
-                    {t('user.error_message')}
-                  </span>
+                  <span className="text-red-500">{t('user.errorMessage')}</span>
                 </div>
               )}
             </div>
@@ -102,7 +100,7 @@ export default function Login() {
             >
               <Image
                 src="/assets/google-logo.svg"
-                alt={t('user.login_with_google')}
+                alt={t('user.loginWithGoogle')}
                 width={500}
                 height={500}
                 style={{ width: '100%', height: 'auto' }}
@@ -119,18 +117,16 @@ export default function Login() {
               }}
             >
               <span style={{ fontSize: '2rem', fontWeight: 'bold' }}>
-                {t('user.login_with_line')}
+                {t('user.loginWithLine')}
               </span>
             </button>
           </div>
 
           <div className="mt-12 text-xl text-center">
-            <span className="text-gray-500">
-              {t('user.no_account_message')}
-            </span>
+            <span className="text-gray-500">{t('user.noAccountMessage')}</span>
             <Link href="/register">
               <p className="text-blue-500 hover:text-blue-700 hover:text-2xl mt-4">
-                {t('user.register_here')}
+                {t('user.registerHere')}
               </p>
             </Link>
           </div>
