@@ -8,9 +8,10 @@ const PhotoSchema = new Schema({
   growingTime: { type: Schema.Types.Mixed, required: true },
   userOwner: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'users',
     required: true,
   },
+  likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'users', default: [] }],
 });
 
 export const PhotoModel =
@@ -24,4 +25,5 @@ export interface Photo {
   imageUrl?: string;
   growingTime: number | string;
   userOwner: string;
+  likes?: string[];
 }

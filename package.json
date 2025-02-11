@@ -10,6 +10,9 @@
   },
   "dependencies": {
     "@auth/mongodb-adapter": "^3.7.4",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/material": "^6.4.3",
     "@types/mongoose": "^5.11.97",
     "@types/node": "18.15.11",
     "@types/react-select": "^5.0.1",

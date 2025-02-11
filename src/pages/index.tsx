@@ -1,3 +1,5 @@
+'use client';
+
 import dayjs from 'dayjs';
 import axios from 'axios';
 import Link from 'next/link';
@@ -6,13 +8,13 @@ import { useState, useEffect } from 'react';
 import { useGetUserID } from '../hooks/useGetUserId';
 import { useCookies } from 'react-cookie';
 import { RiHeartAddLine, RiHeartFill } from 'react-icons/ri';
-import { FaMapMarkerAlt } from 'react-icons/fa';
-import { FaBaby } from 'react-icons/fa';
+import { FaMapMarkerAlt, FaBaby } from 'react-icons/fa';
 import dynamic from 'next/dynamic';
 import Swipe from 'react-easy-swipe';
 import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai';
 import { useSession } from 'next-auth/react';
 import { Photo } from '@/types/photos';
+import PhotoModal from '../components/photoModal';
 
 export default function Home() {
   const { data: session } = useSession();
@@ -25,12 +27,12 @@ export default function Home() {
   const [cookies, _] = useCookies(['access_token']);
   const userID = useGetUserID();
   const babyBirthday = dayjs('2023-04-12T00:00:00+08:00');
+  const [modalPhotoId, setModalPhotoId] = useState<string | null>(null);
+
   const calculateAge = (growingTime: number | string) => {
     if (typeof growingTime === 'number') {
       const diffYears = Math.floor(growingTime / 12);
       const diffMonths = Math.floor(growingTime % 12);
-      console.log('diffYears:', diffYears, 'diffMonths:', diffMonths);
-
       return `${diffYears}Y${diffMonths}M`;
     } else {
       const date = dayjs(growingTime);
@@ -59,7 +61,6 @@ export default function Home() {
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 1000);
-
     return () => clearTimeout(timer);
   }, []);
 
@@ -68,7 +69,6 @@ export default function Home() {
       try {
         const response = await axios.get('/api/photo/photo');
         setPhoto(response.data);
-        console.log(response.data);
       } catch (err) {
         console.log(err);
       }
@@ -77,7 +77,6 @@ export default function Home() {
     const fetchSavedPhotos = async () => {
       try {
         if (!session) return;
-
         const response = await axios.get('/api/photo/photo', {
           params: { action: 'savedPhotos', userID },
         });
@@ -88,7 +87,6 @@ export default function Home() {
     };
 
     fetchPhoto();
-
     if (session) fetchSavedPhotos();
   }, [session, userID]);
 
@@ -96,11 +94,8 @@ export default function Home() {
     try {
       const response = await axios.put(
         '/api/photo/photo',
-        {
-          photoID,
-          userID,
-        },
-        { headers: { authorization: cookies.access_token } } // must verify token
+        { photoID, userID },
+        { headers: { authorization: cookies.access_token } }
       );
       setSavedPhotos(response.data.savedPhotos);
     } catch (err) {
@@ -111,11 +106,8 @@ export default function Home() {
   const unsavePhoto = async (photoID: string) => {
     try {
       const response = await axios.delete('/api/photo/photo', {
-        data: {
-          photoID,
-          userID,
-        },
-        headers: { authorization: cookies.access_token }, // must verify token
+        data: { photoID, userID },
+        headers: { authorization: cookies.access_token },
       });
       setSavedPhotos(response.data.savedPhotos || []);
     } catch (err) {
@@ -135,23 +127,17 @@ export default function Home() {
   };
 
   const reversedPhoto = photo.slice().sort((a, b) => {
-  
     const ageA = parseInt(calculateAge(a.growingTime).replace(/Y|M/g, '')) || 0;
     const ageB = parseInt(calculateAge(b.growingTime).replace(/Y|M/g, '')) || 0;
-
     if (ageB !== ageA) {
-      return ageB - ageA; 
+      return ageB - ageA;
     }
-
-    
     const timestampA = parseInt(a._id.substring(0, 8), 16);
     const timestampB = parseInt(b._id.substring(0, 8), 16);
-
     return timestampB - timestampA;
   });
 
-  ///slideshow
-
+  /// slideshow images
   const images = [
     { id: 1, src: '/assets/bao1.jpeg', alt: 'bao1' },
     { id: 2, src: '/assets/bao2.jpeg', alt: 'bao2' },
@@ -178,8 +164,7 @@ export default function Home() {
             onClick={handlePrevSlide}
             className="absolute left-4 m-auto text-3xl md:text-6xl inset-y-1/2 cursor-pointer text-white p-1 md:p-4 bg-black rounded-full z-20"
           />
-
-          <div className="w-full h-[40vh] md:h-[75vh] flex overflow-hidden relative m-auto ">
+          <div className="w-full h-[40vh] md:h-[75vh] flex overflow-hidden relative m-auto">
             <Swipe
               onSwipeLeft={handleNextSlide}
               onSwipeRight={handlePrevSlide}
@@ -210,121 +195,110 @@ export default function Home() {
         </div>
       )}
       <div className="relative flex justify-center items-center p-6 bg-white">
-        {images.map((_, index) => {
-          return (
-            <div
-              className={
-                index === currentSlide
-                  ? 'h-4 w-4 bg-gray-700 rounded-full mx-2  cursor-pointer'
-                  : 'h-4 w-4 bg-gray-300 rounded-full mx-2  cursor-pointer'
-              }
-              key={index}
-              onClick={() => {
-                setCurrentSlide(index);
-              }}
-            />
-          );
-        })}
+        {images.map((_, index) => (
+          <div
+            key={index}
+            className={
+              index === currentSlide
+                ? 'h-4 w-4 bg-gray-700 rounded-full mx-2 cursor-pointer'
+                : 'h-4 w-4 bg-gray-300 rounded-full mx-2 cursor-pointer'
+            }
+            onClick={() => setCurrentSlide(index)}
+          />
+        ))}
       </div>
-
       <div className="px-2 md:px-6 mx-auto mb-6 text-black">
         <ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
-          {reversedPhoto.map(
-            (photo: {
-              _id: string;
-              name: string;
-              location: string;
-              instructions: string;
-              imageUrl?: string;
-              growingTime: number | string;
-              userOwner: string;
-            }) => (
-              <li
-                key={photo._id}
-                className="border border-gray-300  bg-gray-100 rounded-lg"
-              >
-                <div className="relative w-full h-96 sm:h-[450px] lg:h-[600px]">
-                  {photo?.imageUrl?.endsWith('.jpg') ||
-                  photo?.imageUrl?.endsWith('.png') ||
-                  photo?.imageUrl?.endsWith('.jpeg') ? (
-                    <Link
-                      href={photo?.imageUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <Image
-                        src={photo.imageUrl}
-                        alt={photo.name}
-                        className="object-cover"
-                        fill
-                      />
-                    </Link>
-                  ) : (
-                    <ReactPlayer
-                      url={photo.imageUrl}
-                      controls={false}
-                      width="100%"
-                      height="100%"
-                      config={{
-                        youtube: {
-                          playerVars: {
-                            origin: 'https://www.youtube.com',
-                          },
+          {reversedPhoto.map(photo => (
+            <li
+              key={photo._id}
+              className="border border-gray-300 bg-gray-100 rounded-lg cursor-pointer"
+              // 點擊時不再導向新頁，而是打開 Modal
+              onClick={() => setModalPhotoId(photo._id)}
+            >
+              <div className="relative w-full h-96 sm:h-[450px] lg:h-[600px]">
+                {photo?.imageUrl?.endsWith('.jpg') ||
+                photo?.imageUrl?.endsWith('.png') ||
+                photo?.imageUrl?.endsWith('.jpeg') ? (
+                  <Image
+                    src={photo.imageUrl}
+                    alt={photo.name}
+                    className="object-cover"
+                    fill
+                  />
+                ) : (
+                  <ReactPlayer
+                    url={photo.imageUrl}
+                    controls={false}
+                    width="100%"
+                    height="100%"
+                    config={{
+                      youtube: {
+                        playerVars: {
+                          origin: 'https://www.youtube.com',
                         },
-                      }}
+                      },
+                    }}
+                  />
+                )}
+                <button
+                  className="absolute top-2 right-2 bg-neutral-50 bg-opacity-30 text-red-500 rounded-full p-3"
+                  onClick={e => {
+                    e.stopPropagation(); // 避免點擊按讚按鈕時同時觸發 Modal
+                    if (!session) {
+                      alert('請先登入才能使用我的最愛功能');
+                      return;
+                    }
+                    toggleSavePhoto(photo._id);
+                  }}
+                  style={{
+                    transform: isPhotosaved(photo._id)
+                      ? 'scale(1.1)'
+                      : 'scale(1)',
+                  }}
+                >
+                  {isPhotosaved(photo._id) ? (
+                    <RiHeartFill
+                      size={40}
+                      className="text-red-500 text-base hover:scale-125 transition-all"
+                    />
+                  ) : (
+                    <RiHeartAddLine
+                      size={40}
+                      className="text-base hover:scale-125 transition-all"
                     />
                   )}
-                  <button
-                    className="absolute top-2 right-2 bg-neutral-50 bg-opacity-30 text-red-500 rounded-full p-3"
-                    onClick={() => {
-                      if (!session) {
-                        alert('請先登入才能使用我的最愛功能');
-                        return;
-                      }
-                      toggleSavePhoto(photo._id);
-                    }}
-                    style={{
-                      transform: isPhotosaved(photo._id)
-                        ? 'scale(1.1)'
-                        : 'scale(1)',
-                    }}
-                  >
-                    {isPhotosaved(photo._id) ? (
-                      <RiHeartFill
-                        size={40}
-                        className="text-red-500 text-base hover:scale-125 transition-all"
-                      />
-                    ) : (
-                      <RiHeartAddLine
-                        size={40}
-                        className="text-base hover:scale-125 transition-all"
-                      />
-                    )}
-                  </button>
-                </div>
-                <div className="p-4">
-                  <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-3xl font-bold pt-1 pb-3 mb-0">
-                      {photo.name}
-                    </h3>
-                    <div className="flex gap-2 items-center">
-                      <FaBaby size={25} />
-                      {calculateAge(photo.growingTime)}
-                    </div>
+                </button>
+              </div>
+              <div className="p-4">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-3xl font-bold pt-1 pb-3 mb-0">
+                    {photo.name}
+                  </h3>
+                  <div className="flex gap-2 items-center">
+                    <FaBaby size={25} />
+                    {calculateAge(photo.growingTime)}
                   </div>
-                  <p className="text-gray-600 text-base flex gap-2 items-center">
-                    <FaMapMarkerAlt size={25} />
-                    {photo.location}
-                  </p>
-                  <p className="text-gray-600 text-base my-8">
-                    {photo.instructions}
-                  </p>
                 </div>
-              </li>
-            )
-          )}
+                <p className="text-gray-600 text-base flex gap-2 items-center">
+                  <FaMapMarkerAlt size={25} />
+                  {photo.location}
+                </p>
+                <p className="text-gray-600 text-base my-8">
+                  {photo.instructions}
+                </p>
+              </div>
+            </li>
+          ))}
         </ul>
       </div>
+      {modalPhotoId && (
+        <PhotoModal
+          open={true}
+          photoId={modalPhotoId}
+          onClose={() => setModalPhotoId(null)}
+        />
+      )}
     </main>
   );
 }
