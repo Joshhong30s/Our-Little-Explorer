@@ -49,7 +49,11 @@ export default NextAuth({
         const user = await UserModel.findOne({ username });
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (user && isPasswordValid) {
-          return { id: user._id.toString(), name: user.username };
+          return {
+            id: user._id.toString(),
+            name: user.username,
+            image: user.image,
+          };
         }
 
         throw new Error('Invalid credentials');
@@ -98,6 +102,7 @@ export default NextAuth({
     async jwt({ token, user, account }) {
       if (user) {
         token.id = user.id;
+        token.image = user.image;
       }
 
       if (account?.accessToken) {
@@ -113,7 +118,9 @@ export default NextAuth({
       if (token?.accessToken && session?.user) {
         session.user.accessToken = token.accessToken as string;
       }
-
+      if (token?.image && session?.user) {
+        session.user.image = token.image as string;
+      }
       return session;
     },
   },
