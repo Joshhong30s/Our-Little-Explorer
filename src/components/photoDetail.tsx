@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import { RiHeartFill, RiHeartAddLine } from 'react-icons/ri';
 import { FaShareAlt } from 'react-icons/fa';
+import { ja } from 'date-fns/locale';
 
 interface Comment {
   _id: string;
@@ -50,7 +51,6 @@ export default function PhotoDetail({
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState('');
   const [loading, setLoading] = useState(true);
-
   useEffect(() => {
     if (!photoId) return;
     axios
@@ -136,15 +136,13 @@ export default function PhotoDetail({
       <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200">
         <div className="flex items-center space-x-3">
           <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-200">
-            {photo.userOwner.image ? (
-              <Image
-                src={photo.userOwner.image}
-                alt={photo.userOwner.username}
-                width={40}
-                height={40}
-                className="object-cover"
-              />
-            ) : null}
+            <Image
+              src="/assets/avatar.jpg"
+              alt={photo.userOwner.username}
+              width={40}
+              height={40}
+              className="object-cover"
+            />
           </div>
           <div className="flex flex-col">
             <p className="font-semibold text-sm">{photo.userOwner.username}</p>

@@ -101,6 +101,11 @@ export default function Navbar() {
           <div className="mb-4 md:mb-0 md:ml-6 hover:bg-teal-980 hover:text-gray-50 hover:p-4 hover:rounded-md transition-colors duration-200 ease-in-out">
             <Link href="/message">{t('navbar.leaveMessage')}</Link>
           </div>
+          {session && (
+            <div className="mb-4 md:mb-0 md:ml-6 hover:bg-teal-980 hover:text-gray-50 hover:p-4 hover:rounded-md transition-colors duration-200 ease-in-out">
+              <Link href="/profile">{t('navbar.profile')}</Link>
+            </div>
+          )}
         </div>
       </div>
     </nav>
