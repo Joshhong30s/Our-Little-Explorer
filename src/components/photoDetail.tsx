@@ -132,7 +132,7 @@ export default function PhotoDetail({
   }
 
   return (
-    <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
+    <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden border-t-4 border-b-4 border-gray-400">
       <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200">
         <div className="flex items-center space-x-3">
           <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-200">
@@ -198,14 +198,16 @@ export default function PhotoDetail({
       </div>
 
       <div className="p-4 space-y-4">
-        <div className="space-y-1">
-          <h1 className="font-bold text-lg">{photo.name}</h1>
+        <div>
+          <div className="flex justify-between items-center">
+            <h1 className="font-bold text-lg">{photo.name}</h1>
+            <p className="text-sm font-semibold">
+              {(photo.likes ?? []).length}{' '}
+              {(photo.likes ?? []).length === 1 ? 'Like' : 'Likes'}
+            </p>
+          </div>
           <p className="text-sm text-gray-400">{photo.location}</p>
-          <p className="text-sm text-gray-700 mt-2">{photo.instructions}</p>
-          <p className="text-sm font-semibold mt-2">
-            {(photo.likes ?? []).length}{' '}
-            {(photo.likes ?? []).length === 1 ? 'Like' : 'Likes'}
-          </p>
+          <p className="text-sm text-gray-700 mt-3">{photo.instructions}</p>
         </div>
 
         <div className="max-h-60 overflow-y-auto space-y-3">
