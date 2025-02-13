@@ -15,6 +15,7 @@ import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai';
 import { useSession } from 'next-auth/react';
 import { Photo } from '@/types/photos';
 import PhotoModal from '../components/photoModal';
+import { FaRegComment } from 'react-icons/fa';
 import { set } from 'mongoose';
 
 export default function Home() {
@@ -268,16 +269,18 @@ export default function Home() {
                 photo?.imageUrl?.endsWith('.png') ||
                 photo?.imageUrl?.endsWith('.jpeg') ? (
                   <div
-                    className="absolute bottom-0 w-full 
-               bg-gradient-to-t from-black/80 via-black/10 to-transparent
-               flex justify-end items-center px-3 py-2"
+                    className="absolute bottom-0 w-full
+                             bg-gradient-to-t from-black/80 via-black/10 to-transparent
+                             px-3 py-2 flex justify-end"
                   >
                     <button
-                      onClick={() => setModalPhotoId(photo._id)}
-                      className="bg-slate-50 opacity-90 font-semibold text-black px-4 py-2 rounded-lg
-               hover:bg-amber-100 transition"
+                      onClick={() => setModalPhotoId(photo._id)} // 打開 Modal
+                      className="text-white flex items-center gap-2
+                               bg-black/30 px-3 py-2 rounded-md
+                               hover:bg-black/50 transition"
                     >
-                      點我留言
+                      <FaRegComment size={22} className="inline-block" />
+                      <span className="text-sm font-semibold ">留言</span>
                     </button>
                   </div>
                 ) : null}
