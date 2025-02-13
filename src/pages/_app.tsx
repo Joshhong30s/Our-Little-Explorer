@@ -34,7 +34,7 @@ function App({ Component, pageProps }: AppProps) {
           <link rel="icon" href="/assets/baby1.svg" />
           <link rel="apple-touch-icon" href="/assets/baby1.svg" />
         </Head>
-        <Script
+        {/* <Script
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-GLENJJ7YR4"
         ></Script>
@@ -45,7 +45,7 @@ function App({ Component, pageProps }: AppProps) {
             gtag('js', new Date());
             gtag('config', 'G-GLENJJ7YR4');
           `}
-        </Script>
+        </Script> */}
         <NoSSR>
           <Navbar />
           <Component {...pageProps} />
