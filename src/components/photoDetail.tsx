@@ -228,7 +228,7 @@ export default function PhotoDetail({
                   {comment.text}
                 </p>
                 <p className="text-xs text-gray-400">
-                  {new Date(comment.createdAt).toLocaleTimeString()}
+                  {new Date(comment.createdAt).toLocaleString()}
                 </p>
               </div>
             </div>
