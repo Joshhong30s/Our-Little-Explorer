@@ -1,14 +1,17 @@
 import NextAuth from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
-import CredentialsProvider from 'next-auth/providers/credentials';
 import FacebookProvider from 'next-auth/providers/facebook';
 import LineProvider from 'next-auth/providers/line';
+import CredentialsProvider from 'next-auth/providers/credentials';
+
 import { MongoDBAdapter } from '@auth/mongodb-adapter';
 import bcrypt from 'bcrypt';
+
 import clientPromise from '@/utils/mongodb';
 import { UserModel } from '@/types/users';
+import type { NextAuthOptions } from 'next-auth';
 
-export default NextAuth({
+export const authOptions: NextAuthOptions = {
   adapter: MongoDBAdapter(clientPromise),
   providers: [
     GoogleProvider({
@@ -43,38 +46,40 @@ export default NextAuth({
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
-        const username = credentials?.username ?? '';
-        const password = credentials?.password ?? '';
-
-        const user = await UserModel.findOne({ username });
-        const isPasswordValid = await bcrypt.compare(password, user.password);
-        if (user && isPasswordValid) {
-          return {
-            id: user._id.toString(),
-            name: user.username,
-            image: user.image,
-          };
+        if (!credentials?.username || !credentials.password) {
+          throw new Error('Missing username or password');
+        }
+        const user = await UserModel.findOne({
+          username: credentials.username,
+        });
+        if (!user) {
+          throw new Error('User not found');
         }
 
-        throw new Error('Invalid credentials');
+        const isPasswordValid = await bcrypt.compare(
+          credentials.password,
+          user.password
+        );
+        if (!isPasswordValid) {
+          throw new Error('Invalid credentials');
+        }
+
+        return {
+          id: user._id.toString(),
+          name: user.username,
+          image: user.image,
+        };
       },
     }),
   ],
+
   callbacks: {
     async signIn({ user, account }) {
       if (account?.provider === 'credentials') {
-        const existingUser = await UserModel.findOne({ username: user.name });
-
-        if (existingUser) {
-          console.log('Existing user (credentials):', existingUser);
-          return true;
-        } else {
-          console.log('User not found (credentials)');
-          return false;
-        }
+        return true;
       } else {
+        // OAuth
         const existingUser = await UserModel.findOne({ email: user.email });
-
         if (existingUser) {
           console.log('Existing user (OAuth):', existingUser);
 
@@ -82,16 +87,14 @@ export default NextAuth({
             existingUser.providers.push(account?.provider);
             await existingUser.save();
           }
-
           return true;
         } else {
           const newUser = new UserModel({
-            email: user.email,
+            email: user.email || '',
             username: user.name || '',
             image: user.image || '',
             providers: [account?.provider],
           });
-
           await newUser.save();
           console.log('New user created:', newUser);
           return true;
@@ -105,21 +108,29 @@ export default NextAuth({
         token.image = user.image;
       }
 
+      if (token.id) {
+        const dbUser = await UserModel.findById(token.id).lean();
+        if (dbUser) {
+          const userDoc = dbUser as { createdAt?: Date };
+          token.createdAt = userDoc.createdAt;
+        }
+      }
+
       if (account?.accessToken) {
         token.accessToken = String(account.accessToken);
       }
 
       return token;
     },
+
     async session({ session, token }) {
-      if (token?.id && session?.user) {
-        session.user.id = token.id;
-      }
-      if (token?.accessToken && session?.user) {
-        session.user.accessToken = token.accessToken as string;
-      }
-      if (token?.image && session?.user) {
-        session.user.image = token.image as string;
+      if (session?.user) {
+        session.user.id = token.id as string;
+        session.user.image = (token.image as string) || '';
+        session.user.createdAt = (token.createdAt as string) || '';
+        if (token?.accessToken) {
+          session.user.accessToken = token.accessToken as string;
+        }
       }
       return session;
     },
@@ -128,4 +139,6 @@ export default NextAuth({
     strategy: 'jwt',
   },
   secret: process.env.NEXTAUTH_SECRET,
-});
+};
+
+export default NextAuth(authOptions);
