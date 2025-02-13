@@ -47,10 +47,9 @@ export default function ProfilePage() {
 
       const cloudinaryUrl = uploadRes.data.url;
 
-      const updateRes = await axios.put(
-        `/api/user/${session.user.id}`,
-        { image: cloudinaryUrl } // body
-      );
+      const updateRes = await axios.put(`/api/user/${session.user.id}`, {
+        image: cloudinaryUrl,
+      });
 
       alert('頭像更新成功！');
       console.log('更新回傳:', updateRes.data);
@@ -72,13 +71,15 @@ export default function ProfilePage() {
       <div className="mb-4">
         <p className="text-sm text-gray-500">目前頭像：</p>
         {currentImage ? (
-          <Image
-            src={currentImage}
-            alt="current avatar"
-            width={80}
-            height={80}
-            className="rounded-full object-cover"
-          />
+          <div className="w-20 h-20 rounded-full overflow-hidden">
+            <Image
+              src={currentImage}
+              alt="current avatar"
+              width={80}
+              height={80}
+              className="rounded-full object-cover"
+            />
+          </div>
         ) : (
           <div className="w-20 h-20 rounded-full bg-gray-200" />
         )}

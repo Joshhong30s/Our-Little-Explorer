@@ -15,6 +15,7 @@ import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai';
 import { useSession } from 'next-auth/react';
 import { Photo } from '@/types/photos';
 import PhotoModal from '../components/photoModal';
+import { set } from 'mongoose';
 
 export default function Home() {
   const { data: session } = useSession();
@@ -58,17 +59,12 @@ export default function Home() {
   };
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, []);
-
-  useEffect(() => {
     const fetchPhoto = async () => {
       try {
+        setIsLoading(true);
         const response = await axios.get('/api/photo/photo');
         setPhoto(response.data);
+        setIsLoading(false);
       } catch (err) {
         console.log(err);
       }
@@ -213,7 +209,6 @@ export default function Home() {
             <li
               key={photo._id}
               className="border border-gray-300 bg-gray-100 rounded-lg cursor-pointer"
-              // 點擊時不再導向新頁，而是打開 Modal
               onClick={() => setModalPhotoId(photo._id)}
             >
               <div className="relative w-full h-96 sm:h-[450px] lg:h-[600px]">
@@ -244,7 +239,7 @@ export default function Home() {
                 <button
                   className="absolute top-2 right-2 bg-neutral-50 bg-opacity-30 text-red-500 rounded-full p-3"
                   onClick={e => {
-                    e.stopPropagation(); // 避免點擊按讚按鈕時同時觸發 Modal
+                    e.stopPropagation();
                     if (!session) {
                       alert('請先登入才能使用我的最愛功能');
                       return;
@@ -269,6 +264,23 @@ export default function Home() {
                     />
                   )}
                 </button>
+                {photo?.imageUrl?.endsWith('.jpg') ||
+                photo?.imageUrl?.endsWith('.png') ||
+                photo?.imageUrl?.endsWith('.jpeg') ? (
+                  <div
+                    className="absolute bottom-0 w-full 
+               bg-gradient-to-t from-black/80 via-black/10 to-transparent
+               flex justify-end items-center px-3 py-2"
+                  >
+                    <button
+                      onClick={() => setModalPhotoId(photo._id)}
+                      className="bg-slate-50 opacity-90 font-semibold text-black px-4 py-2 rounded-lg
+               hover:bg-amber-100 transition"
+                    >
+                      點我留言
+                    </button>
+                  </div>
+                ) : null}
               </div>
               <div className="p-4">
                 <div className="flex justify-between items-center mb-4">
