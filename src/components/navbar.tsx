@@ -56,7 +56,6 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* 中間 logo 與手機版的左右切換按鈕 */}
         <div className="order-1 md:order-2 flex justify-between items-center">
           <button
             className="md:hidden text-neutral-800"

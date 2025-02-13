@@ -193,7 +193,7 @@ export default function PhotoDetail({
             config={{
               youtube: {
                 playerVars: {
-                  origin: 'https://www.youtube.com',
+                  origin: 'https://06baby.vercel.app',
                 },
               },
             }}
