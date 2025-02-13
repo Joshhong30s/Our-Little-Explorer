@@ -221,6 +221,7 @@ export default function Home() {
                     alt={photo.name}
                     className="object-cover"
                     fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
                 ) : (
                   <ReactPlayer
@@ -232,6 +233,7 @@ export default function Home() {
                       youtube: {
                         playerVars: {
                           origin: 'https://www.youtube.com',
+                          modestbranding: 1,
                         },
                       },
                     }}
@@ -265,25 +267,22 @@ export default function Home() {
                     />
                   )}
                 </button>
-                {photo?.imageUrl?.endsWith('.jpg') ||
-                photo?.imageUrl?.endsWith('.png') ||
-                photo?.imageUrl?.endsWith('.jpeg') ? (
-                  <div
-                    className="absolute bottom-0 w-full
+
+                <div
+                  className="absolute bottom-0 w-full
                              bg-gradient-to-t from-black/80 via-black/10 to-transparent
                              px-3 py-2 flex justify-end"
-                  >
-                    <button
-                      onClick={() => setModalPhotoId(photo._id)} // 打開 Modal
-                      className="text-white flex items-center gap-2
+                >
+                  <button
+                    onClick={() => setModalPhotoId(photo._id)}
+                    className="text-white flex items-center gap-2
                                bg-black/30 px-3 py-2 rounded-md
                                hover:bg-black/50 transition"
-                    >
-                      <FaRegComment size={22} className="inline-block" />
-                      <span className="text-sm font-semibold ">留言</span>
-                    </button>
-                  </div>
-                ) : null}
+                  >
+                    <FaRegComment size={22} className="inline-block" />
+                    <span className="text-sm font-semibold ">留言</span>
+                  </button>
+                </div>
               </div>
               <div className="p-4">
                 <div className="flex justify-between items-center mb-4">

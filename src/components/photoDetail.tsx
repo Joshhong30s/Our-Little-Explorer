@@ -8,6 +8,7 @@ import { useSession } from 'next-auth/react';
 import { RiHeartFill, RiHeartAddLine } from 'react-icons/ri';
 import { FaShareAlt } from 'react-icons/fa';
 import { ja } from 'date-fns/locale';
+import ReactPlayer from 'react-player';
 
 interface Comment {
   _id: string;
@@ -51,6 +52,10 @@ export default function PhotoDetail({
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState('');
   const [loading, setLoading] = useState(true);
+  const isYoutube =
+    photo?.imageUrl.includes('youtube.com') ||
+    photo?.imageUrl.includes('youtu.be');
+
   useEffect(() => {
     if (!photoId) return;
     axios
@@ -178,11 +183,20 @@ export default function PhotoDetail({
       </div>
 
       <div className="bg-black flex items-center justify-center">
-        {photo.imageUrl.endsWith('.mp4') ? (
-          <video
-            src={photo.imageUrl}
-            controls
-            className="object-contain w-full max-h-[500px]"
+        {isYoutube ? (
+          <ReactPlayer
+            url={photo.imageUrl}
+            controls={false}
+            playing
+            width={450}
+            height={600}
+            config={{
+              youtube: {
+                playerVars: {
+                  origin: 'https://www.youtube.com',
+                },
+              },
+            }}
           />
         ) : (
           <Image
