@@ -129,7 +129,7 @@ export default function Message() {
                 placeholder={t('message.avatarPlaceholder')}
                 formatOptionLabel={option => (
                   <div>
-                    <img
+                    <Image
                       src={option.value}
                       alt={option.label}
                       className="w-10 h-10"

@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import { RiHeartFill, RiHeartAddLine } from 'react-icons/ri';
 import { FaShareAlt } from 'react-icons/fa';
-import { ja } from 'date-fns/locale';
+import { RxAvatar } from 'react-icons/rx';
 import ReactPlayer from 'react-player';
 
 interface Comment {
@@ -200,7 +200,7 @@ export default function PhotoDetail({
           />
         ) : (
           <Image
-            src={photo.imageUrl}
+            src={photo.imageUrl ? photo.imageUrl : '/assets/notFound.jpg'}
             alt={photo.name}
             width={800}
             height={600}
@@ -234,7 +234,9 @@ export default function PhotoDetail({
                     height={32}
                     className="object-cover"
                   />
-                ) : null}
+                ) : (
+                  <RxAvatar size={32} className="text-gray-500" />
+                )}
               </div>
               <div>
                 <p className="text-sm">

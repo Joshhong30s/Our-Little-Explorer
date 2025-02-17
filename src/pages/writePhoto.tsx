@@ -236,7 +236,7 @@ export default function WritePhoto() {
               />
             )}
             {file && (
-              <img
+              <Image
                 src={URL.createObjectURL(file)}
                 alt={t('photo.uploadedPhotoAlt')}
               />
