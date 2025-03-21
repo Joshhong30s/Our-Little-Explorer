@@ -31,8 +31,20 @@
     "resetPasswordEmailInvalid": "無效的電子郵件",
     "resetPasswordEmailNotFound": "找不到電子郵件"
   },
-  "common": {
-    "error_message": "發生錯誤，請再試一次。"
+  "error_message": "發生錯誤，請再試一次。",
+  "profile": {
+    "title": "我的個人資料",
+    "basicInfo": "基本資料",
+    "username": "使用者名稱：",
+    "email": "Email：",
+    "registrationDate": "註冊日期：",
+    "avatarUpload": "上傳/更新頭像",
+    "preview": "預覽：",
+    "bio": "個人簡介 (Bio)",
+    "bioPlaceholder": "簡單介紹一下你自己...",
+    "updateBio": "更新簡介",
+    "uploadAvatar": "上傳頭像",
+    "uploading": "上傳中..."
   },
   "message": {
     "leaveMessage": "我要留言給小寶",
@@ -56,7 +68,7 @@
     "avatar": "頭像 {number}"
   },
   "photo": {
-    "diaryTitle": "小寶日誌..",
+    "diaryTitle": "小寶成長日記",
     "photoTitleLabel": "相片標題",
     "photoTitlePlaceholder": "...這張照片是",
     "photoLocationLabel": "相片地點",

@@ -5,12 +5,10 @@ import axios from 'axios';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import dayjs from 'dayjs';
-
-interface BioFormData {
-  bio: string;
-}
+import { useTranslation } from 'next-i18next';
 
 export default function ProfilePage() {
+  const { t } = useTranslation('common');
   const { data: session } = useSession();
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -34,11 +32,11 @@ export default function ProfilePage() {
 
   const handleUpload = async () => {
     if (!selectedFile) {
-      alert('請先選擇圖片');
+      alert(t('photo.noPhoto'));
       return;
     }
     if (!session?.user?.id) {
-      alert('請先登入');
+      alert(t('photo.notLoggedIn'));
       return;
     }
 
@@ -60,7 +58,7 @@ export default function ProfilePage() {
         image: cloudinaryUrl,
       });
 
-      alert('頭像更新成功！');
+      alert(t('profile.avatarUpload') + '成功！');
       console.log('更新回傳:', updateRes.data);
 
       setCurrentImage(cloudinaryUrl);
@@ -68,7 +66,7 @@ export default function ProfilePage() {
       setSelectedFile(null);
     } catch (error) {
       console.error(error);
-      alert('上傳失敗');
+      alert(t('photo.uploadFail'));
     } finally {
       setUploading(false);
     }
@@ -76,14 +74,14 @@ export default function ProfilePage() {
 
   const handleUpdateBio = async () => {
     if (!session?.user?.id) {
-      alert('請先登入');
+      alert(t('photo.notLoggedIn'));
       return;
     }
     try {
       const updateRes = await axios.put(`/api/user/${session.user.id}`, {
         bio,
       });
-      alert('簡介更新成功！');
+      alert(t('profile.updateBio') + '成功！');
       console.log(updateRes.data);
     } catch (error) {
       console.error(error);
@@ -94,13 +92,13 @@ export default function ProfilePage() {
   const userCreatedAt = session?.user?.createdAt;
   const formattedDate = userCreatedAt
     ? dayjs(userCreatedAt).format('YYYY-MM-DD')
-    : '(未知)';
+    : t('message.unknownDate');
 
   return (
     <div className="max-w-2xl mx-auto p-4 space-y-6">
-      <h1 className="text-2xl font-bold">我的個人資料</h1>
+      <h1 className="text-2xl font-bold">{t('profile.title')}</h1>
       <section className="p-4 border border-gray-300 rounded-md space-y-4 bg-white">
-        <h2 className="text-lg font-semibold">基本資料</h2>
+        <h2 className="text-lg font-semibold">{t('profile.basicInfo')}</h2>
         <div className="flex items-center gap-4">
           {currentImage ? (
             <div className="w-20 h-20 rounded-full overflow-hidden">
@@ -117,30 +115,30 @@ export default function ProfilePage() {
           )}
 
           <div>
-            <p className="text-sm text-gray-500">使用者名稱：</p>
+            <p className="text-sm text-gray-500">{t('profile.username')}</p>
             <p className="text-base font-medium">
               {session?.user?.name || 'No name'}
             </p>
 
-            <p className="text-sm text-gray-500 mt-2">Email：</p>
+            <p className="text-sm text-gray-500 mt-2">{t('profile.email')}</p>
             <p className="text-base font-medium">
-              {session?.user?.email || '無'}
+              {session?.user?.email || t('error_message')}
             </p>
           </div>
         </div>
 
         <div className="text-sm text-gray-600">
-          <span className="font-semibold">註冊日期：</span>
+          <span className="font-semibold">{t('profile.registrationDate')}</span>
           {formattedDate}
         </div>
       </section>
 
       <section className="p-4 border border-gray-300 rounded-md space-y-4 bg-white">
-        <h2 className="text-lg font-semibold">上傳/更新頭像</h2>
+        <h2 className="text-lg font-semibold">{t('profile.avatarUpload')}</h2>
 
         {previewUrl && (
           <div>
-            <p className="text-sm text-gray-500">預覽：</p>
+            <p className="text-sm text-gray-500">{t('profile.preview')}</p>
             <Image
               src={previewUrl}
               alt="preview"
@@ -169,23 +167,23 @@ export default function ProfilePage() {
           disabled={uploading}
           className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-300"
         >
-          {uploading ? '上傳中...' : '上傳頭像'}
+          {uploading ? t('profile.uploading') : t('profile.avatarUpload')}
         </button>
       </section>
 
       <section className="p-4 border border-gray-300 rounded-md space-y-4 bg-white">
-        <h2 className="text-lg font-semibold">個人簡介 (Bio)</h2>
+        <h2 className="text-lg font-semibold">{t('profile.bio')}</h2>
         <textarea
           value={bio}
           onChange={e => setBio(e.target.value)}
-          placeholder="簡單介紹一下你自己..."
+          placeholder={t('profile.bioPlaceholder')}
           className="w-full h-24 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
         />
         <button
           onClick={handleUpdateBio}
           className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
         >
-          更新簡介
+          {t('profile.updateBio')}
         </button>
       </section>
     </div>

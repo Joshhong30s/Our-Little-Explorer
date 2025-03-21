@@ -1,12 +1,12 @@
 'use client';
+
 import dayjs from 'dayjs';
 import { useState } from 'react';
 import axios from 'axios';
 import { useGetUserID } from '../hooks/useGetUserId';
-import { useCookies } from 'react-cookie';
-import Image from 'next/image';
 import { useSession } from 'next-auth/react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'next-i18next';
+import Image from 'next/image';
 
 type PhotoType = {
   name: string;

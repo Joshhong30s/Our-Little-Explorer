@@ -10,6 +10,7 @@ import Script from 'next/script';
 import { appWithTranslation } from 'next-i18next';
 import '@/i18n';
 import { SessionProvider } from 'next-auth/react';
+import { useTranslation } from 'next-i18next';
 
 const klee = Klee_One({
   weight: '600',
@@ -22,11 +23,12 @@ const Noto = Noto_Sans_TC({
 });
 
 function App({ Component, pageProps }: AppProps) {
+  const { t } = useTranslation('common');
   return (
     <SessionProvider session={pageProps.session}>
       <div className={Noto.className}>
         <Head>
-          <title>小寶成長日記</title>
+          <title>{t('photo.diaryTitle')}</title>
           <meta name="description" content="My Baby Photo Album" />
           <meta name="keywords" content="baby, infant, baby products" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -34,18 +36,7 @@ function App({ Component, pageProps }: AppProps) {
           <link rel="icon" href="/assets/baby1.svg" />
           <link rel="apple-touch-icon" href="/assets/baby1.svg" />
         </Head>
-        {/* <Script
-          async
-          src="https://www.googletagmanager.com/gtag/js?id=G-GLENJJ7YR4"
-        ></Script>
-        <Script id="gtag-script">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-GLENJJ7YR4');
-          `}
-        </Script> */}
+        {/* 其他 Script 內容… */}
         <NoSSR>
           <Navbar />
           <Component {...pageProps} />

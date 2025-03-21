@@ -1,15 +1,17 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Image from 'next/image';
-import { useState, useEffect } from 'react';
 import { useGetUserID } from '../hooks/useGetUserId';
 import { FaBaby } from 'react-icons/fa';
 import Link from 'next/link';
 import ReactPlayer from 'react-player';
 import dayjs from 'dayjs';
+import { useTranslation } from 'next-i18next';
 
 export default function SavedPhotos() {
+  const { t } = useTranslation('common');
   const [savedPhotos, setSavedPhotos] = useState([]);
 
   const userID = useGetUserID();
@@ -112,7 +114,7 @@ export default function SavedPhotos() {
                     </div>
                   </div>
                   <p className="text-gray-600 text-sm ">
-                    照片地點：{photo.location}
+                    {t('photo.photoLocationLabel')}：{photo.location}
                   </p>
                   <p className="text-gray-600 text-sm my-4">
                     {photo.instructions}

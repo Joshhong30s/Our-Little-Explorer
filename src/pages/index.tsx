@@ -17,8 +17,10 @@ import { Photo } from '@/types/photos';
 import PhotoModal from '../components/photoModal';
 import { FaRegComment } from 'react-icons/fa';
 import { set } from 'mongoose';
+import { useTranslation } from 'next-i18next';
 
 export default function Home() {
+  const { t } = useTranslation('common');
   const { data: session } = useSession();
   const [isLoading, setIsLoading] = useState(true);
   const [photo, setPhoto] = useState<Photo[]>([]);
@@ -153,7 +155,7 @@ export default function Home() {
       {isLoading ? (
         <div className="flex flex-col justify-center items-center min-h-screen text-center gap-2">
           <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
-          <p className="text-lg ml-4">Loading...</p>
+          <p className="text-lg ml-4">{t('common.loading')}</p>
         </div>
       ) : (
         <div className="relative bg-gradient-to-br from-neutral-800 to-neutral-500">
@@ -173,7 +175,7 @@ export default function Home() {
                     <Image
                       key={image.id}
                       src={image.src}
-                      alt={`Slide image ${index + 1}`}
+                      alt={t('photo.uploadedPhotoAlt', { index: index + 1 })}
                       className="animate-fadeIn"
                       priority={true}
                       fill
@@ -244,7 +246,7 @@ export default function Home() {
                   onClick={e => {
                     e.stopPropagation();
                     if (!session) {
-                      alert('請先登入才能使用我的最愛功能');
+                      alert(t('photo.notLoggedIn'));
                       return;
                     }
                     toggleSavePhoto(photo._id);
@@ -268,19 +270,15 @@ export default function Home() {
                   )}
                 </button>
 
-                <div
-                  className="absolute bottom-0 w-full
-                             bg-gradient-to-t from-black/80 via-black/10 to-transparent
-                             px-3 py-2 flex justify-end"
-                >
+                <div className="absolute bottom-0 w-full bg-gradient-to-t from-black/80 via-black/10 to-transparent px-3 py-2 flex justify-end">
                   <button
                     onClick={() => setModalPhotoId(photo._id)}
-                    className="text-white flex items-center gap-2
-                               bg-black/30 px-3 py-2 rounded-md
-                               hover:bg-black/50 transition"
+                    className="text-white flex items-center gap-2 bg-black/30 px-3 py-2 rounded-md hover:bg-black/50 transition"
                   >
                     <FaRegComment size={22} className="inline-block" />
-                    <span className="text-sm font-semibold ">留言</span>
+                    <span className="text-sm font-semibold ">
+                      {t('message.leaveMessage')}
+                    </span>
                   </button>
                 </div>
               </div>

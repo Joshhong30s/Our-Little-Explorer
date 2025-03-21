@@ -1,8 +1,10 @@
+'use client';
+
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
-import { signIn, signOut } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 
 export default function Login() {
   const { t } = useTranslation('common');
@@ -45,7 +47,7 @@ export default function Login() {
               <div className="mb-4">
                 <label
                   htmlFor="username"
-                  className="block text-gray-700 font-bold mb-2 "
+                  className="block text-gray-700 font-bold mb-2"
                 >
                   {t('user.username')}
                 </label>
@@ -64,7 +66,7 @@ export default function Login() {
                   htmlFor="password"
                   className="block text-gray-700 font-bold mb-2"
                 >
-                  {t('common:user.passWord')}
+                  {t('user.passWord')}
                 </label>
                 <input
                   type="password"
@@ -79,9 +81,9 @@ export default function Login() {
               <div className="text-center">
                 <button
                   type="submit"
-                  className="mt-12 group relative w-full flex justify-center py-2 px-4 border border-transparent text-lg font-medium rounded-full hover:bg-teal-980 hover:text-gray-100 text-slate-600 bg-blue-980 focus:outline-none "
+                  className="mt-12 group relative w-full flex justify-center py-2 px-4 border border-transparent text-lg font-medium rounded-full hover:bg-teal-980 hover:text-gray-100 text-slate-600 bg-blue-980 focus:outline-none"
                 >
-                  {t('common:user.login')}
+                  {t('user.login')}
                 </button>
               </div>
 
