@@ -96,32 +96,26 @@ export default function Login() {
           </form>
 
           <div className="mt-8 space-y-4 text-center">
-            <button
-              className="w-full py-2 px-4 rounded-lg"
-              onClick={() => signIn('google', { callbackUrl: '/' })}
-            >
-              <Image
-                src="/assets/google-logo.svg"
-                alt={t('user.loginWithGoogle')}
-                width={500}
-                height={500}
-                style={{ width: '100%', height: 'auto' }}
-              />
-            </button>
-            <button
-              onClick={() => signIn('line', { callbackUrl: '/' })}
-              className="flex items-center justify-center w-full bg-green-500 text-white hover:bg-green-600 rounded-full"
-              style={{
-                width: '100%',
-                height: 'auto',
-                aspectRatio: '180 / 40',
-                padding: 0,
-              }}
-            >
-              <span style={{ fontSize: '2rem', fontWeight: 'bold' }}>
-                {t('user.loginWithLine')}
-              </span>
-            </button>
+            <div className="h-12 w-full">
+              <button
+                className="w-full h-full flex items-center justify-center bg-[#000000] hover:bg-gray-700 text-white rounded-lg transition-colors"
+                onClick={() => signIn('google', { callbackUrl: '/' })}
+              >
+                <span className="text-lg font-bold">
+                  {t('user.loginWithGoogle')}
+                </span>
+              </button>
+            </div>
+            <div className="h-12 w-full">
+              <button
+                onClick={() => signIn('line', { callbackUrl: '/' })}
+                className="w-full h-full flex items-center justify-center bg-[#06C755] hover:bg-[#05B74C] text-white rounded-lg transition-colors"
+              >
+                <span className="text-lg font-bold">
+                  {t('user.loginWithLine')}
+                </span>
+              </button>
+            </div>
           </div>
 
           <div className="mt-12 text-xl text-center">

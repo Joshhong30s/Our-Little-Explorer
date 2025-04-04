@@ -9,7 +9,8 @@ import { useSession } from 'next-auth/react';
 import { RiHeartFill, RiHeartAddLine } from 'react-icons/ri';
 import { FaShareAlt, FaTag } from 'react-icons/fa';
 import { RxAvatar } from 'react-icons/rx';
-import ReactPlayer from 'react-player';
+import dynamic from 'next/dynamic';
+const ReactPlayer = dynamic(() => import('react-player/lazy'), { ssr: false });
 import { Photo } from '@/types/photos';
 
 interface Comment {
@@ -65,9 +66,10 @@ export default function PhotoDetail({
   const [loading, setLoading] = useState(true);
   const [loadingRecommendations, setLoadingRecommendations] = useState(false);
 
-  const isYoutube =
-    photo?.imageUrl.includes('youtube.com') ||
-    photo?.imageUrl.includes('youtu.be');
+  const isYoutube = photo?.imageUrl && (
+    photo.imageUrl.includes('youtube.com') ||
+    photo.imageUrl.includes('youtu.be')
+  );
 
   useEffect(() => {
     if (!photoId) return;
@@ -218,20 +220,24 @@ export default function PhotoDetail({
 
       <div className="bg-black flex items-center justify-center">
         {isYoutube ? (
-          <ReactPlayer
-            url={photo.imageUrl}
-            controls={false}
-            playing
-            width={450}
-            height={600}
-            config={{
-              youtube: {
-                playerVars: {
-                  origin: 'https://ourlittleexplorer.vercel.app',
-                },
-              },
-            }}
-          />
+          <div className="w-[450px] h-[600px] flex items-center justify-center">
+            {isYoutube && (
+              <ReactPlayer
+                url={photo.imageUrl}
+                controls={true}
+                width={450}
+                height={600}
+                config={{
+                  youtube: {
+                    playerVars: {
+                      origin: typeof window !== 'undefined' ? window.location.origin : '',
+                      modestbranding: 1,
+                    },
+                  },
+                }}
+              />
+            )}
+          </div>
         ) : (
           <Image
             src={photo.imageUrl ? photo.imageUrl : '/assets/notFound.jpg'}

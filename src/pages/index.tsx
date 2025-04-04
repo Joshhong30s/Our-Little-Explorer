@@ -24,9 +24,7 @@ export default function Home() {
   const { data: session } = useSession();
   const [isLoading, setIsLoading] = useState(true);
   const [photo, setPhoto] = useState<Photo[]>([]);
-  const ReactPlayer = dynamic(() => import('react-player/lazy'), {
-    ssr: false,
-  });
+  const ReactPlayer = dynamic(() => import('react-player/lazy'), { ssr: false });
   const [savedPhotos, setSavedPhotos] = useState<string[]>([]);
   const [cookies, _] = useCookies(['access_token']);
   const userID = useGetUserID();
@@ -225,20 +223,29 @@ export default function Home() {
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
-                ) : (
-                  <ReactPlayer
-                    url={photo.imageUrl}
-                    controls={false}
-                    width="100%"
-                    height="100%"
-                    config={{
-                      youtube: {
-                        playerVars: {
-                          origin: 'https://ourlittleexplorer.vercel.app',
-                          modestbranding: 1,
+                ) : photo?.imageUrl && (photo.imageUrl.includes('youtube.com') || photo.imageUrl.includes('youtu.be')) ? (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <ReactPlayer
+                      url={photo.imageUrl}
+                      controls={true}
+                      width="100%"
+                      height="100%"
+                      config={{
+                        youtube: {
+                          playerVars: {
+                            origin: typeof window !== 'undefined' ? window.location.origin : '',
+                            modestbranding: 1,
+                          },
                         },
-                      },
-                    }}
+                      }}
+                    />
+                  </div>
+                ) : (
+                  <Image
+                    src="/assets/notFound.jpg"
+                    alt="Not Found"
+                    fill
+                    className="object-cover"
                   />
                 )}
                 <button
