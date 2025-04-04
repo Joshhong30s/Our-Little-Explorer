@@ -11,12 +11,14 @@ interface PhotoModalProps {
   open: boolean;
   onClose: () => void;
   photoId: string;
+  setModalPhotoId: (photoId: string) => void;
 }
 
 export default function PhotoModal({
   open,
   onClose,
   photoId,
+  setModalPhotoId,
 }: PhotoModalProps) {
   const boxStyle = {
     background: 'linear-gradient(to bottom right, #ffffff, #f7f7f7)',
@@ -75,7 +77,7 @@ export default function PhotoModal({
             </IconButton>
           </div>
 
-          <PhotoDetail photoId={photoId} />
+          <PhotoDetail photoId={photoId} setModalPhotoId={setModalPhotoId} />
         </Box>
       </Fade>
     </Modal>

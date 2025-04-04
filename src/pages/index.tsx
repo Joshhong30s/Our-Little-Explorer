@@ -234,7 +234,7 @@ export default function Home() {
                     config={{
                       youtube: {
                         playerVars: {
-                          origin: 'https://06baby.vercel.app',
+                          origin: 'https://ourlittleexplorer.vercel.app',
                           modestbranding: 1,
                         },
                       },
@@ -309,6 +309,7 @@ export default function Home() {
           open={true}
           photoId={modalPhotoId}
           onClose={() => setModalPhotoId(null)}
+          setModalPhotoId={setModalPhotoId}
         />
       )}
     </main>

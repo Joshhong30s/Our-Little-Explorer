@@ -1,3 +1,4 @@
+// Updated PhotoDetail.tsx with MCP integration
 'use client';
 
 import { useRouter } from 'next/router';
@@ -6,9 +7,10 @@ import axios from 'axios';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import { RiHeartFill, RiHeartAddLine } from 'react-icons/ri';
-import { FaShareAlt } from 'react-icons/fa';
+import { FaShareAlt, FaTag } from 'react-icons/fa';
 import { RxAvatar } from 'react-icons/rx';
 import ReactPlayer from 'react-player';
+import { Photo } from '@/types/photos';
 
 interface Comment {
   _id: string;
@@ -37,12 +39,19 @@ interface PhotoDetails {
   createdAt?: string;
 }
 
+interface PhotoRecommendation {
+  suggestedTags: string[];
+  relatedPhotos: Photo[];
+}
+
 interface PhotoDetailProps {
   photoId?: string;
+  setModalPhotoId?: (id: string) => void;
 }
 
 export default function PhotoDetail({
   photoId: propPhotoId,
+  setModalPhotoId: setModalPhotoId,
 }: PhotoDetailProps) {
   const router = useRouter();
   const photoId = propPhotoId || (router.query.photoId as string);
@@ -50,25 +59,49 @@ export default function PhotoDetail({
 
   const [photo, setPhoto] = useState<PhotoDetails | null>(null);
   const [comments, setComments] = useState<Comment[]>([]);
+  const [recommendations, setRecommendations] =
+    useState<PhotoRecommendation | null>(null);
   const [newComment, setNewComment] = useState('');
   const [loading, setLoading] = useState(true);
+  const [loadingRecommendations, setLoadingRecommendations] = useState(false);
+
   const isYoutube =
     photo?.imageUrl.includes('youtube.com') ||
     photo?.imageUrl.includes('youtu.be');
 
   useEffect(() => {
     if (!photoId) return;
-    axios
-      .get(`/api/photo/${photoId}`)
-      .then(res => {
+
+    const fetchPhotoData = async () => {
+      try {
+        const res = await axios.get(`/api/photo/${photoId}`);
         setPhoto(res.data.photo);
         setComments(res.data.comments || []);
         setLoading(false);
-      })
-      .catch(err => {
+
+        // Fetch recommendations after photo is loaded
+        fetchRecommendations();
+      } catch (err) {
         console.error(err);
         setLoading(false);
-      });
+      }
+    };
+
+    const fetchRecommendations = async () => {
+      try {
+        setLoadingRecommendations(true);
+        const res = await axios.get(
+          `/api/photo/recommendations?photoId=${photoId}`
+        );
+        setRecommendations(res.data);
+        setLoadingRecommendations(false);
+      } catch (err) {
+        console.error('Failed to fetch recommendations:', err);
+        setLoadingRecommendations(false);
+      }
+    };
+
+    fetchPhotoData();
   }, [photoId]);
 
   const toggleLike = async () => {
@@ -136,6 +169,7 @@ export default function PhotoDetail({
     );
   }
 
+  console.log('recommendations', recommendations);
   return (
     <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden border-t-4 border-b-4 border-gray-400">
       <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200">
@@ -193,7 +227,7 @@ export default function PhotoDetail({
             config={{
               youtube: {
                 playerVars: {
-                  origin: 'https://06baby.vercel.app',
+                  origin: 'https://ourlittleexplorer.vercel.app',
                 },
               },
             }}
@@ -220,8 +254,26 @@ export default function PhotoDetail({
           </div>
           <p className="text-sm text-gray-400">{photo.location}</p>
           <p className="text-sm text-gray-700 mt-3">{photo.instructions}</p>
+
+          {/* AI-Generated Tags */}
+          {recommendations?.suggestedTags &&
+            recommendations.suggestedTags.length > 0 && (
+              <div className="mt-4">
+                <div className="flex flex-wrap gap-2">
+                  {recommendations.suggestedTags.map((tag, idx) => (
+                    <span
+                      key={idx}
+                      className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full"
+                    >
+                      {tag.startsWith('#') ? tag : `#${tag}`}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
         </div>
 
+        {/* Comments Section */}
         <div className="max-h-60 overflow-y-auto space-y-3">
           {comments.map(comment => (
             <div key={comment._id} className="flex space-x-2">
@@ -251,6 +303,7 @@ export default function PhotoDetail({
           ))}
         </div>
 
+        {/* Comment Form */}
         <form
           onSubmit={handleCommentSubmit}
           className="flex items-center space-x-2 border-t border-gray-200 pt-2"
@@ -270,6 +323,32 @@ export default function PhotoDetail({
             送出
           </button>
         </form>
+
+        {/* Related Photos Section - Powered by MCP */}
+        {recommendations?.relatedPhotos &&
+          recommendations.relatedPhotos.length > 0 && (
+            <div className="mt-6 pt-4 border-t border-gray-200">
+              <h3 className="text-md font-semibold mb-3">Related Photos</h3>
+              <div className="grid grid-cols-3 gap-2">
+                {recommendations.relatedPhotos.slice(0, 3).map(relatedPhoto => (
+                  <div
+                    key={relatedPhoto._id}
+                    className="relative h-24 cursor-pointer"
+                    onClick={() =>
+                      setModalPhotoId && setModalPhotoId(relatedPhoto._id)
+                    }
+                  >
+                    <Image
+                      src={relatedPhoto.imageUrl || '/assets/notFound.jpg'}
+                      alt={relatedPhoto.name}
+                      fill
+                      className="object-cover rounded-md"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
       </div>
     </div>
   );
