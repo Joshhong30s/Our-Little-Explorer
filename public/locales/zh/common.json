@@ -32,6 +32,7 @@
     "resetPasswordEmailNotFound": "找不到電子郵件"
   },
   "error_message": "發生錯誤，請再試一次。",
+  "loading": "載入中...",
   "profile": {
     "title": "我的個人資料",
     "basicInfo": "基本資料",

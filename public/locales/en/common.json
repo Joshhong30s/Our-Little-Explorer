@@ -33,6 +33,7 @@
   },
   "common": {
     "error_message": "Something went wrong. Please try again.",
+    "loading": "Loading...",
     "profile": {
       "title": "My Profile",
       "basicInfo": "Basic Information",
