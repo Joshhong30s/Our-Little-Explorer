@@ -48,11 +48,13 @@ interface PhotoRecommendation {
 interface PhotoDetailProps {
   photoId?: string;
   setModalPhotoId?: (id: string) => void;
+  isMobile?: boolean;
 }
 
 export default function PhotoDetail({
   photoId: propPhotoId,
-  setModalPhotoId: setModalPhotoId,
+  setModalPhotoId,
+  isMobile = false,
 }: PhotoDetailProps) {
   const router = useRouter();
   const photoId = propPhotoId || (router.query.photoId as string);
@@ -66,10 +68,10 @@ export default function PhotoDetail({
   const [loading, setLoading] = useState(true);
   const [loadingRecommendations, setLoadingRecommendations] = useState(false);
 
-  const isYoutube = photo?.imageUrl && (
-    photo.imageUrl.includes('youtube.com') ||
-    photo.imageUrl.includes('youtu.be')
-  );
+  const isYoutube =
+    photo?.imageUrl &&
+    (photo.imageUrl.includes('youtube.com') ||
+      photo.imageUrl.includes('youtu.be'));
 
   useEffect(() => {
     if (!photoId) return;
@@ -173,52 +175,29 @@ export default function PhotoDetail({
 
   console.log('recommendations', recommendations);
   return (
-    <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden border-t-4 border-b-4 border-gray-400">
-      <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200">
-        <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-200">
-            <Image
-              src="/assets/avatar.jpg"
-              alt={photo.userOwner.username}
-              width={40}
-              height={40}
-              className="object-cover"
-            />
+    <div className="flex flex-col md:flex-row h-full">
+      {/* Left side - Image/Video */}
+      <div className="md:flex-1 bg-black flex items-center justify-center relative">
+        {/* Header for mobile */}
+        {isMobile && (
+          <div className="absolute top-12 left-0 right-0 z-10 flex items-center justify-between px-4 py-2">
+            <div className="flex items-center space-x-2">
+              <div className="w-8 h-8 rounded-full overflow-hidden bg-gray-200 ring-2 ring-white">
+                <Image
+                  src={photo.userOwner.image || '/assets/avatar.jpg'}
+                  alt={photo.userOwner.username}
+                  width={32}
+                  height={32}
+                  className="object-cover"
+                />
+              </div>
+              <span className="text-white font-medium text-sm drop-shadow">
+                {photo.userOwner.username}
+              </span>
+            </div>
           </div>
-          <div className="flex flex-col">
-            <p className="font-semibold text-sm">{photo.userOwner.username}</p>
-            {photo.createdAt && (
-              <p className="text-xs text-gray-400">
-                {new Date(photo.createdAt).toLocaleDateString()}
-              </p>
-            )}
-          </div>
-        </div>
+        )}
 
-        <div className="flex space-x-4">
-          <button onClick={toggleLike} aria-label="Like" className="group">
-            {(photo.likes ?? []).includes(session?.user?.id ?? '') ? (
-              <RiHeartFill
-                size={24}
-                className="text-pink-500 transition-transform group-active:scale-125"
-              />
-            ) : (
-              <RiHeartAddLine
-                size={24}
-                className="text-gray-600 transition-transform group-active:scale-125"
-              />
-            )}
-          </button>
-          <button onClick={handleShare} aria-label="Share" className="group">
-            <FaShareAlt
-              size={20}
-              className="text-gray-600 transition-transform group-active:scale-125"
-            />
-          </button>
-        </div>
-      </div>
-
-      <div className="bg-black flex items-center justify-center">
         {isYoutube ? (
           <div className="w-[450px] h-[600px] flex items-center justify-center">
             {isYoutube && (
@@ -230,7 +209,10 @@ export default function PhotoDetail({
                 config={{
                   youtube: {
                     playerVars: {
-                      origin: typeof window !== 'undefined' ? window.location.origin : '',
+                      origin:
+                        typeof window !== 'undefined'
+                          ? window.location.origin
+                          : '',
                       modestbranding: 1,
                     },
                   },
@@ -249,112 +231,152 @@ export default function PhotoDetail({
         )}
       </div>
 
-      <div className="p-4 space-y-4">
-        <div>
-          <div className="flex justify-between items-center">
-            <h1 className="font-bold text-lg">{photo.name}</h1>
-            <p className="text-sm font-semibold">
-              {(photo.likes ?? []).length}{' '}
-              {(photo.likes ?? []).length === 1 ? 'Like' : 'Likes'}
-            </p>
+      {/* Right side - Details and Comments */}
+      <div className="flex flex-col md:w-[380px] bg-white">
+        {/* Header for desktop */}
+        {/* {!isMobile && (
+          <div className="flex items-center justify-between p-4 border-b">
+            <div className="flex items-center space-x-3">
+              <div className="w-8 h-8 rounded-full overflow-hidden bg-gray-200">
+                <Image
+                  src={photo.userOwner.image || "/assets/avatar.jpg"}
+                  alt={photo.userOwner.username}
+                  width={32}
+                  height={32}
+                  className="object-cover"
+                />
+              </div>
+              <div className="flex flex-col">
+                <p className="font-semibold text-sm">{photo.userOwner.username}</p>
+                <p className="text-xs text-gray-500">{photo.location}</p>
+              </div>
+            </div>
           </div>
-          <p className="text-sm text-gray-400">{photo.location}</p>
-          <p className="text-sm text-gray-700 mt-3">{photo.instructions}</p>
+        )} */}
 
-          {/* AI-Generated Tags */}
-          {recommendations?.suggestedTags &&
-            recommendations.suggestedTags.length > 0 && (
-              <div className="mt-4">
-                <div className="flex flex-wrap gap-2">
+        {/* Comments and details scroll area */}
+        <div className="flex-1 overflow-y-auto overscroll-contain">
+          {/* Photo caption */}
+          <div className="p-4 space-y-2 border-b">
+            <div className="flex items-start space-x-3">
+              <div className="w-8 h-8 rounded-full overflow-hidden bg-gray-200 flex-shrink-0">
+                <Image
+                  src={photo.userOwner.image || '/assets/avatar.jpg'}
+                  alt={photo.userOwner.username}
+                  width={32}
+                  height={32}
+                  className="object-cover"
+                />
+              </div>
+              <div>
+                <p className="text-sm">
+                  <span className="font-bold">{photo.userOwner.username}</span>{' '}
+                  <span className="text-gray-900">{photo.instructions}</span>
+                </p>
+                {photo.createdAt && (
+                  <p className="text-xs text-gray-400 mt-1">
+                    {new Date(photo.createdAt).toLocaleDateString()}
+                  </p>
+                )}
+              </div>
+            </div>
+
+            {/* Tags */}
+            {recommendations?.suggestedTags &&
+              recommendations.suggestedTags.length > 0 && (
+                <div className="flex flex-wrap gap-1.5 mt-3">
                   {recommendations.suggestedTags.map((tag, idx) => (
                     <span
                       key={idx}
-                      className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full"
+                      className="text-blue-600 text-sm hover:underline cursor-pointer"
                     >
                       {tag.startsWith('#') ? tag : `#${tag}`}
                     </span>
                   ))}
                 </div>
-              </div>
-            )}
-        </div>
+              )}
+          </div>
 
-        {/* Comments Section */}
-        <div className="max-h-60 overflow-y-auto space-y-3">
-          {comments.map(comment => (
-            <div key={comment._id} className="flex space-x-2">
-              <div className="w-8 h-8 rounded-full overflow-hidden bg-gray-200">
-                {comment.user.image ? (
-                  <Image
-                    src={comment.user.image}
-                    alt={comment.user.username}
-                    width={32}
-                    height={32}
-                    className="object-cover"
-                  />
-                ) : (
-                  <RxAvatar size={32} className="text-gray-500" />
-                )}
-              </div>
-              <div>
-                <p className="text-sm">
-                  <span className="font-bold">{comment.user.username}</span>{' '}
-                  {comment.text}
-                </p>
-                <p className="text-xs text-gray-400">
-                  {new Date(comment.createdAt).toLocaleString()}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Comment Form */}
-        <form
-          onSubmit={handleCommentSubmit}
-          className="flex items-center space-x-2 border-t border-gray-200 pt-2"
-        >
-          <input
-            type="text"
-            placeholder="新增留言..."
-            value={newComment}
-            onChange={e => setNewComment(e.target.value)}
-            className="flex-1 text-sm py-1 px-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-300"
-          />
-          <button
-            type="submit"
-            disabled={!newComment.trim()}
-            className="text-blue-500 font-bold text-sm"
-          >
-            送出
-          </button>
-        </form>
-
-        {/* Related Photos Section - Powered by MCP */}
-        {recommendations?.relatedPhotos &&
-          recommendations.relatedPhotos.length > 0 && (
-            <div className="mt-6 pt-4 border-t border-gray-200">
-              <h3 className="text-md font-semibold mb-3">Related Photos</h3>
-              <div className="grid grid-cols-3 gap-2">
-                {recommendations.relatedPhotos.slice(0, 3).map(relatedPhoto => (
-                  <div
-                    key={relatedPhoto._id}
-                    className="relative h-24 cursor-pointer"
-                    onClick={() =>
-                      setModalPhotoId && setModalPhotoId(relatedPhoto._id)
-                    }
-                  >
+          {/* Comments */}
+          <div className="flex-1 p-4 space-y-4 overflow-y-auto">
+            {comments.map(comment => (
+              <div key={comment._id} className="flex space-x-2">
+                <div className="w-8 h-8 rounded-full overflow-hidden bg-gray-200">
+                  {comment.user.image ? (
                     <Image
-                      src={relatedPhoto.imageUrl || '/assets/notFound.jpg'}
-                      alt={relatedPhoto.name}
-                      fill
-                      className="object-cover rounded-md"
+                      src={comment.user.image}
+                      alt={comment.user.username}
+                      width={32}
+                      height={32}
+                      className="object-cover"
                     />
-                  </div>
-                ))}
+                  ) : (
+                    <RxAvatar size={32} className="text-gray-500" />
+                  )}
+                </div>
+                <div>
+                  <p className="text-sm">
+                    <span className="font-bold">{comment.user.username}</span>{' '}
+                    {comment.text}
+                  </p>
+                  <p className="text-xs text-gray-400">
+                    {new Date(comment.createdAt).toLocaleString()}
+                  </p>
+                </div>
               </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="border-t bg-white">
+          <div className="px-4 py-2 flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <button
+                onClick={toggleLike}
+                className="p-2 -ml-2 group active:scale-90 transition-transform"
+                aria-label="Like"
+              >
+                {(photo.likes ?? []).includes(session?.user?.id ?? '') ? (
+                  <RiHeartFill size={28} className="text-red-500" />
+                ) : (
+                  <RiHeartAddLine size={28} className="text-gray-700" />
+                )}
+              </button>
+              <button
+                onClick={handleShare}
+                className="p-2 group active:scale-90 transition-transform"
+                aria-label="Share"
+              >
+                <FaShareAlt size={22} className="text-gray-700" />
+              </button>
             </div>
-          )}
+            <p className="text-sm font-semibold">
+              {(photo.likes ?? []).length}{' '}
+              {(photo.likes ?? []).length === 1 ? 'like' : 'likes'}
+            </p>
+          </div>
+
+          {/* Comment form */}
+          <form
+            onSubmit={handleCommentSubmit}
+            className="flex items-center px-4 py-2 border-t"
+          >
+            <input
+              type="text"
+              placeholder="Add a comment..."
+              value={newComment}
+              onChange={e => setNewComment(e.target.value)}
+              className="flex-1 text-sm py-2 focus:outline-none"
+            />
+            <button
+              type="submit"
+              disabled={!newComment.trim()}
+              className="ml-2 text-blue-500 font-semibold text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Post
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );

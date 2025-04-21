@@ -4,7 +4,8 @@ import dayjs from 'dayjs';
 import axios from 'axios';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useInView } from 'react-intersection-observer';
 import { useGetUserID } from '../hooks/useGetUserId';
 import { useCookies } from 'react-cookie';
 import { RiHeartAddLine, RiHeartFill } from 'react-icons/ri';
@@ -24,7 +25,9 @@ export default function Home() {
   const { data: session } = useSession();
   const [isLoading, setIsLoading] = useState(true);
   const [photo, setPhoto] = useState<Photo[]>([]);
-  const ReactPlayer = dynamic(() => import('react-player/lazy'), { ssr: false });
+  const ReactPlayer = dynamic(() => import('react-player/lazy'), {
+    ssr: false,
+  });
   const [savedPhotos, setSavedPhotos] = useState<string[]>([]);
   const [cookies, _] = useCookies(['access_token']);
   const userID = useGetUserID();
@@ -123,16 +126,46 @@ export default function Home() {
     }
   };
 
-  const reversedPhoto = photo.slice().sort((a, b) => {
-    const ageA = parseInt(calculateAge(a.growingTime).replace(/Y|M/g, '')) || 0;
-    const ageB = parseInt(calculateAge(b.growingTime).replace(/Y|M/g, '')) || 0;
-    if (ageB !== ageA) {
-      return ageB - ageA;
-    }
-    const timestampA = parseInt(a._id.substring(0, 8), 16);
-    const timestampB = parseInt(b._id.substring(0, 8), 16);
-    return timestampB - timestampA;
+  const reversedPhoto = useMemo(
+    () =>
+      photo.slice().sort((a, b) => {
+        const ageA =
+          parseInt(calculateAge(a.growingTime).replace(/Y|M/g, '')) || 0;
+        const ageB =
+          parseInt(calculateAge(b.growingTime).replace(/Y|M/g, '')) || 0;
+        if (ageB !== ageA) {
+          return ageB - ageA;
+        }
+        const timestampA = parseInt(a._id.substring(0, 8), 16);
+        const timestampB = parseInt(b._id.substring(0, 8), 16);
+        return timestampB - timestampA;
+      }),
+    [photo]
+  );
+
+  // Implement virtual scrolling with intersection observer
+  const [displayCount, setDisplayCount] = useState(8);
+  const { ref: loadMoreRef, inView } = useInView({
+    threshold: 0,
+    rootMargin: '100px',
   });
+
+  useEffect(() => {
+    if (inView && displayCount < reversedPhoto.length) {
+      setDisplayCount(prev => Math.min(prev + 8, reversedPhoto.length));
+    }
+  }, [inView, reversedPhoto.length, displayCount]);
+
+  const visiblePhotos = useMemo(() => {
+    return reversedPhoto.slice(0, displayCount);
+  }, [reversedPhoto, displayCount]);
+
+  // Memoize image loading state tracking
+  const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
+
+  const handleImageLoad = useCallback((id: string) => {
+    setLoadedImages(prev => new Set([...prev, id]));
+  }, []);
 
   /// slideshow images
   const images = [
@@ -157,38 +190,55 @@ export default function Home() {
         </div>
       ) : (
         <div className="relative bg-gradient-to-br from-neutral-800 to-neutral-500">
-          <AiOutlineLeft
+          <button
             onClick={handlePrevSlide}
-            className="absolute left-4 m-auto text-3xl md:text-6xl inset-y-1/2 cursor-pointer text-white p-1 md:p-4 bg-black rounded-full z-20"
-          />
-          <div className="w-full h-[40vh] md:h-[75vh] flex overflow-hidden relative m-auto">
+            className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 flex items-center justify-center w-12 h-12 md:w-16 md:h-16 text-white bg-black/60 hover:bg-black/80 rounded-full z-20 active:scale-95 transition-all cursor-pointer"
+            aria-label={t('common.previous')}
+          >
+            <AiOutlineLeft className="w-6 h-6 md:w-8 md:h-8" />
+          </button>
+          <div className="w-full h-[45vh] md:h-[75vh] flex overflow-hidden relative m-auto">
+            <div className="absolute inset-0 z-0">
+              {images.map((image, index) => {
+                const isNext = index === (currentSlide + 1) % images.length;
+                const isPrev =
+                  index === (currentSlide - 1 + images.length) % images.length;
+                const shouldLoad = index === currentSlide || isNext || isPrev;
+
+                return shouldLoad ? (
+                  <div
+                    key={image.id}
+                    className={`absolute inset-0 transition-opacity duration-500 ${
+                      index === currentSlide ? 'opacity-100' : 'opacity-0'
+                    }`}
+                  >
+                    <Image
+                      src={image.src}
+                      alt={t('photo.uploadedPhotoAlt', { index: index + 1 })}
+                      className="animate-fadeIn"
+                      priority={index === currentSlide}
+                      fill
+                      style={{ objectFit: 'contain' }}
+                      quality={75}
+                      sizes="100vw"
+                    />
+                  </div>
+                ) : null;
+              })}
+            </div>
             <Swipe
               onSwipeLeft={handleNextSlide}
               onSwipeRight={handlePrevSlide}
               className="absolute z-10 w-full h-full"
-            >
-              {images.map((image, index) => {
-                if (index === currentSlide) {
-                  return (
-                    <Image
-                      key={image.id}
-                      src={image.src}
-                      alt={t('photo.uploadedPhotoAlt', { index: index + 1 })}
-                      className="animate-fadeIn"
-                      priority={true}
-                      fill
-                      style={{ objectFit: 'contain' }}
-                      quality={5}
-                    />
-                  );
-                }
-              })}
-            </Swipe>
+            />
           </div>
-          <AiOutlineRight
+          <button
             onClick={handleNextSlide}
-            className="absolute right-4 m-auto text-3xl md:text-6xl inset-y-1/2 cursor-pointer text-white p-1 md:p-4 bg-black rounded-full z-20"
-          />
+            className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 flex items-center justify-center w-12 h-12 md:w-16 md:h-16 text-white bg-black/60 hover:bg-black/80 rounded-full z-20 active:scale-95 transition-all cursor-pointer"
+            aria-label={t('common.next')}
+          >
+            <AiOutlineRight className="w-6 h-6 md:w-8 md:h-8" />
+          </button>
         </div>
       )}
       <div className="relative flex justify-center items-center p-6 bg-white">
@@ -204,26 +254,39 @@ export default function Home() {
           />
         ))}
       </div>
-      <div className="px-2 md:px-6 mx-auto mb-6 text-black">
-        <ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
-          {reversedPhoto.map(photo => (
+      <div className="px-3 md:px-6 mx-auto mb-6 text-black">
+        <ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-8">
+          {visiblePhotos.map(photo => (
             <li
               key={photo._id}
               className="border border-gray-300 bg-gray-100 rounded-lg cursor-pointer"
               onClick={() => setModalPhotoId(photo._id)}
             >
-              <div className="relative w-full h-96 sm:h-[450px] lg:h-[600px]">
+              <div className="relative w-full aspect-[3/4] md:aspect-[4/5] lg:aspect-[3/4]">
                 {photo?.imageUrl?.endsWith('.jpg') ||
                 photo?.imageUrl?.endsWith('.png') ||
                 photo?.imageUrl?.endsWith('.jpeg') ? (
-                  <Image
-                    src={photo.imageUrl}
-                    alt={photo.name}
-                    className="object-cover"
-                    fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  />
-                ) : photo?.imageUrl && (photo.imageUrl.includes('youtube.com') || photo.imageUrl.includes('youtu.be')) ? (
+                  <>
+                    {!loadedImages.has(photo._id) && (
+                      <div className="absolute inset-0 bg-gray-200 animate-pulse" />
+                    )}
+                    <Image
+                      src={photo.imageUrl}
+                      alt={photo.name}
+                      className={`object-cover transition-opacity duration-300 ${
+                        loadedImages.has(photo._id)
+                          ? 'opacity-100'
+                          : 'opacity-0'
+                      }`}
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      loading="lazy"
+                      onLoadingComplete={() => handleImageLoad(photo._id)}
+                    />
+                  </>
+                ) : photo?.imageUrl &&
+                  (photo.imageUrl.includes('youtube.com') ||
+                    photo.imageUrl.includes('youtu.be')) ? (
                   <div className="w-full h-full flex items-center justify-center">
                     <ReactPlayer
                       url={photo.imageUrl}
@@ -233,7 +296,10 @@ export default function Home() {
                       config={{
                         youtube: {
                           playerVars: {
-                            origin: typeof window !== 'undefined' ? window.location.origin : '',
+                            origin:
+                              typeof window !== 'undefined'
+                                ? window.location.origin
+                                : '',
                             modestbranding: 1,
                           },
                         },
@@ -249,7 +315,11 @@ export default function Home() {
                   />
                 )}
                 <button
-                  className="absolute top-2 right-2 bg-neutral-50 bg-opacity-30 text-red-500 rounded-full p-3"
+                  className={`absolute top-2 right-2 text-red-500 rounded-full p-3 active:scale-90 transition-all ${
+                    isPhotosaved(photo._id)
+                      ? 'bg-white/90 shadow-lg'
+                      : 'bg-neutral-50/30 hover:bg-white/60'
+                  }`}
                   onClick={e => {
                     e.stopPropagation();
                     if (!session) {
@@ -257,11 +327,6 @@ export default function Home() {
                       return;
                     }
                     toggleSavePhoto(photo._id);
-                  }}
-                  style={{
-                    transform: isPhotosaved(photo._id)
-                      ? 'scale(1.1)'
-                      : 'scale(1)',
                   }}
                 >
                   {isPhotosaved(photo._id) ? (
@@ -277,10 +342,13 @@ export default function Home() {
                   )}
                 </button>
 
-                <div className="absolute bottom-0 w-full bg-gradient-to-t from-black/80 via-black/10 to-transparent px-3 py-2 flex justify-end">
+                <div className="absolute bottom-0 w-full bg-gradient-to-t from-black/80 via-black/10 to-transparent px-3 py-3 flex justify-end">
                   <button
-                    onClick={() => setModalPhotoId(photo._id)}
-                    className="text-white flex items-center gap-2 bg-black/30 px-3 py-2 rounded-md hover:bg-black/50 transition"
+                    onClick={e => {
+                      e.stopPropagation();
+                      setModalPhotoId(photo._id);
+                    }}
+                    className="text-white flex items-center gap-2 bg-black/40 backdrop-blur-sm px-3 py-2 rounded-full hover:bg-black/60 active:scale-95 transition-all"
                   >
                     <FaRegComment size={22} className="inline-block" />
                     <span className="text-sm font-semibold ">
@@ -289,7 +357,7 @@ export default function Home() {
                   </button>
                 </div>
               </div>
-              <div className="p-4">
+              <div className="p-4 space-y-3">
                 <div className="flex justify-between items-center mb-4">
                   <h3 className="text-3xl font-bold pt-1 pb-3 mb-0">
                     {photo.name}
@@ -298,17 +366,25 @@ export default function Home() {
                     <FaBaby size={25} />
                     {calculateAge(photo.growingTime)}
                   </div>
-                </div>
-                <p className="text-gray-600 text-base flex gap-2 items-center">
-                  <FaMapMarkerAlt size={25} />
-                  {photo.location}
+                </div>{' '}
+                <p className="text-gray-600 text-sm md:text-base flex gap-2 items-center">
+                  <FaMapMarkerAlt className="text-lg flex-shrink-0" />
+                  <span className="truncate">{photo.location}</span>
                 </p>
-                <p className="text-gray-600 text-base my-8">
+                <p className="text-gray-600 text-sm md:text-base line-clamp-3">
                   {photo.instructions}
                 </p>
               </div>
             </li>
           ))}
+          {displayCount < reversedPhoto.length && (
+            <li
+              ref={loadMoreRef}
+              className="col-span-full flex justify-center p-4"
+            >
+              <div className="animate-pulse rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+            </li>
+          )}
         </ul>
       </div>
       {modalPhotoId && (
