@@ -177,7 +177,7 @@ export default function PhotoDetail({
   return (
     <div className="flex flex-col md:flex-row h-full">
       {/* Left side - Image/Video */}
-      <div className="md:flex-1 bg-black flex items-center justify-center relative">
+      <div className="md:flex-1 bg-black flex items-center justify-center relative md:min-w-[600px]">
         {/* Header for mobile */}
         {isMobile && (
           <div className="absolute top-12 left-0 right-0 z-10 flex items-center justify-between px-4 py-2">
@@ -226,7 +226,7 @@ export default function PhotoDetail({
             alt={photo.name}
             width={800}
             height={600}
-            className="object-contain w-full max-h-[500px]"
+            className="object-contain w-full h-full max-h-[90vh]"
           />
         )}
       </div>

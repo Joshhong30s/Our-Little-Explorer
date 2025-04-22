@@ -23,7 +23,7 @@ export default function Navbar() {
       <div className="flex flex-col md:flex-row justify-center md:items-center md:justify-between">
         <div
           className={`fixed md:relative top-[72px] md:top-0 left-0 w-full md:w-auto bg-white md:bg-transparent z-50 border-b border-gray-200 md:border-none transition-all duration-300 ease-in-out ${
-            isNavbarOpen ? 'max-h-[600px] opacity-100 shadow-lg md:shadow-none' : 'max-h-0 opacity-0 md:opacity-100 md:max-h-[600px]'
+            isNavbarOpen ? 'max-h-[600px] opacity-100 shadow-lg md:shadow-none' : 'max-h-0 opacity-0 pointer-events-none md:opacity-100 md:pointer-events-auto md:max-h-[600px]'
           }`}
         >
           <div className="xl:text-xl w-full">
