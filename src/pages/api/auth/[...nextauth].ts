@@ -77,28 +77,30 @@ export const authOptions: NextAuthOptions = {
     async signIn({ user, account }) {
       if (account?.provider === 'credentials') {
         return true;
-      } else {
-        // OAuth
-        const existingUser = await UserModel.findOne({ email: user.email });
-        if (existingUser) {
-          console.log('Existing user (OAuth):', existingUser);
+      }
 
-          if (!existingUser.providers.includes(account?.provider)) {
-            existingUser.providers.push(account?.provider);
-            await existingUser.save();
-          }
-          return true;
-        } else {
-          const newUser = new UserModel({
-            email: user.email || '',
-            username: user.name || '',
-            image: user.image || '',
-            providers: [account?.provider],
-          });
-          await newUser.save();
-          console.log('New user created:', newUser);
-          return true;
+      const existingUser = await UserModel.findOne({ email: user.email });
+
+      if (existingUser) {
+        console.log('Existing user (OAuth):', existingUser);
+
+        if (!existingUser.providers.includes(account?.provider)) {
+          existingUser.providers.push(account?.provider);
+          await existingUser.save();
         }
+
+        return true;
+      } else {
+        const newUser = new UserModel({
+          email: user.email || '',
+          username: user.name || '',
+          image: user.image || '',
+          providers: [account?.provider],
+        });
+
+        await newUser.save();
+        console.log('New user created:', newUser);
+        return true;
       }
     },
 
@@ -132,12 +134,28 @@ export const authOptions: NextAuthOptions = {
           session.user.accessToken = token.accessToken as string;
         }
       }
+
       return session;
     },
   },
+
   session: {
     strategy: 'jwt',
   },
+
+  // add cookie to prevent ios chrome issue
+  cookies: {
+    sessionToken: {
+      name: `__Secure-next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: 'none',
+        secure: true,
+        path: '/',
+      },
+    },
+  },
+
   secret: process.env.NEXTAUTH_SECRET,
 };
 

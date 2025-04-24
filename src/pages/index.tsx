@@ -186,7 +186,6 @@ export default function Home() {
     }
   }, [inView, filteredAndSortedPhotos.length, displayCount]);
 
-  // Memoize image loading state tracking
   const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
 
   const handleImageLoad = useCallback((id: string) => {
@@ -376,7 +375,8 @@ export default function Home() {
               onClick={() => setModalPhotoId(photo._id)}
             >
               <div className="relative w-full aspect-[3/4] md:aspect-[4/5] lg:aspect-[3/4]">
-                {photo?.imageUrl?.includes('cloudinary') && photo?.imageUrl?.includes('/video/') ? (
+                {photo?.imageUrl?.includes('cloudinary') &&
+                photo?.imageUrl?.includes('/video/') ? (
                   <div className="w-full h-full flex items-center justify-center">
                     <video
                       src={photo.imageUrl}
