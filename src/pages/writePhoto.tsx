@@ -48,32 +48,48 @@ export default function WritePhoto() {
     });
   };
 
+  const [uploadStatus, setUploadStatus] = useState<{
+    status: 'idle' | 'uploading' | 'success' | 'error';
+    message?: string;
+    details?: string;
+  }>({ status: 'idle' });
+
   const handleImageChange = async (e: any) => {
     const file = e.target.files[0];
-    setFile(file);
-
-    if (file) {
-      const formData = new FormData();
-      formData.append('photo', file);
-
-      try {
-        const response = await axios.post('/api/photo/upload', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-
-        alert(t('photo.uploadSuccess'));
-        setPhoto({
-          ...photo,
-          imageUrl: response.data.url,
-        });
-      } catch (err) {
-        console.log(err);
-        alert(t('photo.uploadFail'));
-      }
-    } else {
+    if (!file) {
       alert(t('photo.noPhoto'));
+      return;
+    }
+
+    setFile(file);
+    setUploadStatus({ status: 'uploading' });
+
+    const formData = new FormData();
+    formData.append('photo', file);
+
+    try {
+      const response = await axios.post('/api/photo/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      setUploadStatus({ 
+        status: 'success',
+        message: t('photo.uploadSuccess')
+      });
+      
+      setPhoto({
+        ...photo,
+        imageUrl: response.data.url,
+      });
+    } catch (err: any) {
+      console.error('Upload error:', err);
+      setUploadStatus({ 
+        status: 'error',
+        message: t('photo.uploadFail'),
+        details: err.response?.data?.details || err.message
+      });
     }
   };
 
@@ -194,7 +210,26 @@ export default function WritePhoto() {
               onChange={handleImageChange}
               className="mt-1 block w-full h-8 border-b-2 border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:ring-opacity-50"
             />
-            {file && (
+            {uploadStatus.status === 'uploading' && (
+              <div className="mt-4 flex items-center justify-center space-x-2">
+                <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-blue-500"></div>
+                <span className="text-sm text-gray-600">{t('photo.uploading')}</span>
+              </div>
+            )}
+            {uploadStatus.status === 'error' && (
+              <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-md">
+                <p className="text-red-600 text-sm">{uploadStatus.message}</p>
+                {uploadStatus.details && (
+                  <p className="text-red-500 text-xs mt-1">{uploadStatus.details}</p>
+                )}
+              </div>
+            )}
+            {uploadStatus.status === 'success' && (
+              <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-md">
+                <p className="text-green-600 text-sm">{uploadStatus.message}</p>
+              </div>
+            )}
+            {file && uploadStatus.status !== 'error' && (
               <div className="mt-4 relative w-full aspect-video">
                 {file.type.startsWith('video/') ? (
                   <video

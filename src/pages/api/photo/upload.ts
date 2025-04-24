@@ -22,13 +22,22 @@ export default async function handler(
       keepExtensions: true,
       maxFileSize: 60 * 1024 * 1024, // 60MB limit
       multiples: false,
+      allowEmptyFiles: false,
+      filter: (part) => {
+        if (!part.mimetype) return false;
+        return (
+          part.name === 'photo' && 
+          (part.mimetype.includes('image/') || part.mimetype.includes('video/'))
+        );
+      },
     });
 
     form.parse(req, async (err: any, fields: any, files: any) => {
       if (err) {
         console.error('Form parse error:', {
           error: err,
-          contentType: req.headers['content-type']
+          contentType: req.headers['content-type'],
+          contentLength: req.headers['content-length']
         });
         return res.status(500).json({ 
           error: 'File upload failed',
@@ -43,8 +52,8 @@ export default async function handler(
 
       if (!uploadedFile || Array.isArray(uploadedFile)) {
         console.error('File validation error:', {
-          files,
-          uploadedFile
+          files: Object.keys(files),
+          contentType: uploadedFile?.mimetype
         });
         return res.status(400).json({ 
           error: 'No file or invalid file format',
@@ -55,10 +64,13 @@ export default async function handler(
       try {
         const filePath = uploadedFile.filepath;
         const fileType = uploadedFile.mimetype;
+        const fileSize = uploadedFile.size;
+        
         console.log('Processing file:', {
           mimetype: fileType,
           originalFilename: uploadedFile.originalFilename,
-          size: uploadedFile.size
+          size: fileSize,
+          path: filePath
         });
 
         let cloudinaryUrl: string;
@@ -76,15 +88,30 @@ export default async function handler(
         return res.status(200).json({ 
           message: 'Upload successful',
           url: cloudinaryUrl,
-          type: isVideo(uploadedFile.mimetype) ? 'video' : 'image'
+          type: isVideoFile ? 'video' : 'image',
+          originalName: uploadedFile.originalFilename
         });
-      } catch (error) {
-        console.error('Cloudinary Upload Error:', error);
-        return res.status(500).json({ error: 'Cloudinary upload failed' });
+      } catch (error: any) {
+        console.error('Cloudinary Upload Error:', {
+          error,
+          file: {
+            type: uploadedFile.mimetype,
+            name: uploadedFile.originalFilename,
+            size: uploadedFile.size
+          }
+        });
+        return res.status(500).json({ 
+          error: 'Cloudinary upload failed',
+          details: error.message,
+          fileType: uploadedFile.mimetype
+        });
       }
     });
   } catch (error: any) {
-    console.error(error);
-    return res.status(500).json({ error: error.message });
+    console.error('General error:', error);
+    return res.status(500).json({ 
+      error: error.message,
+      type: 'general_error'
+    });
   }
 }
