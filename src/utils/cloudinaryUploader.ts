@@ -1,22 +1,14 @@
-import cloudinary from 'cloudinary';
-
-cloudinary.v2.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME || '',
-  api_key: process.env.CLOUDINARY_API_KEY || '',
-  api_secret: process.env.CLOUDINARY_API_SECRET || '',
-});
-
-export const CLOUDINARY_UPLOAD_URL = `https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/auto/upload`;
-export const CLOUDINARY_UPLOAD_PRESET =
-  process.env.CLOUDINARY_UPLOAD_PRESET || 'baby_uploads';
+export const CLOUDINARY_CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+export const CLOUDINARY_UPLOAD_PRESET = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
+export const CLOUDINARY_UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/auto/upload`;
 
 export function isVideo(mimeType: string) {
   const videoMimeTypes = [
-    'video/',
-    'video/quicktime',
-    'video/x-msvideo',
-    'video/mp4',
-    'video/x-matroska',
+    'video/',          // general video
+    'video/quicktime', // .mov
+    'video/x-msvideo', // .avi
+    'video/mp4',       // .mp4
+    'video/x-matroska' // .mkv
   ];
   return videoMimeTypes.some(type => mimeType?.toLowerCase().includes(type));
 }
@@ -24,19 +16,49 @@ export function isVideo(mimeType: string) {
 export async function uploadToCloudinary(file: File) {
   const formData = new FormData();
   formData.append('file', file);
-  formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+  formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET || '');
   formData.append('folder', isVideo(file.type) ? 'Baby/videos' : 'Baby/images');
 
-  const response = await fetch(CLOUDINARY_UPLOAD_URL, {
-    method: 'POST',
-    body: formData,
-  });
+  try {
+    const response = await fetch(CLOUDINARY_UPLOAD_URL, {
+      method: 'POST',
+      body: formData
+    });
 
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.message || 'Upload failed');
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Upload failed');
+    }
+
+    const data = await response.json();
+    return data.secure_url;
+  } catch (error) {
+    console.error('Upload error:', error);
+    throw error;
   }
+}
 
-  const data = await response.json();
-  return data.secure_url;
+export async function uploadMediaToCloudinary(input: string) {
+  const formData = new FormData();
+  formData.append('file', input);
+  formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET || '');
+  formData.append('folder', 'Baby');
+
+  try {
+    const response = await fetch(CLOUDINARY_UPLOAD_URL, {
+      method: 'POST',
+      body: formData
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Upload failed');
+    }
+
+    const data = await response.json();
+    return data.secure_url;
+  } catch (error) {
+    console.error('Upload error:', error);
+    throw error;
+  }
 }

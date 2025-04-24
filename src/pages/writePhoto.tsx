@@ -36,7 +36,6 @@ export default function WritePhoto() {
     status: 'idle' | 'uploading' | 'success' | 'error';
     message?: string;
     details?: string;
-    progress?: number;
   }>({ status: 'idle' });
 
   const handleChange = (
@@ -63,11 +62,19 @@ export default function WritePhoto() {
       return;
     }
 
+    const fileType = selectedFile.type;
+    const isVideoFile = isVideo(fileType);
+    const maxSize = 60 * 1024 * 1024; // 60MB
+
+    if (selectedFile.size > maxSize) {
+      alert(t('photo.fileTooLarge'));
+      return;
+    }
+
     setFile(selectedFile);
     setUploadStatus({ 
       status: 'uploading', 
-      message: t('photo.uploading'),
-      progress: 0 
+      message: t('photo.uploading')
     });
 
     try {
@@ -89,6 +96,7 @@ export default function WritePhoto() {
         message: t('photo.uploadFail'),
         details: err.message
       });
+      setFile(null);
     }
   };
 
@@ -211,6 +219,7 @@ export default function WritePhoto() {
               accept="image/*,video/*"
               onChange={handleImageChange}
               className="mt-1 block w-full h-8 border-b-2 border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:ring-opacity-50"
+              disabled={uploadStatus.status === 'uploading'}
             />
             {uploadStatus.status === 'uploading' && (
               <div className="mt-4 flex items-center justify-center space-x-2">

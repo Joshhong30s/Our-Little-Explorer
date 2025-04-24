@@ -1,11 +1,9 @@
-import formidable from 'formidable';
 import type { NextApiRequest, NextApiResponse } from 'next';
-
-import path from 'path';
+import formidable from 'formidable';
 import fs from 'fs';
 import dbConnect from '@/utils/dbConnect';
 import { UserModel } from '@/types/users';
-import { uploadImageToCloudinary } from '@/utils/cloudinaryUploader';
+import { uploadMediaToCloudinary } from '@/utils/cloudinaryUploader';
 
 export const config = {
   api: {
@@ -17,61 +15,60 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  console.log('upload-avatar API route init');
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  await dbConnect();
-
   try {
     const form = formidable({
       keepExtensions: true,
-      maxFileSize: 2 * 1024 * 1024,
-      multiples: false,
+      maxFileSize: 5 * 1024 * 1024, // 5MB limit for avatars
     });
 
-    form.parse(req, async (err: any, fields: any, files: any) => {
+    form.parse(req, async (err, fields, files: any) => {
       if (err) {
-        console.error('Form parse error:', err);
-        return res.status(500).json({ error: '檔案上傳失敗' });
+        return res.status(500).json({ error: 'File upload failed' });
       }
 
-      const userId = fields.userId as string;
-
-      if (!userId) {
-        return res.status(400).json({ error: '缺少 userId' });
-      }
-
-      let avatarFile = files.avatar;
-      if (Array.isArray(avatarFile)) {
-        avatarFile = avatarFile[0];
-      }
-      if (!avatarFile || Array.isArray(avatarFile)) {
-        console.log('avatarFile is invalid => returning 400');
-        return res.status(400).json({ error: '沒有檔案或檔案格式錯誤' });
+      const file = files.avatar;
+      if (!file) {
+        return res.status(400).json({ error: 'No file provided' });
       }
 
       try {
-        const filePath = avatarFile.filepath;
-        const cloudinaryUrl = await uploadImageToCloudinary(filePath);
+        // Read file as buffer and convert to base64
+        const fileBuffer = fs.readFileSync(file.filepath);
+        const base64Data = fileBuffer.toString('base64');
+        const dataURI = `data:${file.mimetype};base64,${base64Data}`;
+        
+        // Upload to Cloudinary
+        const cloudinaryUrl = await uploadMediaToCloudinary(dataURI);
 
-        await UserModel.findByIdAndUpdate(userId, {
-          image: cloudinaryUrl,
+        // Clean up temp file
+        fs.unlinkSync(file.filepath);
+
+        // Update user avatar in database
+        await dbConnect();
+        const userId = fields.userId;
+        await UserModel.findByIdAndUpdate(userId, { image: cloudinaryUrl });
+
+        return res.status(200).json({ 
+          url: cloudinaryUrl
         });
-
-        fs.unlinkSync(filePath);
-
-        return res
-          .status(200)
-          .json({ message: '上傳成功', url: cloudinaryUrl });
-      } catch (error) {
-        console.error('Cloudinary Upload Error:', error);
-        return res.status(500).json({ error: 'Cloudinary 上傳失敗' });
+      } catch (error: any) {
+        // Clean up temp file in case of error
+        if (file.filepath && fs.existsSync(file.filepath)) {
+          fs.unlinkSync(file.filepath);
+        }
+        
+        console.error('Upload error:', error);
+        return res.status(500).json({ 
+          error: 'Upload failed',
+          details: error.message 
+        });
       }
     });
   } catch (error: any) {
-    console.error(error);
     return res.status(500).json({ error: error.message });
   }
 }
