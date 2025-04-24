@@ -190,7 +190,17 @@ export default function Home() {
     setLoadedImages(prev => new Set([...prev, id]));
   }, []);
 
-  /// slideshow images
+  const getVideoPoster = (url: string) => {
+    const match = url.match(
+      /^(https?:\/\/[^/]+\/[^/]+\/video\/upload\/)([^/]+)\/(.+)$/
+    );
+    if (!match) return url;
+
+    const [_, baseUrl, transformations, publicId] = match;
+    return `${baseUrl}c_scale,w_800,so_auto/${publicId}`;
+  };
+
+  // slideshow images
   const images = [
     { id: 1, src: '/assets/bao1.jpeg', alt: 'bao1' },
     { id: 2, src: '/assets/bao2.jpeg', alt: 'bao2' },
@@ -381,6 +391,7 @@ export default function Home() {
                       controls
                       className="w-full h-full object-cover"
                       preload="metadata"
+                      poster={getVideoPoster(photo.imageUrl)}
                     />
                   </div>
                 ) : photo?.imageUrl?.endsWith('.jpg') ||

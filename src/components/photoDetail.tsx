@@ -70,9 +70,21 @@ export default function PhotoDetail({
 
   const getMediaType = (url?: string) => {
     if (!url) return 'none';
-    if (url.includes('youtube.com') || url.includes('youtu.be')) return 'youtube';
-    if (url.includes('cloudinary') && url.includes('/video/')) return 'cloudinary-video';
+    if (url.includes('youtube.com') || url.includes('youtu.be'))
+      return 'youtube';
+    if (url.includes('cloudinary') && url.includes('/video/'))
+      return 'cloudinary-video';
     return 'image';
+  };
+
+  const getVideoPoster = (url: string) => {
+    const match = url.match(
+      /^(https?:\/\/[^/]+\/[^/]+\/video\/upload\/)([^/]+)\/(.+)$/
+    );
+    if (!match) return url;
+
+    const [_, baseUrl, transformations, publicId] = match;
+    return `${baseUrl}c_scale,w_800,so_auto/${publicId}`;
   };
 
   const mediaType = getMediaType(photo?.imageUrl);
@@ -212,7 +224,10 @@ export default function PhotoDetail({
               config={{
                 youtube: {
                   playerVars: {
-                    origin: typeof window !== 'undefined' ? window.location.origin : '',
+                    origin:
+                      typeof window !== 'undefined'
+                        ? window.location.origin
+                        : '',
                     modestbranding: 1,
                   },
                 },
@@ -226,6 +241,7 @@ export default function PhotoDetail({
               controls
               className="max-w-full max-h-full object-contain"
               preload="metadata"
+              poster={getVideoPoster(photo.imageUrl)}
             />
           </div>
         ) : (
