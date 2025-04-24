@@ -6,47 +6,37 @@ cloudinary.v2.config({
   api_secret: process.env.CLOUDINARY_API_SECRET || '',
 });
 
-export async function uploadImageToCloudinary(
-  filePath: string,
-  folder: string = 'Baby'
-) {
-  const result = await cloudinary.v2.uploader.upload(filePath, {
-    folder: folder,
-  });
-  return result.secure_url;
-}
-
-export async function uploadVideoToCloudinary(
-  filePath: string,
-  folder: string = 'Baby/videos'
-) {
-  try {
-    const result = await cloudinary.v2.uploader.upload(filePath, {
-      resource_type: 'auto',
-      folder: folder,
-      use_filename: true,
-      unique_filename: true,
-      overwrite: false,
-      invalidate: true,
-      chunk_size: 20000000, // 20MB chunks
-    });
-    return result.secure_url;
-  } catch (error) {
-    console.error('Error uploading video to Cloudinary:', {
-      error,
-      filePath
-    });
-    throw error;
-  }
-}
+export const CLOUDINARY_UPLOAD_URL = `https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/auto/upload`;
+export const CLOUDINARY_UPLOAD_PRESET =
+  process.env.CLOUDINARY_UPLOAD_PRESET || 'baby_uploads';
 
 export function isVideo(mimeType: string) {
   const videoMimeTypes = [
-    'video/',          // general video
-    'video/quicktime', // .mov
-    'video/x-msvideo', // .avi
-    'video/mp4',       // .mp4
-    'video/x-matroska' // .mkv
+    'video/',
+    'video/quicktime',
+    'video/x-msvideo',
+    'video/mp4',
+    'video/x-matroska',
   ];
   return videoMimeTypes.some(type => mimeType?.toLowerCase().includes(type));
+}
+
+export async function uploadToCloudinary(file: File) {
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+  formData.append('folder', isVideo(file.type) ? 'Baby/videos' : 'Baby/images');
+
+  const response = await fetch(CLOUDINARY_UPLOAD_URL, {
+    method: 'POST',
+    body: formData,
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.message || 'Upload failed');
+  }
+
+  const data = await response.json();
+  return data.secure_url;
 }
