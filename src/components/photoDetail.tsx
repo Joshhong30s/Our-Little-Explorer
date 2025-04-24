@@ -68,10 +68,14 @@ export default function PhotoDetail({
   const [loading, setLoading] = useState(true);
   const [loadingRecommendations, setLoadingRecommendations] = useState(false);
 
-  const isYoutube =
-    photo?.imageUrl &&
-    (photo.imageUrl.includes('youtube.com') ||
-      photo.imageUrl.includes('youtu.be'));
+  const getMediaType = (url?: string) => {
+    if (!url) return 'none';
+    if (url.includes('youtube.com') || url.includes('youtu.be')) return 'youtube';
+    if (url.includes('cloudinary') && url.includes('/video/')) return 'cloudinary-video';
+    return 'image';
+  };
+
+  const mediaType = getMediaType(photo?.imageUrl);
 
   useEffect(() => {
     if (!photoId) return;
@@ -198,31 +202,35 @@ export default function PhotoDetail({
           </div>
         )}
 
-        {isYoutube ? (
+        {mediaType === 'youtube' ? (
           <div className="w-[450px] h-[600px] flex items-center justify-center">
-            {isYoutube && (
-              <ReactPlayer
-                url={photo.imageUrl}
-                controls={true}
-                width={450}
-                height={600}
-                config={{
-                  youtube: {
-                    playerVars: {
-                      origin:
-                        typeof window !== 'undefined'
-                          ? window.location.origin
-                          : '',
-                      modestbranding: 1,
-                    },
+            <ReactPlayer
+              url={photo.imageUrl}
+              controls={true}
+              width={450}
+              height={600}
+              config={{
+                youtube: {
+                  playerVars: {
+                    origin: typeof window !== 'undefined' ? window.location.origin : '',
+                    modestbranding: 1,
                   },
-                }}
-              />
-            )}
+                },
+              }}
+            />
+          </div>
+        ) : mediaType === 'cloudinary-video' ? (
+          <div className="w-[450px] h-[600px] flex items-center justify-center">
+            <video
+              src={photo.imageUrl}
+              controls
+              className="max-w-full max-h-full object-contain"
+              preload="metadata"
+            />
           </div>
         ) : (
           <Image
-            src={photo.imageUrl ? photo.imageUrl : '/assets/notFound.jpg'}
+            src={photo.imageUrl || '/assets/notFound.jpg'}
             alt={photo.name}
             width={800}
             height={600}

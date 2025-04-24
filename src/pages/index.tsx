@@ -34,23 +34,33 @@ export default function Home() {
   const babyBirthday = dayjs('2023-04-12T00:00:00+08:00');
   const [modalPhotoId, setModalPhotoId] = useState<string | null>(null);
 
-  const calculateAge = (growingTime: number | string) => {
-    if (typeof growingTime === 'number') {
-      const diffYears = Math.floor(growingTime / 12);
-      const diffMonths = Math.floor(growingTime % 12);
-      return `${diffYears}Y${diffMonths}M`;
-    } else {
-      const date = dayjs(growingTime);
-      const diffYears = date.diff(babyBirthday, 'year');
-      const diffMonths = date.diff(
-        babyBirthday.add(diffYears, 'year'),
-        'month'
-      );
-      return `${diffYears}Y${diffMonths}M`;
-    }
-  };
+  const calculateAge = useCallback(
+    (growingTime: number | string) => {
+      if (typeof growingTime === 'number') {
+        const diffYears = Math.floor(growingTime / 12);
+        const diffMonths = Math.floor(growingTime % 12);
+        return `${diffYears}Y${diffMonths}M`;
+      } else {
+        const date = dayjs(growingTime);
+        const diffYears = date.diff(babyBirthday, 'year');
+        const diffMonths = date.diff(
+          babyBirthday.add(diffYears, 'year'),
+          'month'
+        );
+        return `${diffYears}Y${diffMonths}M`;
+      }
+    },
+    [babyBirthday]
+  );
 
+  // Age filter states
+  const [startPeriod, setStartPeriod] = useState({ years: 0, months: 0 });
+  const [endPeriod, setEndPeriod] = useState({ years: 2, months: 11 });
   const [currentSlide, setCurrentSlide] = useState(0);
+
+  // Range options
+  const yearOptions = Array.from({ length: 3 }, (_, i) => i); // 0-2 years
+  const monthOptions = Array.from({ length: 12 }, (_, i) => i); // 0-11 months
 
   const handleNextSlide = () => {
     let newSlide = currentSlide === images.length - 1 ? 0 : currentSlide + 1;
@@ -126,9 +136,28 @@ export default function Home() {
     }
   };
 
-  const reversedPhoto = useMemo(
-    () =>
-      photo.slice().sort((a, b) => {
+  const ageToMonths = useCallback((photoAge: string) => {
+    const years = parseInt(photoAge.split('Y')[0]) || 0;
+    const months = parseInt(photoAge.split('Y')[1]?.replace('M', '')) || 0;
+    return years * 12 + months;
+  }, []);
+
+  const isInAgeRange = useCallback(
+    (photoAge: string) => {
+      const ageInMonths = ageToMonths(photoAge);
+      const startMonths = startPeriod.years * 12 + startPeriod.months;
+      const endMonths = endPeriod.years * 12 + endPeriod.months;
+      return ageInMonths >= startMonths && ageInMonths <= endMonths;
+    },
+    [startPeriod, endPeriod, ageToMonths]
+  );
+
+  // Filter and sort photos
+  const filteredAndSortedPhotos = useMemo(() => {
+    return photo
+      .slice()
+      .filter(p => isInAgeRange(calculateAge(p.growingTime)))
+      .sort((a, b) => {
         const ageA =
           parseInt(calculateAge(a.growingTime).replace(/Y|M/g, '')) || 0;
         const ageB =
@@ -139,9 +168,8 @@ export default function Home() {
         const timestampA = parseInt(a._id.substring(0, 8), 16);
         const timestampB = parseInt(b._id.substring(0, 8), 16);
         return timestampB - timestampA;
-      }),
-    [photo]
-  );
+      });
+  }, [photo, isInAgeRange, calculateAge]);
 
   // Implement virtual scrolling with intersection observer
   const [displayCount, setDisplayCount] = useState(8);
@@ -151,14 +179,12 @@ export default function Home() {
   });
 
   useEffect(() => {
-    if (inView && displayCount < reversedPhoto.length) {
-      setDisplayCount(prev => Math.min(prev + 8, reversedPhoto.length));
+    if (inView && displayCount < filteredAndSortedPhotos.length) {
+      setDisplayCount(prev =>
+        Math.min(prev + 8, filteredAndSortedPhotos.length)
+      );
     }
-  }, [inView, reversedPhoto.length, displayCount]);
-
-  const visiblePhotos = useMemo(() => {
-    return reversedPhoto.slice(0, displayCount);
-  }, [reversedPhoto, displayCount]);
+  }, [inView, filteredAndSortedPhotos.length, displayCount]);
 
   // Memoize image loading state tracking
   const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
@@ -254,18 +280,115 @@ export default function Home() {
           />
         ))}
       </div>
+
+      <div className="bg-gradient-to-b from-blue-50 to-white ">
+        <div className="max-w-7xl mx-auto py-5 px-4">
+          <div className="flex flex-wrap gap-6 items-center justify-center">
+            <div className="flex items-center gap-3 bg-white px-6 py-3 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 min-w-[280px] md:min-w-[320px]">
+              <label className="text-sm font-medium text-gray-700">
+                {t('filter.from')}:
+              </label>
+              <select
+                className="w-24 md:w-32 px-3 py-2 border-0 bg-blue-50/70 rounded-lg focus:ring-2 focus:ring-blue-400 transition-all duration-200 hover:bg-blue-50"
+                value={startPeriod.years}
+                onChange={e =>
+                  setStartPeriod(prev => ({
+                    ...prev,
+                    years: parseInt(e.target.value),
+                  }))
+                }
+              >
+                {yearOptions.map(year => (
+                  <option key={year} value={year}>
+                    {year}
+                    {t('filter.yearUnit')}
+                  </option>
+                ))}
+              </select>
+              <select
+                className="w-24 md:w-32 px-3 py-2 border-0 bg-blue-50/70 rounded-lg focus:ring-2 focus:ring-blue-400 transition-all duration-200 hover:bg-blue-50"
+                value={startPeriod.months}
+                onChange={e =>
+                  setStartPeriod(prev => ({
+                    ...prev,
+                    months: parseInt(e.target.value),
+                  }))
+                }
+              >
+                {monthOptions.map(month => (
+                  <option key={month} value={month}>
+                    {month}
+                    {t('filter.monthUnit')}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="flex items-center gap-3 bg-white px-6 py-3 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 min-w-[280px] md:min-w-[320px]">
+              <label className="text-sm font-medium text-gray-700">
+                {t('filter.to')}:
+              </label>
+              <select
+                className="w-24 md:w-32 px-3 py-2 border-0 bg-blue-50/70 rounded-lg focus:ring-2 focus:ring-blue-400 transition-all duration-200 hover:bg-blue-50"
+                value={endPeriod.years}
+                onChange={e =>
+                  setEndPeriod(prev => ({
+                    ...prev,
+                    years: parseInt(e.target.value),
+                  }))
+                }
+              >
+                {yearOptions.map(year => (
+                  <option key={year} value={year}>
+                    {year}
+                    {t('filter.yearUnit')}
+                  </option>
+                ))}
+              </select>
+              <select
+                className="w-24 md:w-32 px-3 py-2 border-0 bg-blue-50/70 rounded-lg focus:ring-2 focus:ring-blue-400 transition-all duration-200 hover:bg-blue-50"
+                value={endPeriod.months}
+                onChange={e =>
+                  setEndPeriod(prev => ({
+                    ...prev,
+                    months: parseInt(e.target.value),
+                  }))
+                }
+              >
+                {monthOptions.map(month => (
+                  <option key={month} value={month}>
+                    {month}
+                    {t('filter.monthUnit')}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="px-3 md:px-6 mx-auto mb-6 text-black">
         <ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-8">
-          {visiblePhotos.map(photo => (
+          {filteredAndSortedPhotos.slice(0, displayCount).map(photo => (
             <li
               key={photo._id}
               className="border border-gray-300 bg-gray-100 rounded-lg cursor-pointer"
               onClick={() => setModalPhotoId(photo._id)}
             >
               <div className="relative w-full aspect-[3/4] md:aspect-[4/5] lg:aspect-[3/4]">
-                {photo?.imageUrl?.endsWith('.jpg') ||
-                photo?.imageUrl?.endsWith('.png') ||
-                photo?.imageUrl?.endsWith('.jpeg') ? (
+                {photo?.imageUrl?.includes('cloudinary') && photo?.imageUrl?.includes('/video/') ? (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <video
+                      src={photo.imageUrl}
+                      controls
+                      className="w-full h-full object-cover"
+                      preload="metadata"
+                    />
+                  </div>
+                ) : photo?.imageUrl?.endsWith('.jpg') ||
+                  photo?.imageUrl?.endsWith('.png') ||
+                  photo?.imageUrl?.endsWith('.jpeg') ||
+                  photo?.imageUrl?.includes('cloudinary') ? (
                   <>
                     {!loadedImages.has(photo._id) && (
                       <div className="absolute inset-0 bg-gray-200 animate-pulse" />
@@ -377,7 +500,7 @@ export default function Home() {
               </div>
             </li>
           ))}
-          {displayCount < reversedPhoto.length && (
+          {displayCount < filteredAndSortedPhotos.length && (
             <li
               ref={loadMoreRef}
               className="col-span-full flex justify-center p-4"

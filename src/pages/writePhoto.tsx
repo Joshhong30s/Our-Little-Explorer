@@ -22,7 +22,6 @@ export default function WritePhoto() {
   const userID = useGetUserID();
   const { data: session } = useSession();
   const [file, setFile] = useState<File | null>(null);
-  const [allowYoutubeUrl, setAllowYoutubeUrl] = useState(false);
   const [photo, setPhoto] = useState<PhotoType>({
     name: '',
     location: '',
@@ -50,48 +49,31 @@ export default function WritePhoto() {
   };
 
   const handleImageChange = async (e: any) => {
-    if (allowYoutubeUrl) {
-      const inputUrl = e.target.value;
-      setPhoto({
-        ...photo,
-        imageUrl: inputUrl,
-      });
-    } else {
-      const file = e.target.files[0];
-      setFile(file);
+    const file = e.target.files[0];
+    setFile(file);
 
-      if (file) {
-        const clientId = '204e2ddd7271745';
-        const auth = 'Client-ID ' + clientId;
-        const data = new FormData();
-        const filename = file.name;
-        data.append('name', filename);
-        data.append('image', file);
+    if (file) {
+      const formData = new FormData();
+      formData.append('photo', file);
 
-        try {
-          const response = await axios.post(
-            'https://api.imgur.com/3/image',
-            data,
-            {
-              headers: {
-                Authorization: auth,
-                Accept: 'application/json',
-              },
-            }
-          );
+      try {
+        const response = await axios.post('/api/photo/upload', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
 
-          alert(t('photo.uploadSuccess'));
-          setPhoto({
-            ...photo,
-            imageUrl: response.data.data.link,
-          });
-        } catch (err) {
-          console.log(err);
-          alert(t('photo.uploadFail'));
-        }
-      } else {
-        alert(t('photo.noPhoto'));
+        alert(t('photo.uploadSuccess'));
+        setPhoto({
+          ...photo,
+          imageUrl: response.data.url,
+        });
+      } catch (err) {
+        console.log(err);
+        alert(t('photo.uploadFail'));
       }
+    } else {
+      alert(t('photo.noPhoto'));
     }
   };
 
@@ -198,48 +180,37 @@ export default function WritePhoto() {
             />
           </div>
           <div>
+            <label
+              htmlFor="image"
+              className="block text-gray-700 font-medium text-lg"
+            >
+              {t('photo.uploadOptionLabel')}
+            </label>
             <input
-              type="radio"
-              id="youtube"
+              type="file"
+              id="image"
               name="image"
-              onChange={() => setAllowYoutubeUrl(true)}
-              className="mr-2"
+              accept="image/*,video/*"
+              onChange={handleImageChange}
+              className="mt-1 block w-full h-8 border-b-2 border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:ring-opacity-50"
             />
-            <label htmlFor="youtube">{t('photo.youtubeOptionLabel')}</label>
-            <br />
-            <input
-              type="radio"
-              id="upload"
-              name="image"
-              onChange={() => setAllowYoutubeUrl(false)}
-              className="mr-2"
-            />
-            <label htmlFor="upload">{t('photo.uploadOptionLabel')}</label>
-          </div>
-          <div>
-            {allowYoutubeUrl ? (
-              <input
-                type="text"
-                id="youtubeUrl"
-                name="youtubeUrl"
-                placeholder={t('photo.youtubeUrlPlaceholder')}
-                onChange={handleImageChange}
-                className="mt-1 block w-full h-8 border-b-2 border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:ring-opacity-50"
-              />
-            ) : (
-              <input
-                type="file"
-                id="image"
-                name="image"
-                onChange={handleImageChange}
-                className="mt-1 block w-full h-8 border-b-2 border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:ring-opacity-50"
-              />
-            )}
             {file && (
-              <Image
-                src={URL.createObjectURL(file)}
-                alt={t('photo.uploadedPhotoAlt')}
-              />
+              <div className="mt-4 relative w-full aspect-video">
+                {file.type.startsWith('video/') ? (
+                  <video
+                    src={URL.createObjectURL(file)}
+                    controls
+                    className="w-full h-full"
+                  />
+                ) : (
+                  <Image
+                    src={URL.createObjectURL(file)}
+                    alt={t('photo.uploadedPhotoAlt')}
+                    fill
+                    className="object-contain"
+                  />
+                )}
+              </div>
             )}
           </div>
           <div className="py-4 text-center">

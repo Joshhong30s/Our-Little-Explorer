@@ -31,6 +31,12 @@
     "resetPasswordEmailInvalid": "無效的電子郵件",
     "resetPasswordEmailNotFound": "找不到電子郵件"
   },
+  "filter": {
+    "from": "從",
+    "to": "至",
+    "yearUnit": "歲",
+    "monthUnit": "月"
+  },
   "error_message": "發生錯誤，請再試一次。",
   "loading": "載入中...",
   "profile": {

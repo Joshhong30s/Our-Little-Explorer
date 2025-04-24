@@ -92,6 +92,12 @@
     "failedUpload": "Failed to upload image",
     "uploadedPhotoAlt": "Uploaded photo"
   },
+  "filter": {
+    "from": "From",
+    "to": "To",
+    "yearUnit": "Y",
+    "monthUnit": "M"
+  },
   "navbar": {
     "login": "Login",
     "logout": "Logout",
