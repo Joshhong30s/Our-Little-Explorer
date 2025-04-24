@@ -31,26 +31,24 @@
     "resetPasswordEmailInvalid": "Invalid email",
     "resetPasswordEmailNotFound": "Email not found"
   },
-  "common": {
-    "error_message": "Something went wrong. Please try again.",
-    "loading": "Loading...",
-    "profile": {
-      "title": "My Profile",
-      "basicInfo": "Basic Information",
-      "username": "Username:",
-      "email": "Email:",
-      "registrationDate": "Registration Date:",
-      "avatarUpload": "Upload/Update Avatar",
-      "preview": "Preview:",
-      "bio": "Personal Bio",
-      "bioPlaceholder": "Tell us a bit about yourself...",
-      "updateBio": "Update Bio",
-      "uploadAvatar": "Upload Avatar",
-      "uploading": "Uploading..."
-    }
+  "error_message": "Something went wrong. Please try again.",
+  "loading": "Loading...",
+  "profile": {
+    "title": "My Profile",
+    "basicInfo": "Basic Information",
+    "username": "Username:",
+    "email": "Email:",
+    "registrationDate": "Registration Date:",
+    "avatarUpload": "Upload/Update Avatar",
+    "preview": "Preview:",
+    "bio": "Personal Bio",
+    "bioPlaceholder": "Tell us a bit about yourself...",
+    "updateBio": "Update Bio",
+    "uploadAvatar": "Upload Avatar",
+    "uploading": "Uploading..."
   },
   "message": {
-    "leaveMessage": "Leave a message for Bao",
+    "leaveMessage": "Leave a message",
     "avatarLabel": "My Avatar",
     "avatarPlaceholder": "Select an avatar",
     "nameLabel": "My Name",

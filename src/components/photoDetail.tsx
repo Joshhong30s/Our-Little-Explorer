@@ -12,6 +12,7 @@ import { RxAvatar } from 'react-icons/rx';
 import dynamic from 'next/dynamic';
 const ReactPlayer = dynamic(() => import('react-player/lazy'), { ssr: false });
 import { Photo } from '@/types/photos';
+import VideoPlayer from './VideoPlayer';
 
 interface Comment {
   _id: string;
@@ -77,15 +78,6 @@ export default function PhotoDetail({
     return 'image';
   };
 
-  const getVideoPoster = (url: string) => {
-    const match = url.match(
-      /^(https?:\/\/[^/]+\/[^/]+\/video\/upload\/)([^/]+)\/(.+)$/
-    );
-    if (!match) return url;
-
-    const [_, baseUrl, transformations, publicId] = match;
-    return `${baseUrl}c_scale,w_800,so_auto/${publicId}`;
-  };
 
   const mediaType = getMediaType(photo?.imageUrl);
 
@@ -235,14 +227,10 @@ export default function PhotoDetail({
             />
           </div>
         ) : mediaType === 'cloudinary-video' ? (
-          <div className="w-[450px] h-[600px] flex items-center justify-center">
-            <video
-              src={photo.imageUrl}
-              controls
-              className="max-w-full max-h-full object-contain"
-              preload="metadata"
-              poster={getVideoPoster(photo.imageUrl)}
-            />
+          <div className="w-full h-full flex items-center justify-center">
+            <div className="w-[450px] aspect-[3/4] flex items-center justify-center">
+              <VideoPlayer videoUrl={photo.imageUrl} />
+            </div>
           </div>
         ) : (
           <Image

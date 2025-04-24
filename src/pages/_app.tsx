@@ -36,7 +36,6 @@ function App({ Component, pageProps }: AppProps) {
           <link rel="icon" href="/assets/baby1.svg" />
           <link rel="apple-touch-icon" href="/assets/baby1.svg" />
         </Head>
-        {/* 其他 Script 內容… */}
         <NoSSR>
           <Navbar />
           <Component {...pageProps} />

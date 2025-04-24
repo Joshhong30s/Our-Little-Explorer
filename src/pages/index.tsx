@@ -19,6 +19,7 @@ import PhotoModal from '../components/photoModal';
 import { FaRegComment } from 'react-icons/fa';
 import { set } from 'mongoose';
 import { useTranslation } from 'next-i18next';
+import VideoPlayer from '@/components/VideoPlayer';
 
 export default function Home() {
   const { t } = useTranslation('common');
@@ -190,16 +191,6 @@ export default function Home() {
     setLoadedImages(prev => new Set([...prev, id]));
   }, []);
 
-  const getVideoPoster = (url: string) => {
-    const match = url.match(
-      /^(https?:\/\/[^/]+\/[^/]+\/video\/upload\/)([^/]+)\/(.+)$/
-    );
-    if (!match) return url;
-
-    const [_, baseUrl, transformations, publicId] = match;
-    return `${baseUrl}c_scale,w_800,so_auto/${publicId}`;
-  };
-
   // slideshow images
   const images = [
     { id: 1, src: '/assets/bao1.jpeg', alt: 'bao1' },
@@ -219,14 +210,14 @@ export default function Home() {
       {isLoading ? (
         <div className="flex flex-col justify-center items-center min-h-screen text-center gap-2">
           <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
-          <p className="text-lg ml-4">{t('common.loading')}</p>
+          <p className="text-lg ml-4">{t('loading')}</p>
         </div>
       ) : (
         <div className="relative bg-gradient-to-br from-neutral-800 to-neutral-500">
           <button
             onClick={handlePrevSlide}
             className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 flex items-center justify-center w-12 h-12 md:w-16 md:h-16 text-white bg-black/60 hover:bg-black/80 rounded-full z-20 active:scale-95 transition-all cursor-pointer"
-            aria-label={t('common.previous')}
+            aria-label={t('previous')}
           >
             <AiOutlineLeft className="w-6 h-6 md:w-8 md:h-8" />
           </button>
@@ -268,7 +259,7 @@ export default function Home() {
           <button
             onClick={handleNextSlide}
             className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 flex items-center justify-center w-12 h-12 md:w-16 md:h-16 text-white bg-black/60 hover:bg-black/80 rounded-full z-20 active:scale-95 transition-all cursor-pointer"
-            aria-label={t('common.next')}
+            aria-label={t('next')}
           >
             <AiOutlineRight className="w-6 h-6 md:w-8 md:h-8" />
           </button>
@@ -385,15 +376,7 @@ export default function Home() {
               <div className="relative w-full aspect-[3/4] md:aspect-[4/5] lg:aspect-[3/4]">
                 {photo?.imageUrl?.includes('cloudinary') &&
                 photo?.imageUrl?.includes('/video/') ? (
-                  <div className="w-full h-full flex items-center justify-center">
-                    <video
-                      src={photo.imageUrl}
-                      controls
-                      className="w-full h-full object-cover"
-                      preload="metadata"
-                      poster={getVideoPoster(photo.imageUrl)}
-                    />
-                  </div>
+                  <VideoPlayer videoUrl={photo.imageUrl} />
                 ) : photo?.imageUrl?.endsWith('.jpg') ||
                   photo?.imageUrl?.endsWith('.png') ||
                   photo?.imageUrl?.endsWith('.jpeg') ||
