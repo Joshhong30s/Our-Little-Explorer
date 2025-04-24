@@ -158,10 +158,8 @@ export default function Home() {
       .slice()
       .filter(p => isInAgeRange(calculateAge(p.growingTime)))
       .sort((a, b) => {
-        const ageA =
-          parseInt(calculateAge(a.growingTime).replace(/Y|M/g, '')) || 0;
-        const ageB =
-          parseInt(calculateAge(b.growingTime).replace(/Y|M/g, '')) || 0;
+        const ageA = ageToMonths(calculateAge(a.growingTime));
+        const ageB = ageToMonths(calculateAge(b.growingTime));
         if (ageB !== ageA) {
           return ageB - ageA;
         }
@@ -169,7 +167,7 @@ export default function Home() {
         const timestampB = parseInt(b._id.substring(0, 8), 16);
         return timestampB - timestampA;
       });
-  }, [photo, isInAgeRange, calculateAge]);
+  }, [photo, isInAgeRange, calculateAge, ageToMonths]);
 
   // Implement virtual scrolling with intersection observer
   const [displayCount, setDisplayCount] = useState(8);

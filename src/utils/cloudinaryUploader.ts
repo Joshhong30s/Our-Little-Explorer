@@ -25,16 +25,37 @@ export async function uploadVideoToCloudinary(
       folder: folder,
       resource_type: 'video',
       chunk_size: 20000000,
-      eager: [{ streaming_profile: 'hd' }],
+      eager: [
+        {
+          streaming_profile: 'hd',
+          format: 'mp4',
+        },
+      ],
       eager_async: true,
+      transformation: [
+        {
+          quality: 'auto',
+          fetch_format: 'auto',
+        },
+      ],
     });
     return result.secure_url;
   } catch (error) {
-    console.error('Error uploading video to Cloudinary:', error);
-    throw new Error('Video upload failed');
+    console.error('Error uploading video to Cloudinary:', {
+      error,
+      filePath,
+    });
+    throw error;
   }
 }
 
 export function isVideo(mimeType: string) {
-  return mimeType?.startsWith('video/');
+  const videoMimeTypes = [
+    'video/',
+    'video/quicktime',
+    'video/x-msvideo',
+    'video/mp4',
+    'video/x-matroska',
+  ];
+  return videoMimeTypes.some(type => mimeType?.toLowerCase().includes(type));
 }

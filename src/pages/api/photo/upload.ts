@@ -26,8 +26,14 @@ export default async function handler(
 
     form.parse(req, async (err: any, fields: any, files: any) => {
       if (err) {
-        console.error('Form parse error:', err);
-        return res.status(500).json({ error: 'File upload failed' });
+        console.error('Form parse error:', {
+          error: err,
+          contentType: req.headers['content-type']
+        });
+        return res.status(500).json({ 
+          error: 'File upload failed',
+          details: err.message 
+        });
       }
 
       let uploadedFile = files.photo;
@@ -36,14 +42,29 @@ export default async function handler(
       }
 
       if (!uploadedFile || Array.isArray(uploadedFile)) {
-        return res.status(400).json({ error: 'No file or invalid file format' });
+        console.error('File validation error:', {
+          files,
+          uploadedFile
+        });
+        return res.status(400).json({ 
+          error: 'No file or invalid file format',
+          receivedFiles: Object.keys(files)
+        });
       }
 
       try {
         const filePath = uploadedFile.filepath;
-        let cloudinaryUrl: string;
+        const fileType = uploadedFile.mimetype;
+        console.log('Processing file:', {
+          mimetype: fileType,
+          originalFilename: uploadedFile.originalFilename,
+          size: uploadedFile.size
+        });
 
-        if (isVideo(uploadedFile.mimetype)) {
+        let cloudinaryUrl: string;
+        const isVideoFile = isVideo(fileType);
+
+        if (isVideoFile) {
           cloudinaryUrl = await uploadVideoToCloudinary(filePath);
         } else {
           cloudinaryUrl = await uploadImageToCloudinary(filePath);
