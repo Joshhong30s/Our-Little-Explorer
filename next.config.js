@@ -33,6 +33,9 @@ const nextConfig = {
     ],
   },
   i18n,
+  serverRuntimeConfig: {
+    maxFileSize: 32 * 1024 * 1024,
+  },
 };
 
 module.exports = nextConfig;

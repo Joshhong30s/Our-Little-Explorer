@@ -72,23 +72,35 @@ export default function WritePhoto() {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
+        maxContentLength: Infinity,
+        maxBodyLength: Infinity,
+        timeout: 60000,
+        onUploadProgress: progressEvent => {
+          const percentCompleted = Math.round(
+            (progressEvent.loaded * 100) / progressEvent.total!
+          );
+          setUploadStatus({
+            status: 'uploading',
+            message: `${t('photo.uploading')} ${percentCompleted}%`,
+          });
+        },
       });
 
-      setUploadStatus({ 
+      setUploadStatus({
         status: 'success',
-        message: t('photo.uploadSuccess')
+        message: t('photo.uploadSuccess'),
       });
-      
+
       setPhoto({
         ...photo,
         imageUrl: response.data.url,
       });
     } catch (err: any) {
       console.error('Upload error:', err);
-      setUploadStatus({ 
+      setUploadStatus({
         status: 'error',
         message: t('photo.uploadFail'),
-        details: err.response?.data?.details || err.message
+        details: err.response?.data?.details || err.message,
       });
     }
   };
@@ -213,14 +225,18 @@ export default function WritePhoto() {
             {uploadStatus.status === 'uploading' && (
               <div className="mt-4 flex items-center justify-center space-x-2">
                 <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-blue-500"></div>
-                <span className="text-sm text-gray-600">{t('photo.uploading')}</span>
+                <span className="text-sm text-gray-600">
+                  {t('photo.uploading')}
+                </span>
               </div>
             )}
             {uploadStatus.status === 'error' && (
               <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-md">
                 <p className="text-red-600 text-sm">{uploadStatus.message}</p>
                 {uploadStatus.details && (
-                  <p className="text-red-500 text-xs mt-1">{uploadStatus.details}</p>
+                  <p className="text-red-500 text-xs mt-1">
+                    {uploadStatus.details}
+                  </p>
                 )}
               </div>
             )}
