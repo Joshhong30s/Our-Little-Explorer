@@ -73,7 +73,7 @@ export default function PhotoModal({
       }}
     >
       <Fade in={open}>
-        <Box 
+        <Box
           sx={boxStyle}
           onTouchStart={handleTouchStart}
           className="instagram-modal"
@@ -82,23 +82,29 @@ export default function PhotoModal({
             <div className="absolute top-0 left-0 right-0 z-50 flex justify-between items-center px-4 py-3 bg-white/90 backdrop-blur">
               <div className="w-8" /> {/* Spacer */}
               <div className="w-20 h-1 rounded-full bg-gray-300 mx-auto" />
-              <IconButton onClick={onClose} size="small" className="text-black">
-                <MdClose size={24} />
+              <IconButton
+                onClick={onClose}
+                size="small"
+                className="text-black/90 hover:text-black active:text-black/70 bg-black"
+              >
+                <MdClose size={24} className="drop-shadow-sm" />
               </IconButton>
             </div>
           ) : (
-            <IconButton
-              onClick={onClose}
-              size="small"
-              className="absolute top-4 right-4 z-50 bg-black/50 hover:bg-black/70 text-white"
-            >
-              <MdClose size={24} />
-            </IconButton>
+            <div className="absolute top-4 right-4 z-[60]">
+              <IconButton
+                onClick={onClose}
+                size="small"
+                className="bg-black hover:bg-black/80 text-white shadow-lg hover:shadow-xl transition-all"
+              >
+                <MdClose size={24} className="drop-shadow-md" />
+              </IconButton>
+            </div>
           )}
 
-          <PhotoDetail 
-            photoId={photoId} 
-            setModalPhotoId={setModalPhotoId} 
+          <PhotoDetail
+            photoId={photoId}
+            setModalPhotoId={setModalPhotoId}
             isMobile={isMobile}
           />
         </Box>
