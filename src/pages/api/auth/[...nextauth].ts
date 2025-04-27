@@ -143,15 +143,37 @@ export const authOptions: NextAuthOptions = {
     strategy: 'jwt',
   },
 
-  // add cookie to prevent ios chrome issue
   cookies: {
     sessionToken: {
-      name: `__Secure-next-auth.session-token`,
+      name: `${
+        process.env.NODE_ENV === 'production' ? '__Secure-' : ''
+      }next-auth.session-token`,
       options: {
         httpOnly: true,
-        sameSite: 'none',
-        secure: true,
+        sameSite: 'lax',
         path: '/',
+        secure: process.env.NODE_ENV === 'production',
+      },
+    },
+    callbackUrl: {
+      name: `${
+        process.env.NODE_ENV === 'production' ? '__Secure-' : ''
+      }next-auth.callback-url`,
+      options: {
+        sameSite: 'lax',
+        path: '/',
+        secure: process.env.NODE_ENV === 'production',
+      },
+    },
+    csrfToken: {
+      name: `${
+        process.env.NODE_ENV === 'production' ? '__Host-' : ''
+      }next-auth.csrf-token`,
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure: process.env.NODE_ENV === 'production',
       },
     },
   },
