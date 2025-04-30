@@ -1,13 +1,12 @@
-// Updated PhotoDetail.tsx with MCP integration
 'use client';
 
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import { RiHeartFill, RiHeartAddLine } from 'react-icons/ri';
-import { FaShareAlt, FaTag } from 'react-icons/fa';
+import { FaShareAlt } from 'react-icons/fa';
 import { RxAvatar } from 'react-icons/rx';
 import dynamic from 'next/dynamic';
 const ReactPlayer = dynamic(() => import('react-player/lazy'), { ssr: false });
@@ -16,11 +15,7 @@ import VideoPlayer from './VideoPlayer';
 
 interface Comment {
   _id: string;
-  user: {
-    _id: string;
-    username: string;
-    image?: string;
-  };
+  user: { _id: string; username: string; image?: string };
   text: string;
   createdAt: string;
 }
@@ -32,11 +27,7 @@ interface PhotoDetails {
   instructions: string;
   imageUrl: string;
   growingTime: string;
-  userOwner: {
-    _id: string;
-    username: string;
-    image?: string;
-  };
+  userOwner: { _id: string; username: string; image?: string };
   likes: string[];
   createdAt?: string;
 }
@@ -67,7 +58,6 @@ export default function PhotoDetail({
     useState<PhotoRecommendation | null>(null);
   const [newComment, setNewComment] = useState('');
   const [loading, setLoading] = useState(true);
-  const [loadingRecommendations, setLoadingRecommendations] = useState(false);
 
   const getMediaType = (url?: string) => {
     if (!url) return 'none';
@@ -77,43 +67,26 @@ export default function PhotoDetail({
       return 'cloudinary-video';
     return 'image';
   };
-
-
   const mediaType = getMediaType(photo?.imageUrl);
 
   useEffect(() => {
     if (!photoId) return;
-
-    const fetchPhotoData = async () => {
+    (async () => {
       try {
         const res = await axios.get(`/api/photo/${photoId}`);
         setPhoto(res.data.photo);
         setComments(res.data.comments || []);
-        setLoading(false);
-
-        // Fetch recommendations after photo is loaded
-        fetchRecommendations();
-      } catch (err) {
-        console.error(err);
-        setLoading(false);
-      }
-    };
-
-    const fetchRecommendations = async () => {
+      } catch {}
+      setLoading(false);
       try {
-        setLoadingRecommendations(true);
-        const res = await axios.get(
+        const rec = await axios.get(
           `/api/photo/recommendations?photoId=${photoId}`
         );
-        setRecommendations(res.data);
-        setLoadingRecommendations(false);
+        setRecommendations(rec.data);
       } catch (err) {
-        console.error('Failed to fetch recommendations:', err);
-        setLoadingRecommendations(false);
+        console.error(err);
       }
-    };
-
-    fetchPhotoData();
+    })();
   }, [photoId]);
 
   const toggleLike = async () => {
@@ -152,16 +125,29 @@ export default function PhotoDetail({
   const handleShare = async () => {
     if (!photo) return;
     if (navigator.share) {
-      navigator
-        .share({
-          title: photo.name,
-          text: photo.instructions,
-          url: window.location.href,
-        })
-        .catch(err => console.error(err));
+      await navigator.share({
+        title: photo.name,
+        text: photo.instructions,
+        url: window.location.href,
+      });
     } else {
       await navigator.clipboard.writeText(window.location.href);
       alert('已複製連結到剪貼簿');
+    }
+  };
+
+  const handleTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
+    const touch = event.touches[0];
+    const target = event.target as HTMLElement;
+    if (
+      target.closest('.comment-form') ||
+      target.closest('.comment-input') ||
+      target.closest('.comment-scroll-container')
+    ) {
+      return;
+    }
+    if (touch.clientY > window.innerHeight - 100) {
+      setModalPhotoId?.('');
     }
   };
 
@@ -172,7 +158,6 @@ export default function PhotoDetail({
       </div>
     );
   }
-
   if (!photo) {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -181,31 +166,18 @@ export default function PhotoDetail({
     );
   }
 
-  console.log('recommendations', recommendations);
   return (
-    <div className="flex flex-col md:flex-row h-full">
-      {/* Left side - Image/Video */}
-      <div className="md:flex-1 bg-black flex items-center justify-center relative md:min-w-[600px]">
-        {/* Header for mobile */}
-        {isMobile && (
-          <div className="absolute top-12 left-0 right-0 z-10 flex items-center justify-between px-4 py-2">
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 rounded-full overflow-hidden bg-gray-200 ring-2 ring-white">
-                <Image
-                  src={photo.userOwner.image || '/assets/avatar.jpg'}
-                  alt={photo.userOwner.username}
-                  width={32}
-                  height={32}
-                  className="object-cover"
-                />
-              </div>
-              <span className="text-white font-medium text-sm drop-shadow">
-                {photo.userOwner.username}
-              </span>
-            </div>
-          </div>
-        )}
-
+    <div
+      className="flex flex-col md:flex-row h-full"
+      onTouchStart={handleTouchStart}
+    >
+      <div
+        className={`
+          bg-black flex items-center justify-center relative
+          ${isMobile ? 'h-[60vh]' : ''}
+          md:flex-1 md:min-w-[600px]
+        `}
+      >
         {mediaType === 'youtube' ? (
           <div className="w-[450px] h-[600px] flex items-center justify-center">
             <ReactPlayer
@@ -238,106 +210,81 @@ export default function PhotoDetail({
             alt={photo.name}
             width={800}
             height={600}
-            className="object-contain w-full h-full max-h-[90vh]"
+            className="object-contain w-full h-full"
           />
         )}
       </div>
 
-      {/* Right side - Details and Comments */}
-      <div className="flex flex-col md:w-[380px] bg-white">
-        {/* Header for desktop */}
-        {/* {!isMobile && (
-          <div className="flex items-center justify-between p-4 border-b">
-            <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 rounded-full overflow-hidden bg-gray-200">
-                <Image
-                  src={photo.userOwner.image || "/assets/avatar.jpg"}
-                  alt={photo.userOwner.username}
-                  width={32}
-                  height={32}
-                  className="object-cover"
-                />
-              </div>
-              <div className="flex flex-col">
-                <p className="font-semibold text-sm">{photo.userOwner.username}</p>
-                <p className="text-xs text-gray-500">{photo.location}</p>
-              </div>
+      <div
+        className={`
+          flex flex-col bg-white
+          ${isMobile ? 'h-[40vh]' : 'h-full'}
+          md:flex-none md:w-[380px]
+        `}
+      >
+        <div className="p-4 border-b space-y-2">
+          <div className="flex items-start space-x-3">
+            <div className="w-8 h-8 rounded-full overflow-hidden bg-gray-200">
+              <Image
+                src={photo.userOwner.image || '/assets/avatar.jpg'}
+                alt={photo.userOwner.username}
+                width={32}
+                height={32}
+                className="object-cover"
+              />
+            </div>
+            <div>
+              <p className="text-sm">
+                <span className="font-bold">{photo.userOwner.username}</span>{' '}
+                {photo.instructions}
+              </p>
+              {photo.createdAt && (
+                <p className="mt-1 text-xs text-gray-400">
+                  {new Date(photo.createdAt).toLocaleDateString()}
+                </p>
+              )}
             </div>
           </div>
-        )} */}
+          {recommendations && recommendations?.suggestedTags?.length > 0 && (
+            <div className="mt-3 flex flex-wrap gap-1.5">
+              {recommendations?.suggestedTags.map((tag, i) => (
+                <span
+                  key={i}
+                  className="text-blue-600 text-sm hover:underline cursor-pointer"
+                >
+                  {tag.startsWith('#') ? tag : `#${tag}`}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
 
-        {/* Comments and details scroll area */}
-        <div className="flex-1 overflow-y-auto overscroll-contain">
-          {/* Photo caption */}
-          <div className="p-4 space-y-2 border-b">
-            <div className="flex items-start space-x-3">
-              <div className="w-8 h-8 rounded-full overflow-hidden bg-gray-200 flex-shrink-0">
-                <Image
-                  src={photo.userOwner.image || '/assets/avatar.jpg'}
-                  alt={photo.userOwner.username}
-                  width={32}
-                  height={32}
-                  className="object-cover"
-                />
+        <div className="flex-1 overflow-y-auto p-4 space-y-4 comment-scroll-container">
+          {comments.map(c => (
+            <div key={c._id} className="flex space-x-2">
+              <div className="w-8 h-8 rounded-full overflow-hidden bg-gray-200">
+                {c.user.image ? (
+                  <Image
+                    src={c.user.image}
+                    alt={c.user.username}
+                    width={32}
+                    height={32}
+                    className="object-cover"
+                  />
+                ) : (
+                  <RxAvatar size={32} className="text-gray-500" />
+                )}
               </div>
               <div>
                 <p className="text-sm">
-                  <span className="font-bold">{photo.userOwner.username}</span>{' '}
-                  <span className="text-gray-900">{photo.instructions}</span>
+                  <span className="font-bold">{c.user.username}</span> {c.text}
                 </p>
-                {photo.createdAt && (
-                  <p className="text-xs text-gray-400 mt-1">
-                    {new Date(photo.createdAt).toLocaleDateString()}
-                  </p>
-                )}
+                <p className="mt-1 text-xs text-gray-400">
+                  {new Date(c.createdAt).toLocaleString()}
+                </p>
               </div>
             </div>
-
-            {/* Tags */}
-            {recommendations?.suggestedTags &&
-              recommendations.suggestedTags.length > 0 && (
-                <div className="flex flex-wrap gap-1.5 mt-3">
-                  {recommendations.suggestedTags.map((tag, idx) => (
-                    <span
-                      key={idx}
-                      className="text-blue-600 text-sm hover:underline cursor-pointer"
-                    >
-                      {tag.startsWith('#') ? tag : `#${tag}`}
-                    </span>
-                  ))}
-                </div>
-              )}
-          </div>
-
-          {/* Comments */}
-          <div className="flex-1 p-4 space-y-4 overflow-y-auto">
-            {comments.map(comment => (
-              <div key={comment._id} className="flex space-x-2">
-                <div className="w-8 h-8 rounded-full overflow-hidden bg-gray-200">
-                  {comment.user.image ? (
-                    <Image
-                      src={comment.user.image}
-                      alt={comment.user.username}
-                      width={32}
-                      height={32}
-                      className="object-cover"
-                    />
-                  ) : (
-                    <RxAvatar size={32} className="text-gray-500" />
-                  )}
-                </div>
-                <div>
-                  <p className="text-sm">
-                    <span className="font-bold">{comment.user.username}</span>{' '}
-                    {comment.text}
-                  </p>
-                  <p className="text-xs text-gray-400">
-                    {new Date(comment.createdAt).toLocaleString()}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
+          ))}
         </div>
 
         <div className="border-t bg-white">
@@ -345,8 +292,7 @@ export default function PhotoDetail({
             <div className="flex items-center space-x-4">
               <button
                 onClick={toggleLike}
-                className="p-2 -ml-2 group active:scale-90 transition-transform"
-                aria-label="Like"
+                className="p-2 group active:scale-90 transition-transform"
               >
                 {(photo.likes ?? []).includes(session?.user?.id ?? '') ? (
                   <RiHeartFill size={28} className="text-red-500" />
@@ -357,7 +303,6 @@ export default function PhotoDetail({
               <button
                 onClick={handleShare}
                 className="p-2 group active:scale-90 transition-transform"
-                aria-label="Share"
               >
                 <FaShareAlt size={22} className="text-gray-700" />
               </button>
@@ -367,18 +312,16 @@ export default function PhotoDetail({
               {(photo.likes ?? []).length === 1 ? 'like' : 'likes'}
             </p>
           </div>
-
-          {/* Comment form */}
           <form
             onSubmit={handleCommentSubmit}
-            className="flex items-center px-4 py-2 border-t"
+            className="comment-form flex items-center px-4 py-2 border-t"
           >
             <input
               type="text"
               placeholder="Add a comment..."
               value={newComment}
               onChange={e => setNewComment(e.target.value)}
-              className="flex-1 text-sm py-2 focus:outline-none"
+              className="comment-input flex-1 text-sm py-2 focus:outline-none"
             />
             <button
               type="submit"

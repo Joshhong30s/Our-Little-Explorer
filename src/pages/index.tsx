@@ -59,9 +59,16 @@ export default function Home() {
   const [endPeriod, setEndPeriod] = useState({ years: 2, months: 11 });
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  // Range options
-  const yearOptions = Array.from({ length: 3 }, (_, i) => i); // 0-2 years
-  const monthOptions = Array.from({ length: 12 }, (_, i) => i); // 0-11 months
+  const handleResetFilter = () => {
+    setStartPeriod({ years: 0, months: 0 });
+    const today = dayjs();
+    const diffYears = today.diff(babyBirthday, 'year');
+    const diffMonths = today.diff(babyBirthday.add(diffYears, 'year'), 'month');
+    setEndPeriod({ years: diffYears, months: diffMonths });
+  };
+
+  const yearOptions = Array.from({ length: 3 }, (_, i) => i);
+  const monthOptions = Array.from({ length: 12 }, (_, i) => i);
 
   const handleNextSlide = () => {
     let newSlide = currentSlide === images.length - 1 ? 0 : currentSlide + 1;
@@ -361,6 +368,12 @@ export default function Home() {
                 ))}
               </select>
             </div>
+            <button
+              onClick={handleResetFilter}
+              className="bg-white text-blue-600 font-medium text-sm px-6 py-3 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 min-w-[100px] md:min-w-[120px]"
+            >
+              {t('filter.reset')}
+            </button>
           </div>
         </div>
       </div>

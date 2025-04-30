@@ -50,8 +50,18 @@ export default function PhotoModal({
     boxShadow: { xs: 'none', md: '0 0 20px rgba(0,0,0,0.2)' },
   };
 
-  const handleTouchStart = (e: React.TouchEvent) => {
-    const touch = e.touches[0];
+  const handleTouchStart = (event: TouchEvent) => {
+    const touch = event.touches[0];
+    const target = event.target as HTMLElement;
+
+    if (
+      target.closest('.comment-input') ||
+      target.closest('.comment-form') ||
+      target.closest('.comment-scroll-container')
+    ) {
+      return;
+    }
+
     if (touch.clientY > window.innerHeight - 100) {
       onClose();
     }
@@ -74,8 +84,11 @@ export default function PhotoModal({
     >
       <Fade in={open}>
         <Box
+          component="div"
           sx={boxStyle}
-          onTouchStart={handleTouchStart}
+          onTouchStart={(event: React.TouchEvent<HTMLDivElement>) =>
+            handleTouchStart(event.nativeEvent)
+          }
           className="instagram-modal"
         >
           {isMobile ? (

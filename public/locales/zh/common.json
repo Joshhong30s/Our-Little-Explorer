@@ -35,7 +35,8 @@
     "from": "從",
     "to": "至",
     "yearUnit": "歲",
-    "monthUnit": "月"
+    "monthUnit": "月",
+    "reset": "重設"
   },
   "error_message": "發生錯誤，請再試一次。",
   "loading": "載入中...",
@@ -94,7 +95,9 @@
     "notLoggedIn": "用戶未登入，請先登入",
     "noAccessToken": "Access token 未找到，請重新登入",
     "failedUpload": "上傳圖片失敗",
-    "uploadedPhotoAlt": "已上傳相片"
+    "uploadedPhotoAlt": "上傳的照片 {{index}}",
+    "notFoundAlt": "找不到照片",
+    "storyPhotoAlt": "故事照片 {{index}}"
   },
   "navbar": {
     "login": "登入",
@@ -109,5 +112,58 @@
     "toggleLeft": "切換導覽",
     "toggleRight": "切換資訊列",
     "profile": "帳戶管理"
+  },
+  "nav": {
+    "home": "所有照片",
+    "profile": "個人資料",
+    "login": "登入",
+    "register": "註冊",
+    "logout": "登出",
+    "writePhoto": "寫下回憶",
+    "storyboard": "製作故事",
+    "savedPhotos": "收藏照片",
+    "leaveMessage": "留言",
+    "toggleMenu": "切換選單",
+    "logoAlt": "寶寶Logo"
+  },
+  "auth": {
+    "loginRequired": "請先登入後使用此功能",
+    "loginToAccess": "登入後即可使用"
+  },
+  "storyboard": {
+    "title": "製作寶寶故事",
+    "selectPhotos": "選擇照片",
+    "preview": "預覽",
+    "controls": "故事設定",
+    "chooseStyle": "選擇故事風格",
+    "styles": {
+      "warm": "溫馨感人",
+      "fun": "歡樂玩趣",
+      "documentary": "成長紀實"
+    },
+    "gridView": "網格檢視",
+    "timelineView": "時間軸檢視",
+    "noPhotosSelected": "請從左側選擇照片",
+    "generate": "開始生成故事",
+    "generating": "生成中...",
+    "selectPhotosFirst": "請先選擇照片以生成故事",
+    "selectedCount": "已選擇 {{count}} 張照片",
+    "copy": "複製到剪貼簿",
+    "share": "分享故事",
+    "regenerate": "重新生成",
+    "copied": "已複製到剪貼簿！",
+    "shared": "故事分享成功！",
+    "errors": {
+      "generateFailed": "故事生成失敗，請重試。",
+      "photoLoadFailed": "照片載入失敗，請重新整理頁面。",
+      "networkError": "網路連線錯誤，請檢查網路狀態。",
+      "copyFailed": "複製到剪貼簿失敗",
+      "shareFailed": "故事分享失敗",
+      "apiKeyError": "OpenAI API金鑰錯誤，請檢查設定。",
+      "timeout": "請求逾時，請重試。",
+      "rateLimit": "API使用次數已達上限，請稍後再試。",
+      "invalidStyle": "無效的故事風格",
+      "noPhotos": "請選擇照片以生成故事"
+    }
   }
 }

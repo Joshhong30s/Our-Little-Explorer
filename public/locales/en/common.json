@@ -88,13 +88,16 @@
     "notLoggedIn": "User not logged in, please log in first",
     "noAccessToken": "Access token not found, please log in again",
     "failedUpload": "Failed to upload image",
-    "uploadedPhotoAlt": "Uploaded photo"
+    "uploadedPhotoAlt": "Uploaded photo {{index}}",
+    "notFoundAlt": "Photo not found",
+    "storyPhotoAlt": "Story photo {{index}}"
   },
   "filter": {
     "from": "From",
     "to": "To",
     "yearUnit": "Y",
-    "monthUnit": "M"
+    "monthUnit": "M",
+    "reset": "Reset"
   },
   "navbar": {
     "login": "Login",
@@ -109,5 +112,58 @@
     "toggleLeft": "Toggle navigation",
     "toggleRight": "Toggle data bar",
     "profile": "Profile"
+  },
+  "nav": {
+    "home": "All Photos",
+    "profile": "Profile",
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout",
+    "writePhoto": "Write Photo",
+    "storyboard": "Create Story",
+    "savedPhotos": "Saved Photos",
+    "leaveMessage": "Leave Message",
+    "toggleMenu": "Toggle Menu",
+    "logoAlt": "Baby Logo"
+  },
+  "auth": {
+    "loginRequired": "Please login to access this feature",
+    "loginToAccess": "Login to access"
+  },
+  "storyboard": {
+    "title": "Create Your Story",
+    "selectPhotos": "Select Photos",
+    "preview": "Preview",
+    "controls": "Story Settings",
+    "chooseStyle": "Choose Story Style",
+    "styles": {
+      "warm": "Warm & Touching",
+      "fun": "Fun & Playful",
+      "documentary": "Documentary"
+    },
+    "gridView": "Grid View",
+    "timelineView": "Timeline View",
+    "noPhotosSelected": "Select photos from the left panel",
+    "generate": "Generate Story",
+    "generating": "Generating...",
+    "selectPhotosFirst": "Select photos to generate a story",
+    "selectedCount": "{{count}} photos selected",
+    "copy": "Copy to clipboard",
+    "share": "Share story",
+    "regenerate": "Regenerate story",
+    "copied": "Copied to clipboard!",
+    "shared": "Story shared successfully!",
+    "errors": {
+      "generateFailed": "Failed to generate story. Please try again.",
+      "photoLoadFailed": "Failed to load photos. Please refresh the page.",
+      "networkError": "Network error. Please check your connection.",
+      "copyFailed": "Failed to copy text to clipboard",
+      "shareFailed": "Failed to share story",
+      "apiKeyError": "OpenAI API key error. Please check your configuration.",
+      "timeout": "Request timeout. Please try again.",
+      "rateLimit": "API rate limit exceeded. Please try again later.",
+      "invalidStyle": "Invalid story style selected",
+      "noPhotos": "Please select photos to generate a story"
+    }
   }
 }
