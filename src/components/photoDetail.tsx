@@ -219,10 +219,32 @@ export default function PhotoDetail({
         <div
           className={`
           flex flex-col bg-white
-          ${isMobile ? 'h-[40vh]' : 'h-full'}
-          md:flex-none md:w-[380px]
+          ${isMobile ? 'h-[40vh]' : 'h-full '}
+          md:flex-none md:w-[500px]
         `}
         >
+          {isMobile && (
+            <form
+              onSubmit={handleCommentSubmit}
+              className="comment-form flex items-center px-4 py-2 mt-2"
+            >
+              <input
+                type="text"
+                placeholder="我要留言..."
+                value={newComment}
+                onChange={e => setNewComment(e.target.value)}
+                onFocus={() => setIsCommenting(true)}
+                className="comment-input flex-1 text-sm py-2 focus:outline-none bg-gray-100 rounded-lg px-3"
+              />
+              <button
+                type="submit"
+                disabled={!newComment.trim()}
+                className="ml-2 text-blue-500 font-semibold text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Post
+              </button>
+            </form>
+          )}
           <div className="p-4 border-b space-y-2">
             <div className="flex items-start space-x-3">
               <div className="w-8 h-8 rounded-full overflow-hidden bg-gray-200">
@@ -289,8 +311,31 @@ export default function PhotoDetail({
             ))}
           </div>
 
+          {!isMobile && (
+            <form
+              onSubmit={handleCommentSubmit}
+              className="comment-form flex items-center px-4 py-2 mt-2"
+            >
+              <input
+                type="text"
+                placeholder="我要留言..."
+                value={newComment}
+                onChange={e => setNewComment(e.target.value)}
+                onFocus={() => setIsCommenting(true)}
+                className="comment-input flex-1 text-sm py-2 focus:outline-none bg-gray-100 rounded-lg px-3"
+              />
+              <button
+                type="submit"
+                disabled={!newComment.trim()}
+                className="ml-2 text-blue-500 font-semibold text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Post
+              </button>
+            </form>
+          )}
+
           {!isCommenting && (
-            <div className="border-t bg-white">
+            <div className={`border-t bg-white ${isMobile ? 'pb-4' : ''}`}>
               <div className="px-4 py-2 flex items-center justify-between">
                 <div className="flex items-center space-x-4">
                   <button
@@ -315,26 +360,6 @@ export default function PhotoDetail({
                   {photo.likes.length === 1 ? 'like' : 'likes'}
                 </p>
               </div>
-              <form
-                onSubmit={handleCommentSubmit}
-                className="comment-form flex items-center px-4 py-2 border-t"
-              >
-                <input
-                  type="text"
-                  placeholder="Add a comment..."
-                  value={newComment}
-                  onChange={e => setNewComment(e.target.value)}
-                  onFocus={() => setIsCommenting(true)}
-                  className="comment-input flex-1 text-sm py-2 focus:outline-none"
-                />
-                <button
-                  type="submit"
-                  disabled={!newComment.trim()}
-                  className="ml-2 text-blue-500 font-semibold text-sm disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  Post
-                </button>
-              </form>
             </div>
           )}
         </div>
