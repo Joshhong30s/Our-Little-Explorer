@@ -58,6 +58,7 @@ export default function PhotoDetail({
     useState<PhotoRecommendation | null>(null);
   const [newComment, setNewComment] = useState('');
   const [loading, setLoading] = useState(true);
+  const [isCommenting, setIsCommenting] = useState(false);
 
   const getMediaType = (url?: string) => {
     if (!url) return 'none';
@@ -71,7 +72,7 @@ export default function PhotoDetail({
 
   useEffect(() => {
     if (!photoId) return;
-    (async () => {
+    const fetchPhotoData = async () => {
       try {
         const res = await axios.get(`/api/photo/${photoId}`);
         setPhoto(res.data.photo);
@@ -83,10 +84,9 @@ export default function PhotoDetail({
           `/api/photo/recommendations?photoId=${photoId}`
         );
         setRecommendations(rec.data);
-      } catch (err) {
-        console.error(err);
-      }
-    })();
+      } catch {}
+    };
+    fetchPhotoData();
   }, [photoId]);
 
   const toggleLike = async () => {
@@ -117,6 +117,7 @@ export default function PhotoDetail({
       });
       setComments(res.data.comments);
       setNewComment('');
+      setIsCommenting(false);
     } catch (err) {
       console.error(err);
     }
@@ -143,9 +144,8 @@ export default function PhotoDetail({
       target.closest('.comment-form') ||
       target.closest('.comment-input') ||
       target.closest('.comment-scroll-container')
-    ) {
+    )
       return;
-    }
     if (touch.clientY > window.innerHeight - 100) {
       setModalPhotoId?.('');
     }
@@ -167,172 +167,210 @@ export default function PhotoDetail({
   }
 
   return (
-    <div
-      className="flex flex-col md:flex-row h-full"
-      onTouchStart={handleTouchStart}
-    >
+    <>
       <div
-        className={`
+        className="flex flex-col md:flex-row h-full"
+        onTouchStart={handleTouchStart}
+      >
+        <div
+          className={`
           bg-black flex items-center justify-center relative
           ${isMobile ? 'h-[60vh]' : ''}
           md:flex-1 md:min-w-[600px]
         `}
-      >
-        {mediaType === 'youtube' ? (
-          <div className="w-[450px] h-[600px] flex items-center justify-center">
-            <ReactPlayer
-              url={photo.imageUrl}
-              controls={true}
-              width={450}
-              height={600}
-              config={{
-                youtube: {
-                  playerVars: {
-                    origin:
-                      typeof window !== 'undefined'
-                        ? window.location.origin
-                        : '',
-                    modestbranding: 1,
+        >
+          {mediaType === 'youtube' ? (
+            <div className="w-[450px] h-[600px] flex items-center justify-center">
+              <ReactPlayer
+                url={photo.imageUrl}
+                controls={true}
+                width={450}
+                height={600}
+                config={{
+                  youtube: {
+                    playerVars: {
+                      origin:
+                        typeof window !== 'undefined'
+                          ? window.location.origin
+                          : '',
+                      modestbranding: 1,
+                    },
                   },
-                },
-              }}
-            />
-          </div>
-        ) : mediaType === 'cloudinary-video' ? (
-          <div className="w-full h-full flex items-center justify-center">
-            <div className="w-[450px] aspect-[3/4] flex items-center justify-center">
-              <VideoPlayer videoUrl={photo.imageUrl} />
+                }}
+              />
             </div>
-          </div>
-        ) : (
-          <Image
-            src={photo.imageUrl || '/assets/notFound.jpg'}
-            alt={photo.name}
-            width={800}
-            height={600}
-            className="object-contain w-full h-full"
-          />
-        )}
-      </div>
+          ) : mediaType === 'cloudinary-video' ? (
+            <div className="w-full h-full flex items-center justify-center">
+              <div className="w-[450px] aspect-[3/4] flex items-center justify-center">
+                <VideoPlayer videoUrl={photo.imageUrl} />
+              </div>
+            </div>
+          ) : (
+            <Image
+              src={photo.imageUrl || '/assets/notFound.jpg'}
+              alt={photo.name}
+              width={800}
+              height={600}
+              className="object-contain w-full h-full"
+            />
+          )}
+        </div>
 
-      <div
-        className={`
+        <div
+          className={`
           flex flex-col bg-white
           ${isMobile ? 'h-[40vh]' : 'h-full'}
           md:flex-none md:w-[380px]
         `}
-      >
-        <div className="p-4 border-b space-y-2">
-          <div className="flex items-start space-x-3">
-            <div className="w-8 h-8 rounded-full overflow-hidden bg-gray-200">
-              <Image
-                src={photo.userOwner.image || '/assets/avatar.jpg'}
-                alt={photo.userOwner.username}
-                width={32}
-                height={32}
-                className="object-cover"
-              />
-            </div>
-            <div>
-              <p className="text-sm">
-                <span className="font-bold">{photo.userOwner.username}</span>{' '}
-                {photo.instructions}
-              </p>
-              {photo.createdAt && (
-                <p className="mt-1 text-xs text-gray-400">
-                  {new Date(photo.createdAt).toLocaleDateString()}
-                </p>
-              )}
-            </div>
-          </div>
-          {recommendations && recommendations?.suggestedTags?.length > 0 && (
-            <div className="mt-3 flex flex-wrap gap-1.5">
-              {recommendations?.suggestedTags.map((tag, i) => (
-                <span
-                  key={i}
-                  className="text-blue-600 text-sm hover:underline cursor-pointer"
-                >
-                  {tag.startsWith('#') ? tag : `#${tag}`}
-                </span>
-              ))}
-            </div>
-          )}
-        </div>
-
-        <div className="flex-1 overflow-y-auto p-4 space-y-4 comment-scroll-container">
-          {comments.map(c => (
-            <div key={c._id} className="flex space-x-2">
+        >
+          <div className="p-4 border-b space-y-2">
+            <div className="flex items-start space-x-3">
               <div className="w-8 h-8 rounded-full overflow-hidden bg-gray-200">
-                {c.user.image ? (
-                  <Image
-                    src={c.user.image}
-                    alt={c.user.username}
-                    width={32}
-                    height={32}
-                    className="object-cover"
-                  />
-                ) : (
-                  <RxAvatar size={32} className="text-gray-500" />
-                )}
+                <Image
+                  src={photo.userOwner.image || '/assets/avatar.jpg'}
+                  alt={photo.userOwner.username}
+                  width={32}
+                  height={32}
+                  className="object-cover"
+                />
               </div>
               <div>
                 <p className="text-sm">
-                  <span className="font-bold">{c.user.username}</span> {c.text}
+                  <span className="font-bold">{photo.userOwner.username}</span>{' '}
+                  {photo.instructions}
                 </p>
-                <p className="mt-1 text-xs text-gray-400">
-                  {new Date(c.createdAt).toLocaleString()}
-                </p>
+                {photo.createdAt && (
+                  <p className="mt-1 text-xs text-gray-400">
+                    {new Date(photo.createdAt).toLocaleDateString()}
+                  </p>
+                )}
               </div>
             </div>
-          ))}
-        </div>
-
-        <div className="border-t bg-white">
-          <div className="px-4 py-2 flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={toggleLike}
-                className="p-2 group active:scale-90 transition-transform"
-              >
-                {(photo.likes ?? []).includes(session?.user?.id ?? '') ? (
-                  <RiHeartFill size={28} className="text-red-500" />
-                ) : (
-                  <RiHeartAddLine size={28} className="text-gray-700" />
-                )}
-              </button>
-              <button
-                onClick={handleShare}
-                className="p-2 group active:scale-90 transition-transform"
-              >
-                <FaShareAlt size={22} className="text-gray-700" />
-              </button>
-            </div>
-            <p className="text-sm font-semibold">
-              {(photo.likes ?? []).length}{' '}
-              {(photo.likes ?? []).length === 1 ? 'like' : 'likes'}
-            </p>
+            {recommendations && recommendations?.suggestedTags?.length > 0 && (
+              <div className="mt-3 flex flex-wrap gap-1.5">
+                {recommendations?.suggestedTags.map((tag, i) => (
+                  <span
+                    key={i}
+                    className="text-blue-600 text-sm hover:underline cursor-pointer"
+                  >
+                    {tag.startsWith('#') ? tag : `#${tag}`}
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
-          <form
-            onSubmit={handleCommentSubmit}
-            className="comment-form flex items-center px-4 py-2 border-t"
-          >
-            <input
-              type="text"
-              placeholder="Add a comment..."
-              value={newComment}
-              onChange={e => setNewComment(e.target.value)}
-              className="comment-input flex-1 text-sm py-2 focus:outline-none"
-            />
-            <button
-              type="submit"
-              disabled={!newComment.trim()}
-              className="ml-2 text-blue-500 font-semibold text-sm disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              Post
-            </button>
-          </form>
+
+          <div className="flex-1 overflow-y-auto p-4 space-y-4 comment-scroll-container">
+            {comments.map(c => (
+              <div key={c._id} className="flex space-x-2">
+                <div className="w-8 h-8 rounded-full overflow-hidden bg-gray-200">
+                  {c.user.image ? (
+                    <Image
+                      src={c.user.image}
+                      alt={c.user.username}
+                      width={32}
+                      height={32}
+                      className="object-cover"
+                    />
+                  ) : (
+                    <RxAvatar size={32} className="text-gray-500" />
+                  )}
+                </div>
+                <div>
+                  <p className="text-sm">
+                    <span className="font-bold">{c.user.username}</span>{' '}
+                    {c.text}
+                  </p>
+                  <p className="mt-1 text-xs text-gray-400">
+                    {new Date(c.createdAt).toLocaleString()}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {!isCommenting && (
+            <div className="border-t bg-white">
+              <div className="px-4 py-2 flex items-center justify-between">
+                <div className="flex items-center space-x-4">
+                  <button
+                    onClick={toggleLike}
+                    className="p-2 group active:scale-90 transition-transform"
+                  >
+                    {photo.likes.includes(session?.user?.id || '') ? (
+                      <RiHeartFill size={28} className="text-red-500" />
+                    ) : (
+                      <RiHeartAddLine size={28} className="text-gray-700" />
+                    )}
+                  </button>
+                  <button
+                    onClick={handleShare}
+                    className="p-2 group active:scale-90 transition-transform"
+                  >
+                    <FaShareAlt size={22} className="text-gray-700" />
+                  </button>
+                </div>
+                <p className="text-sm font-semibold">
+                  {photo.likes.length}{' '}
+                  {photo.likes.length === 1 ? 'like' : 'likes'}
+                </p>
+              </div>
+              <form
+                onSubmit={handleCommentSubmit}
+                className="comment-form flex items-center px-4 py-2 border-t"
+              >
+                <input
+                  type="text"
+                  placeholder="Add a comment..."
+                  value={newComment}
+                  onChange={e => setNewComment(e.target.value)}
+                  onFocus={() => setIsCommenting(true)}
+                  className="comment-input flex-1 text-sm py-2 focus:outline-none"
+                />
+                <button
+                  type="submit"
+                  disabled={!newComment.trim()}
+                  className="ml-2 text-blue-500 font-semibold text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Post
+                </button>
+              </form>
+            </div>
+          )}
         </div>
       </div>
-    </div>
+
+      {isCommenting && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg w-full max-w-md p-4">
+            <form onSubmit={handleCommentSubmit} className="flex flex-col">
+              <input
+                type="text"
+                value={newComment}
+                onChange={e => setNewComment(e.target.value)}
+                autoFocus
+                className="border p-2 mb-4 focus:outline-none"
+              />
+              <div className="flex justify-end space-x-2">
+                <button
+                  type="button"
+                  onClick={() => setIsCommenting(false)}
+                  className="px-4 py-2"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={!newComment.trim()}
+                  className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"
+                >
+                  Post
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
