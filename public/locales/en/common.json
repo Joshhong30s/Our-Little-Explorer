@@ -34,6 +34,8 @@
   "error_message": "Something went wrong. Please try again.",
   "loading": "Loading...",
   "profile": {
+    "dropImage": "Drag and drop an image here",
+    "selectFile": "Select a file",
     "title": "My Profile",
     "basicInfo": "Basic Information",
     "username": "Username:",

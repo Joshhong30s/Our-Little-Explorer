@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import dayjs from 'dayjs';
 import { useTranslation } from 'next-i18next';
+import { uploadToCloudinary } from '@/utils/cloudinaryUploader';
 
 export default function ProfilePage() {
   const { t } = useTranslation('common');
@@ -42,30 +43,18 @@ export default function ProfilePage() {
 
     setUploading(true);
     try {
-      const formData = new FormData();
-      formData.append('avatar', selectedFile);
-      formData.append('userId', session.user.id);
+      const cloudinaryUrl = await uploadToCloudinary(selectedFile);
 
-      const uploadRes = await axios.post('/api/user/upload-avatar', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-
-      const cloudinaryUrl = uploadRes.data.url;
-
-      const updateRes = await axios.put(`/api/user/${session.user.id}`, {
+      await axios.put(`/api/user/${session.user.id}`, {
         image: cloudinaryUrl,
       });
-
-      alert(t('profile.avatarUpload') + '成功！');
-      console.log('更新回傳:', updateRes.data);
 
       setCurrentImage(cloudinaryUrl);
       setPreviewUrl('');
       setSelectedFile(null);
+      alert(t('profile.avatarUpload') + '成功！');
     } catch (error) {
-      console.error(error);
+      console.error('Upload error:', error);
       alert(t('photo.uploadFail'));
     } finally {
       setUploading(false);
@@ -115,12 +104,16 @@ export default function ProfilePage() {
           )}
 
           <div className="flex-1 min-w-0">
-            <p className="text-sm text-gray-500 mb-1">{t('profile.username')}</p>
+            <p className="text-sm text-gray-500 mb-1">
+              {t('profile.username')}
+            </p>
             <p className="text-base font-medium truncate">
               {session?.user?.name || 'No name'}
             </p>
 
-            <p className="text-sm text-gray-500 mt-3 mb-1">{t('profile.email')}</p>
+            <p className="text-sm text-gray-500 mt-3 mb-1">
+              {t('profile.email')}
+            </p>
             <p className="text-base font-medium truncate">
               {session?.user?.email || t('error_message')}
             </p>
@@ -139,7 +132,9 @@ export default function ProfilePage() {
         <div className="flex flex-col items-center space-y-4">
           {previewUrl && (
             <div className="text-center">
-              <p className="text-sm text-gray-500 mb-2">{t('profile.preview')}</p>
+              <p className="text-sm text-gray-500 mb-2">
+                {t('profile.preview')}
+              </p>
               <div className="w-32 h-32 mx-auto rounded-full overflow-hidden border-2 border-blue-200">
                 <Image
                   src={previewUrl}
@@ -160,7 +155,9 @@ export default function ProfilePage() {
                 onChange={handleFileChange}
                 className="hidden"
               />
-              <span className="text-sm text-gray-600 text-center mb-2">{t('profile.dropImage')}</span>
+              <span className="text-sm text-gray-600 text-center mb-2">
+                {t('profile.dropImage')}
+              </span>
               <span className="px-4 py-2 bg-blue-50 text-blue-700 rounded font-medium text-sm hover:bg-blue-100 transition-colors">
                 {t('profile.selectFile')}
               </span>

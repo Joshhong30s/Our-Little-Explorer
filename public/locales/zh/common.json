@@ -41,6 +41,8 @@
   "error_message": "發生錯誤，請再試一次。",
   "loading": "載入中...",
   "profile": {
+    "dropImage": "拖曳圖片到這裡",
+    "selectFile": "選擇檔案",
     "title": "我的個人資料",
     "basicInfo": "基本資料",
     "username": "使用者名稱：",
