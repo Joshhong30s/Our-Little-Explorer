@@ -79,12 +79,6 @@ export default function PhotoDetail({
         setComments(res.data.comments || []);
       } catch {}
       setLoading(false);
-      try {
-        const rec = await axios.get(
-          `/api/photo/recommendations?photoId=${photoId}`
-        );
-        setRecommendations(rec.data);
-      } catch {}
     };
     fetchPhotoData();
   }, [photoId]);
@@ -175,7 +169,7 @@ export default function PhotoDetail({
         <div
           className={`
           bg-black flex items-center justify-center relative
-          ${isMobile ? 'h-[60vh]' : ''}
+          ${isMobile ? 'h-[50vh]' : ''}
           md:flex-1 md:min-w-[600px]
         `}
         >
@@ -219,70 +213,70 @@ export default function PhotoDetail({
         <div
           className={`
           flex flex-col bg-white
-          ${isMobile ? 'h-[40vh]' : 'h-full '}
-          md:flex-none md:w-[500px]
+          ${isMobile ? 'h-[50vh]' : 'h-full'}
+          md:flex-none md:w-[600px]
         `}
         >
-          {isMobile && (
-            <form
-              onSubmit={handleCommentSubmit}
-              className="comment-form flex items-center px-4 py-2 mt-2"
-            >
-              <input
-                type="text"
-                placeholder="我要留言..."
-                value={newComment}
-                onChange={e => setNewComment(e.target.value)}
-                onFocus={() => setIsCommenting(true)}
-                className="comment-input flex-1 text-sm py-2 focus:outline-none bg-gray-100 rounded-lg px-3"
-              />
-              <button
-                type="submit"
-                disabled={!newComment.trim()}
-                className="ml-2 text-blue-500 font-semibold text-sm disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                Post
-              </button>
-            </form>
-          )}
-          <div className="p-4 border-b space-y-2">
-            <div className="flex items-start space-x-3">
-              <div className="w-8 h-8 rounded-full overflow-hidden bg-gray-200">
-                <Image
-                  src={photo.userOwner.image || '/assets/avatar.jpg'}
-                  alt={photo.userOwner.username}
-                  width={32}
-                  height={32}
-                  className="object-cover"
-                />
-              </div>
-              <div>
-                <p className="text-sm">
-                  <span className="font-bold">{photo.userOwner.username}</span>{' '}
-                  {photo.instructions}
-                </p>
-                {photo.createdAt && (
-                  <p className="mt-1 text-xs text-gray-400">
-                    {new Date(photo.createdAt).toLocaleDateString()}
+          <div className="p-4 border-b">
+            <div className="flex items-center justify-between space-x-3">
+              <div className="flex items-center space-x-3">
+                <div className="w-8 h-8 rounded-full overflow-hidden bg-gray-200">
+                  <Image
+                    src={photo.userOwner.image || '/assets/avatar.jpg'}
+                    alt={photo.userOwner.username}
+                    width={32}
+                    height={32}
+                    className="object-cover"
+                  />
+                </div>
+                <div>
+                  <p className="text-sm">
+                    <span className="font-bold">
+                      {photo.userOwner.username}
+                    </span>{' '}
+                    {photo.instructions}
                   </p>
-                )}
+                  {photo.createdAt && (
+                    <p className="mt-1 text-xs text-gray-400">
+                      {new Date(photo.createdAt).toLocaleDateString()}
+                    </p>
+                  )}
+                </div>
+              </div>
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={toggleLike}
+                  className="p-1 group active:scale-90 transition-transform"
+                >
+                  {photo.likes.includes(session?.user?.id || '') ? (
+                    <RiHeartFill
+                      size={isMobile ? 20 : 24}
+                      className="text-red-500"
+                    />
+                  ) : (
+                    <RiHeartAddLine
+                      size={isMobile ? 20 : 24}
+                      className="text-gray-700"
+                    />
+                  )}
+                </button>
+                <button
+                  onClick={handleShare}
+                  className="p-1 group active:scale-90 transition-transform"
+                >
+                  <FaShareAlt
+                    size={isMobile ? 16 : 20}
+                    className="text-gray-700"
+                  />
+                </button>
               </div>
             </div>
-            {recommendations && recommendations?.suggestedTags?.length > 0 && (
-              <div className="mt-3 flex flex-wrap gap-1.5">
-                {recommendations?.suggestedTags.map((tag, i) => (
-                  <span
-                    key={i}
-                    className="text-blue-600 text-sm hover:underline cursor-pointer"
-                  >
-                    {tag.startsWith('#') ? tag : `#${tag}`}
-                  </span>
-                ))}
-              </div>
-            )}
           </div>
 
-          <div className="flex-1 overflow-y-auto p-4 space-y-4 comment-scroll-container">
+          <div
+            className="flex-1 overflow-y-auto p-4 space-y-4 comment-scroll-container"
+            style={{ WebkitOverflowScrolling: 'touch' }}
+          >
             {comments.map(c => (
               <div key={c._id} className="flex space-x-2">
                 <div className="w-8 h-8 rounded-full overflow-hidden bg-gray-200">
@@ -311,55 +305,30 @@ export default function PhotoDetail({
             ))}
           </div>
 
-          {!isMobile && (
-            <form
-              onSubmit={handleCommentSubmit}
-              className="comment-form flex items-center px-4 py-2 mt-2"
-            >
-              <input
-                type="text"
-                placeholder="我要留言..."
-                value={newComment}
-                onChange={e => setNewComment(e.target.value)}
-                onFocus={() => setIsCommenting(true)}
-                className="comment-input flex-1 text-sm py-2 focus:outline-none bg-gray-100 rounded-lg px-3"
-              />
-              <button
-                type="submit"
-                disabled={!newComment.trim()}
-                className="ml-2 text-blue-500 font-semibold text-sm disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                Post
-              </button>
-            </form>
-          )}
-
           {!isCommenting && (
             <div className={`border-t bg-white ${isMobile ? 'pb-4' : ''}`}>
-              <div className="px-4 py-2 flex items-center justify-between">
-                <div className="flex items-center space-x-4">
-                  <button
-                    onClick={toggleLike}
-                    className="p-2 group active:scale-90 transition-transform"
-                  >
-                    {photo.likes.includes(session?.user?.id || '') ? (
-                      <RiHeartFill size={28} className="text-red-500" />
-                    ) : (
-                      <RiHeartAddLine size={28} className="text-gray-700" />
-                    )}
-                  </button>
-                  <button
-                    onClick={handleShare}
-                    className="p-2 group active:scale-90 transition-transform"
-                  >
-                    <FaShareAlt size={22} className="text-gray-700" />
-                  </button>
-                </div>
-                <p className="text-sm font-semibold">
-                  {photo.likes.length}{' '}
-                  {photo.likes.length === 1 ? 'like' : 'likes'}
-                </p>
-              </div>
+              <form
+                onSubmit={handleCommentSubmit}
+                className={`comment-form flex items-center px-4 py-2 ${
+                  isMobile ? 'mt-2' : 'border-t'
+                }`}
+              >
+                <input
+                  type="text"
+                  placeholder="Add a comment..."
+                  value={newComment}
+                  onChange={e => setNewComment(e.target.value)}
+                  onFocus={() => setIsCommenting(true)}
+                  className="comment-input flex-1 text-sm py-2 focus:outline-none bg-gray-100 rounded-lg px-3"
+                />
+                <button
+                  type="submit"
+                  disabled={!newComment.trim()}
+                  className="ml-2 text-blue-500 font-semibold text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Post
+                </button>
+              </form>
             </div>
           )}
         </div>
