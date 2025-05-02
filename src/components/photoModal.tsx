@@ -93,7 +93,7 @@ export default function PhotoModal({
         >
           {isMobile ? (
             <div className="absolute top-0 left-0 right-0 z-50 flex justify-between items-center px-4 py-3 bg-white/90 backdrop-blur">
-              <div className="w-8" /> {/* Spacer */}
+              <div className="w-8" /> 
               <div className="w-20 h-1 rounded-full bg-gray-300 mx-auto" />
               <IconButton
                 onClick={onClose}

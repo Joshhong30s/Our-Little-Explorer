@@ -160,6 +160,7 @@ export default function PhotoDetail({
     );
   }
 
+  console.log('photo', photo);
   return (
     <>
       <div
@@ -217,6 +218,28 @@ export default function PhotoDetail({
           md:flex-none md:w-[600px]
         `}
         >
+          {isMobile && (
+            <form
+              onSubmit={handleCommentSubmit}
+              className="comment-form flex items-center px-4 py-2 mt-2"
+            >
+              <input
+                type="text"
+                placeholder="我要留言..."
+                value={newComment}
+                onChange={e => setNewComment(e.target.value)}
+                onFocus={() => setIsCommenting(true)}
+                className="comment-input flex-1 text-sm py-2 focus:outline-none bg-gray-100 rounded-lg px-3"
+              />
+              <button
+                type="submit"
+                disabled={!newComment.trim()}
+                className="ml-2 text-blue-500 font-semibold text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Post
+              </button>
+            </form>
+          )}
           <div className="p-4 border-b">
             <div className="flex items-center justify-between space-x-3">
               <div className="flex items-center space-x-3">
@@ -236,11 +259,6 @@ export default function PhotoDetail({
                     </span>{' '}
                     {photo.instructions}
                   </p>
-                  {photo.createdAt && (
-                    <p className="mt-1 text-xs text-gray-400">
-                      {new Date(photo.createdAt).toLocaleDateString()}
-                    </p>
-                  )}
                 </div>
               </div>
               <div className="flex items-center space-x-2">
@@ -297,15 +315,12 @@ export default function PhotoDetail({
                     <span className="font-bold">{c.user.username}</span>{' '}
                     {c.text}
                   </p>
-                  <p className="mt-1 text-xs text-gray-400">
-                    {new Date(c.createdAt).toLocaleString()}
-                  </p>
                 </div>
               </div>
             ))}
           </div>
 
-          {!isCommenting && (
+          {!isMobile && (
             <div className={`border-t bg-white ${isMobile ? 'pb-4' : ''}`}>
               <form
                 onSubmit={handleCommentSubmit}
