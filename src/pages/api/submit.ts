@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { google } from 'googleapis';
 import { GoogleAuth } from 'google-auth-library';
+import { validateAndSanitizeName, validateAndSanitizeMessage, sanitizeUrl } from '../../utils/sanitizer';
 
 type FormData = {
   avatar: string;
@@ -34,6 +35,26 @@ export default async function handler(
 
   const range = 'message!A:D';
   const body: FormData = req.body;
+  
+  // Validate and sanitize inputs
+  const nameValidation = validateAndSanitizeName(body.name);
+  if (!nameValidation.isValid) {
+    return res.status(400).json({ 
+      status: 'error', 
+      message: nameValidation.error 
+    });
+  }
+  
+  const messageValidation = validateAndSanitizeMessage(body.message);
+  if (!messageValidation.isValid) {
+    return res.status(400).json({ 
+      status: 'error', 
+      message: messageValidation.error 
+    });
+  }
+  
+  const sanitizedAvatar = sanitizeUrl(body.avatar);
+  
   const time = new Intl.DateTimeFormat('zh-TW', {
     year: 'numeric',
     month: 'numeric',
@@ -49,7 +70,7 @@ export default async function handler(
       range,
       valueInputOption: 'USER_ENTERED',
       requestBody: {
-        values: [[time, body.avatar, body.name, body.message]],
+        values: [[time, sanitizedAvatar, nameValidation.sanitized, messageValidation.sanitized]],
       },
     });
 

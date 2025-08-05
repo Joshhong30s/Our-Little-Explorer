@@ -4,6 +4,7 @@ import Select from 'react-select';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
+import SafeText from '../components/common/SafeText';
 
 const MenuList = (props: any) => (
   <div className="grid grid-cols-4 gap-2">{props.children}</div>
@@ -215,12 +216,18 @@ export default function Message() {
                             height={40}
                             className="rounded-full mr-3"
                           />
-                          <h3 className="font-semibold text-lg">{name}</h3>
+                          <h3 className="font-semibold text-lg">
+                            <SafeText>{name}</SafeText>
+                          </h3>
                         </div>
-                        <p className="text-gray-500 text-sm">{date}</p>
+                        <p className="text-gray-500 text-sm">
+                          <SafeText>{date}</SafeText>
+                        </p>
                       </div>
-                      <p className="text-gray-700 whitespace-pre-line">
-                        {message}
+                      <p className="text-gray-700">
+                        <SafeText allowLineBreaks={true}>
+                          {message}
+                        </SafeText>
                       </p>
                     </div>
                   ))

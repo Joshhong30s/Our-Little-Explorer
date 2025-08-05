@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import dbConnect from '../../../../utils/dbConnect';
 import { CommentModel } from '../../../../types/comment';
 import { getToken } from 'next-auth/jwt';
+import { validateAndSanitizeMessage } from '../../../../utils/sanitizer';
 
 const secret = process.env.NEXTAUTH_SECRET;
 
@@ -26,12 +27,20 @@ export default async function handler(
   if (!text) {
     return res.status(400).json({ message: 'Missing comment text' });
   }
+  
+  // Validate and sanitize comment text
+  const textValidation = validateAndSanitizeMessage(text);
+  if (!textValidation.isValid) {
+    return res.status(400).json({ 
+      message: textValidation.error 
+    });
+  }
 
   try {
     const newComment = await CommentModel.create({
       photo: photoId,
       user: token.id,
-      text,
+      text: textValidation.sanitized,
     });
 
     const comments = await CommentModel.find({ photo: photoId })

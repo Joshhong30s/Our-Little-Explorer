@@ -37,7 +37,7 @@ export default function Navbar() {
                   href="/"
                   className="block py-4 px-6 md:px-4 md:py-2 transition-all duration-200 ease-in-out active:scale-95"
                 >
-                  {t('navbar.allPhotos')}
+                  {t('nav.home')}
                 </Link>
               </li>
               <li className="block hover:bg-gray-50 md:hover:bg-transparent md:hover:text-teal-980">
@@ -46,7 +46,7 @@ export default function Navbar() {
                     href="/writePhoto"
                     className="block py-4 px-6 md:px-4 md:py-2 transition-all duration-200 ease-in-out active:scale-95"
                   >
-                    {t('navbar.uploadPhoto')}
+                    {t('nav.writePhoto')}
                   </Link>
                 ) : (
                   <button
@@ -55,7 +55,31 @@ export default function Navbar() {
                     title={t('auth.loginToAccess')}
                   >
                     <span className="flex items-center gap-2">
-                      {t('navbar.uploadPhoto')}
+                      {t('nav.writePhoto')}
+                      <HiLockClosed
+                        className="inline-block text-gray-400 group-hover:text-teal-980"
+                        size={16}
+                      />
+                    </span>
+                  </button>
+                )}
+              </li>
+              <li className="block hover:bg-gray-50 md:hover:bg-transparent md:hover:text-teal-980">
+                {session ? (
+                  <Link
+                    href="/storyboard"
+                    className="block py-4 px-6 md:px-4 md:py-2 transition-all duration-200 ease-in-out active:scale-95"
+                  >
+                    {t('nav.story')}
+                  </Link>
+                ) : (
+                  <button
+                    onClick={() => alert(t('auth.loginRequired'))}
+                    className="block w-full text-left py-4 px-6 md:px-4 md:py-2 transition-all duration-200 ease-in-out active:scale-95 text-gray-500 hover:text-teal-980 group"
+                    title={t('auth.loginToAccess')}
+                  >
+                    <span className="flex items-center gap-2">
+                      {t('nav.storyboard')}
                       <HiLockClosed
                         className="inline-block text-gray-400 group-hover:text-teal-980"
                         size={16}
@@ -70,7 +94,7 @@ export default function Navbar() {
                     href="/savedPhoto"
                     className="block py-4 px-6 md:px-4 md:py-2 transition-all duration-200 ease-in-out active:scale-95"
                   >
-                    {t('navbar.favorites')}
+                    {t('nav.savedPhotos', 'Saved Photos')}
                   </Link>
                 ) : (
                   <button
@@ -79,7 +103,7 @@ export default function Navbar() {
                     title={t('auth.loginToAccess')}
                   >
                     <span className="flex items-center gap-2">
-                      {t('navbar.favorites')}
+                      {t('nav.savedPhotos', 'Saved Photos')}
                       <HiLockClosed
                         className="inline-block text-gray-400 group-hover:text-teal-980"
                         size={16}
@@ -93,7 +117,7 @@ export default function Navbar() {
                   href="/message"
                   className="block py-4 px-6 md:px-4 md:py-2 transition-all duration-200 ease-in-out active:scale-95"
                 >
-                  {t('navbar.leaveMessage')}
+                  {t('nav.leaveMessage', 'Leave Message')}
                 </Link>
               </li>
               {session && (
@@ -102,7 +126,7 @@ export default function Navbar() {
                     href="/profile"
                     className="block py-4 px-6 md:px-4 md:py-2 transition-all duration-200 ease-in-out active:scale-95"
                   >
-                    {t('navbar.profile')}
+                    {t('nav.profile')}
                   </Link>
                 </li>
               )}
@@ -112,7 +136,7 @@ export default function Navbar() {
                     onClick={logout}
                     className="block w-full text-left py-4 px-6 md:px-4 md:py-2 transition-all duration-200 ease-in-out active:scale-95"
                   >
-                    {t('navbar.logout')}
+                    {t('nav.logout')}
                   </button>
                 ) : (
                   <>
@@ -120,7 +144,7 @@ export default function Navbar() {
                       href="/login"
                       className="block py-4 px-6 md:px-4 md:py-2 transition-all duration-200 ease-in-out active:scale-95"
                     >
-                      {t('navbar.login')}
+                      {t('nav.login')}
                     </Link>
                   </>
                 )}
@@ -130,7 +154,9 @@ export default function Navbar() {
                   onClick={() => {
                     const newLang = i18n.language === 'en' ? 'zh' : 'en';
                     i18n.changeLanguage(newLang);
-                    router.push(router.pathname, router.asPath, { locale: newLang });
+                    router.push(router.pathname, router.asPath, {
+                      locale: newLang,
+                    });
                   }}
                   className="block w-full text-left py-4 px-6 md:px-4 md:py-2 transition-all duration-200 ease-in-out active:scale-95"
                 >
@@ -143,7 +169,7 @@ export default function Navbar() {
                     href="/register"
                     className="block py-4 px-6 md:px-4 md:py-2 transition-all duration-200 ease-in-out active:scale-95"
                   >
-                    {t('navbar.register')}
+                    {t('nav.register')}
                   </Link>
                 </li>
               )}
@@ -154,7 +180,7 @@ export default function Navbar() {
         <div className="flex justify-between items-center">
           <button
             className="md:hidden z-50 text-neutral-800 p-2 rounded-lg hover:bg-gray-100 active:bg-gray-200 transition-all"
-            aria-label={t('navbar.toggleMenu')}
+            aria-label={t('nav.toggleMenu', 'Toggle Menu')}
             onClick={() => setIsNavbarOpen(!isNavbarOpen)}
           >
             {isNavbarOpen ? <IoMdClose size={36} /> : <IoMdMenu size={36} />}
@@ -167,7 +193,7 @@ export default function Navbar() {
             <Image
               className="rounded-full drop-shadow-xl mx-auto p-0"
               src="/assets/baby1.svg"
-              alt={t('navbar.logoAlt')}
+              alt={t('nav.logoAlt', 'Baby Logo')}
               width={100}
               height={100}
               priority={true}
@@ -179,7 +205,9 @@ export default function Navbar() {
               onClick={() => {
                 const newLang = i18n.language === 'en' ? 'zh' : 'en';
                 i18n.changeLanguage(newLang);
-                router.push(router.pathname, router.asPath, { locale: newLang });
+                router.push(router.pathname, router.asPath, {
+                  locale: newLang,
+                });
               }}
               className="py-2 px-4 hover:text-teal-980 transition-colors duration-200 border rounded-md hover:bg-gray-50"
             >
@@ -189,14 +217,14 @@ export default function Navbar() {
               href="/message"
               className="py-2 px-4 hover:text-teal-980 transition-colors duration-200"
             >
-              {t('navbar.leaveMessage')}
+              {t('nav.leaveMessage', 'Leave Message')}
             </Link>
             {session ? (
               <Link
                 href="/profile"
                 className="py-2 px-4 hover:text-teal-980 transition-colors duration-200"
               >
-                {t('navbar.profile')}
+                {t('nav.profile')}
               </Link>
             ) : (
               <button
@@ -204,7 +232,7 @@ export default function Navbar() {
                 className="py-2 px-4 text-gray-500 hover:text-teal-980 transition-colors duration-200 group flex items-center gap-2"
                 title={t('auth.loginToAccess')}
               >
-                {t('navbar.profile')}
+                {t('nav.profile')}
                 <HiLockClosed
                   className="inline-block text-gray-400 group-hover:text-teal-980"
                   size={16}

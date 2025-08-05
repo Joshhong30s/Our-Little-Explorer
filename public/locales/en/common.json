@@ -31,6 +31,13 @@
     "resetPasswordEmailInvalid": "Invalid email",
     "resetPasswordEmailNotFound": "Email not found"
   },
+  "common": {
+    "previous": "Previous",
+    "next": "Next",
+    "cancel": "Cancel",
+    "save": "Save",
+    "saving": "Saving..."
+  },
   "error_message": "Something went wrong. Please try again.",
   "loading": "Loading...",
   "profile": {
@@ -122,7 +129,8 @@
     "register": "Register",
     "logout": "Logout",
     "writePhoto": "Write Photo",
-    "storyboard": "Create Story",
+    "story": "Create Story",
+    "storyboard": "Storyboard",
     "savedPhotos": "Saved Photos",
     "leaveMessage": "Leave Message",
     "toggleMenu": "Toggle Menu",
@@ -133,8 +141,21 @@
     "loginToAccess": "Login to access"
   },
   "storyboard": {
+    "previous": "Previous",
+    "next": "Next",
     "title": "Create Your Story",
+    "album": {
+      "title": "Story Albums",
+      "delete": "Delete Album"
+    },
+    "close": "Close",
+    "tabs": {
+      "create": "Create Story",
+      "collection": "Story Collection"
+    },
     "selectPhotos": "Select Photos",
+    "arrangeAndNarrate": "Arrange & Narrate",
+    "styleAndGenerate": "Style & Generate",
     "preview": "Preview",
     "controls": "Story Settings",
     "chooseStyle": "Choose Story Style",
@@ -146,15 +167,46 @@
     "gridView": "Grid View",
     "timelineView": "Timeline View",
     "noPhotosSelected": "Select photos from the left panel",
-    "generate": "Generate Story",
-    "generating": "Generating...",
-    "selectPhotosFirst": "Select photos to generate a story",
     "selectedCount": "{{count}} photos selected",
-    "copy": "Copy to clipboard",
-    "share": "Share story",
-    "regenerate": "Regenerate story",
-    "copied": "Copied to clipboard!",
-    "shared": "Story shared successfully!",
+    "generating": "Generating...",
+    "generate": "Generate Story",
+    "selectPhotosFirst": "Select photos to generate a story",
+    "collection": {
+      "empty": "No stories yet. Start creating your first story!",
+      "versions": "{{count}} versions",
+      "viewStory": "View Story",
+      "createNew": "Create New Version",
+      "edit": "Edit Story",
+      "delete": "Delete Story",
+      "deleteConfirm": "Are you sure you want to delete this story? This action cannot be undone.",
+      "milestone": {
+        "firstYear": "First Year",
+        "toddler": "Toddler",
+        "preschool": "Preschool"
+      }
+    },
+    "story": {
+      "save": "Save Story",
+      "saved": "Story Saved",
+      "regenerate": "Regenerate",
+      "new": "Create New Story",
+      "share": "Share Story",
+      "copy": "Copy to Clipboard",
+      "edit": "Edit Story",
+      "delete": "Delete Story"
+    },
+    "alerts": {
+      "storySaved": "Story saved successfully!",
+      "confirmDeleteAlbum": "Are you sure you want to delete this album and all its stories? This action cannot be undone.",
+      "generateFailed": "Failed to generate story",
+      "saveFailed": "Failed to save story",
+      "copied": "Copied to clipboard!",
+      "shared": "Story shared successfully!",
+      "albumDeleted": "Story album deleted successfully!",
+      "albumUpdated": "Story album updated successfully!",
+      "unsavedChanges": "You have unsaved changes. Are you sure you want to close?",
+      "storyDeleted": "Story deleted successfully!"
+    },
     "errors": {
       "generateFailed": "Failed to generate story. Please try again.",
       "photoLoadFailed": "Failed to load photos. Please refresh the page.",
@@ -165,7 +217,47 @@
       "timeout": "Request timeout. Please try again.",
       "rateLimit": "API rate limit exceeded. Please try again later.",
       "invalidStyle": "Invalid story style selected",
-      "noPhotos": "Please select photos to generate a story"
+      "noPhotos": "Please select photos to generate a story",
+      "invalidPhotos": "Some photos have invalid data. Please try again.",
+      "noStory": "No story generated yet.",
+      "updateFailed": "Failed to update story.",
+      "deleteFailed": "Failed to delete."
+    },
+    "narration": {
+      "title": "Add Narration for Photo",
+      "placeholder": "Type narration or record audio...",
+      "startRecording": "Start Recording",
+      "stopRecording": "Stop Recording",
+      "recordingInProgress": "Recording...",
+      "recordingFinished": "Recording finished. Press Save or type to edit.",
+      "recordedAudioPreview": "Recorded audio preview",
+      "transcribing": "Transcribing audio...",
+      "sttError": "Failed to transcribe audio.",
+      "sttErrorManual": "Transcription failed. Please type manually or try recording again.",
+      "micNotSupported": "Microphone not supported by your browser.",
+      "micAccessDenied": "Microphone access denied or error starting recording.",
+      "emptyError": "Please enter or record a narration.",
+      "saveButton": "Save Narration"
+    }
+  },
+  "photoQA": {
+    "title": "Ask About This Photo",
+    "placeholder": "Ask a question about this photo...",
+    "submit": "Ask",
+    "loading": "Thinking...",
+    "photoAlt": "Photo to analyze",
+    "previousQuestion": "Question",
+    "features": {
+      "color_detection": "Color Analysis",
+      "environment_analysis": "Environment Analysis",
+      "face_detection": "Face Detection",
+      "object_detection": "Object Detection",
+      "text_detection": "Text Detection",
+      "landmark_detection": "Landmark Detection"
+    },
+    "errors": {
+      "failed": "Failed to get answer",
+      "unknown": "An unknown error occurred"
     }
   }
 }
