@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { signOut } from 'next-auth/react';
 import { useSession } from 'next-auth/react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { IoMdMenu, IoMdClose } from 'react-icons/io';
 import { HiLockClosed } from 'react-icons/hi';
 import { useTranslation } from 'react-i18next';
@@ -19,6 +19,19 @@ export default function Navbar() {
   const logout = () => {
     signOut({ callbackUrl: '/login' });
   };
+
+  // Auto close mobile menu on route change
+  useEffect(() => {
+    const handleRouteChangeStart = () => {
+      setIsNavbarOpen(false);
+    };
+
+    router.events.on('routeChangeStart', handleRouteChangeStart);
+    
+    return () => {
+      router.events.off('routeChangeStart', handleRouteChangeStart);
+    };
+  }, [router]);
 
   return (
     <nav className="bg-white mx-auto text-xl text-black px-4 md:px-6 py-4 items-center shadow-md">

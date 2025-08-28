@@ -291,15 +291,24 @@ export default function WritePhoto() {
               </div>
               <div>
                 <label htmlFor="growingTime" className="block text-sm font-medium text-gray-700 mb-2">
-                  拍攝時間
+                  拍攝時間 <span className="text-sm text-gray-500">(點選選擇日期)</span>
                 </label>
-                <input
-                  type="date"
-                  id="growingTime"
-                  name="growingTime"
-                  onChange={handleDateChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base"
-                />
+                <div className="relative">
+                  <input
+                    type="date"
+                    id="growingTime"
+                    name="growingTime"
+                    onChange={handleDateChange}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base appearance-none cursor-pointer"
+                    placeholder="點擊選擇拍攝日期"
+                  />
+                  <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                    <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                  </div>
+                </div>
+                <p className="text-xs text-gray-500 mt-1">如未選擇，將使用當前日期</p>
               </div>
             </div>
 
