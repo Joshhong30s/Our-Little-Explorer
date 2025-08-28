@@ -11,6 +11,7 @@ import { appWithTranslation } from 'next-i18next';
 import '@/i18n';
 import { SessionProvider } from 'next-auth/react';
 import { useTranslation } from 'next-i18next';
+import { useEffect } from 'react';
 
 const klee = Klee_One({
   weight: '600',
@@ -24,6 +25,21 @@ const Noto = Noto_Sans_TC({
 
 function App({ Component, pageProps }: AppProps) {
   const { t } = useTranslation('common');
+  
+  // Register service worker for PWA
+  useEffect(() => {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker
+        .register('/sw.js')
+        .then((registration) => {
+          console.log('SW registered: ', registration);
+        })
+        .catch((registrationError) => {
+          console.log('SW registration failed: ', registrationError);
+        });
+    }
+  }, []);
+  
   return (
     <SessionProvider session={pageProps.session}>
       <div className={Noto.className}>
