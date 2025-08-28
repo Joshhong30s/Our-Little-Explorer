@@ -8,6 +8,7 @@ import { MongoDBAdapter } from '@auth/mongodb-adapter';
 import bcrypt from 'bcrypt';
 
 import clientPromise from '@/utils/mongodb';
+import dbConnect from '@/utils/dbConnect';
 import { UserModel } from '@/types/users';
 import type { NextAuthOptions } from 'next-auth';
 
@@ -79,28 +80,37 @@ export const authOptions: NextAuthOptions = {
         return true;
       }
 
-      const existingUser = await UserModel.findOne({ email: user.email });
+      try {
+        await dbConnect();
+        
+        const existingUser = await UserModel.findOne({ email: user.email }).lean();
 
-      if (existingUser) {
-        console.log('Existing user (OAuth):', existingUser);
+        if (existingUser) {
+          console.log('Existing user (OAuth):', existingUser);
 
-        if (!existingUser.providers.includes(account?.provider)) {
-          existingUser.providers.push(account?.provider);
-          await existingUser.save();
+          const userDoc = existingUser as any;
+          if (!userDoc.providers?.includes(account?.provider)) {
+            await UserModel.updateOne(
+              { _id: userDoc._id },
+              { $addToSet: { providers: account?.provider } }
+            );
+          }
+
+          return true;
+        } else {
+          const newUser = await UserModel.create({
+            email: user.email || '',
+            username: user.name || '',
+            image: user.image || '',
+            providers: [account?.provider],
+          });
+
+          console.log('New user created:', newUser._id);
+          return true;
         }
-
-        return true;
-      } else {
-        const newUser = new UserModel({
-          email: user.email || '',
-          username: user.name || '',
-          image: user.image || '',
-          providers: [account?.provider],
-        });
-
-        await newUser.save();
-        console.log('New user created:', newUser);
-        return true;
+      } catch (error) {
+        console.error('SignIn callback error:', error);
+        return false;
       }
     },
 
@@ -110,11 +120,17 @@ export const authOptions: NextAuthOptions = {
         token.image = user.image;
       }
 
-      if (token.id) {
-        const dbUser = await UserModel.findById(token.id).lean();
-        if (dbUser) {
-          const userDoc = dbUser as { createdAt?: Date };
-          token.createdAt = userDoc.createdAt;
+      // Only fetch user data on first sign in, not on every JWT refresh
+      if (user && token.id) {
+        try {
+          await dbConnect();
+          const dbUser = await UserModel.findById(token.id).select('createdAt').lean();
+          if (dbUser) {
+            const userDoc = dbUser as any;
+            token.createdAt = userDoc.createdAt;
+          }
+        } catch (error) {
+          console.error('JWT callback error:', error);
         }
       }
 

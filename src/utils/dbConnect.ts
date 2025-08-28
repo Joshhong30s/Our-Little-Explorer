@@ -1,9 +1,9 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
-const MONGODB_URI = process.env.MONGODB_URI || "";
+const MONGODB_URI = process.env.MONGODB_URI || '';
 
 if (!MONGODB_URI) {
-  throw new Error("Please define the MONGODB_URI environment variable.");
+  throw new Error('Please define the MONGODB_URI environment variable.');
 }
 
 interface MongooseCache {
@@ -26,13 +26,22 @@ async function dbConnect() {
   globalWithMongoose.mongoose = cache;
 
   if (cache.conn) {
-    console.log("using existing mongoose connection");
+    console.log('using existing mongoose connection');
     return cache.conn;
   }
 
   if (!cache.promise) {
-    console.log("creating new mongoose connection");
-    cache.promise = mongoose.connect(MONGODB_URI).then((mongoose) => mongoose);
+    console.log('creating new mongoose connection');
+    const options = {
+      bufferCommands: false,
+      maxPoolSize: 10,
+      serverSelectionTimeoutMS: 5000,
+      socketTimeoutMS: 45000,
+      family: 4,
+    };
+    cache.promise = mongoose
+      .connect(MONGODB_URI, options)
+      .then(mongoose => mongoose);
   }
   cache.conn = await cache.promise;
   return cache.conn;
