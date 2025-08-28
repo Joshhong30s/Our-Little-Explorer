@@ -188,7 +188,7 @@ export default function WritePhoto() {
                 />
               ) : (
                 <div className="relative">
-                  <div className="relative w-full aspect-video rounded-lg overflow-hidden bg-gray-100">
+                  <div className="relative w-full aspect-[3/4] md:aspect-[4/5] lg:aspect-[3/4] rounded-lg overflow-hidden bg-gray-100">
                     {file && file.type.startsWith('video/') ? (
                       <video
                         src={URL.createObjectURL(file)}
