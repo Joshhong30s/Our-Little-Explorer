@@ -16,8 +16,8 @@ export default function Login() {
   useEffect(() => {
     // Detect if running in PWA mode
     const isStandalone = window.matchMedia('(display-mode: standalone)').matches || 
-                        ('standalone' in window.navigator && window.navigator.standalone);
-    setIsPWA(isStandalone);
+                        ('standalone' in window.navigator && (window.navigator as any).standalone);
+    setIsPWA(Boolean(isStandalone));
   }, []);
 
   const handleCredentialsSignIn = async (e: { preventDefault: () => void }) => {

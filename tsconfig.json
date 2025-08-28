@@ -18,7 +18,7 @@
       "@/*": ["src/*"]
     },
     "incremental": true,
-    "typeRoots": ["./types", "./node_modules/@types"]
+    "typeRoots": ["./node_modules/@types", "./types"]
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "types/next-auth.d.ts"],
   "exclude": ["node_modules"]
