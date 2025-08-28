@@ -2,8 +2,8 @@ import mongoose, { Schema } from 'mongoose';
 
 const PhotoSchema = new Schema({
   name: { type: String, required: true, unique: true },
-  location: { type: String, required: true },
-  instructions: { type: String, required: true },
+  location: { type: String, required: false },
+  instructions: { type: String, required: false },
   imageUrl: { type: String, required: false },
   growingTime: { type: Schema.Types.Mixed, required: true },
   userOwner: {

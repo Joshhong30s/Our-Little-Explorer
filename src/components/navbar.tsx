@@ -67,30 +67,6 @@ export default function Navbar() {
               <li className="block hover:bg-gray-50 md:hover:bg-transparent md:hover:text-teal-980">
                 {session ? (
                   <Link
-                    href="/storyboard"
-                    className="block py-4 px-6 md:px-4 md:py-2 transition-all duration-200 ease-in-out active:scale-95"
-                  >
-                    {t('nav.story')}
-                  </Link>
-                ) : (
-                  <button
-                    onClick={() => alert(t('auth.loginRequired'))}
-                    className="block w-full text-left py-4 px-6 md:px-4 md:py-2 transition-all duration-200 ease-in-out active:scale-95 text-gray-500 hover:text-teal-980 group"
-                    title={t('auth.loginToAccess')}
-                  >
-                    <span className="flex items-center gap-2">
-                      {t('nav.storyboard')}
-                      <HiLockClosed
-                        className="inline-block text-gray-400 group-hover:text-teal-980"
-                        size={16}
-                      />
-                    </span>
-                  </button>
-                )}
-              </li>
-              <li className="block hover:bg-gray-50 md:hover:bg-transparent md:hover:text-teal-980">
-                {session ? (
-                  <Link
                     href="/savedPhoto"
                     className="block py-4 px-6 md:px-4 md:py-2 transition-all duration-200 ease-in-out active:scale-95"
                   >

@@ -123,18 +123,14 @@ export default function WritePhoto() {
       return;
     }
 
-    const token = session.user.accessToken || session?.user?.id;
-    if (!token) {
-      alert(t('photo.noAccessToken'));
-      return;
-    }
-
     try {
-      await axios.post('/api/photo/photo', photo, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const photoData = {
+        ...photo,
+        userOwner: userID,
+        location: photo.location || '',
+        instructions: photo.instructions || ''
+      };
+      await axios.post('/api/photo/photo', photoData);
       window.location.replace('/');
     } catch (error) {
       console.error(error);
