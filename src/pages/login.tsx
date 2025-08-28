@@ -106,16 +106,6 @@ export default function Login() {
                 </span>
               </button>
             </div>
-            <div className="h-12 w-full">
-              <button
-                onClick={() => signIn('line', { callbackUrl: '/' })}
-                className="w-full h-full flex items-center justify-center bg-[#06C755] hover:bg-[#05B74C] text-white rounded-lg transition-colors"
-              >
-                <span className="text-lg font-bold">
-                  {t('user.loginWithLine')}
-                </span>
-              </button>
-            </div>
           </div>
 
           <div className="mt-12 text-xl text-center">

@@ -1,7 +1,6 @@
 import NextAuth from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import FacebookProvider from 'next-auth/providers/facebook';
-import LineProvider from 'next-auth/providers/line';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
 import { MongoDBAdapter } from '@auth/mongodb-adapter';
@@ -29,16 +28,6 @@ export const authOptions: NextAuthOptions = {
     FacebookProvider({
       clientId: process.env.FACEBOOK_CLIENT_ID!,
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET!,
-    }),
-    LineProvider({
-      clientId: process.env.LINE_CLIENT_ID!,
-      clientSecret: process.env.LINE_CLIENT_SECRET!,
-      authorization: {
-        params: {
-          scope: 'profile openid email',
-          response_type: 'code',
-        },
-      },
     }),
     CredentialsProvider({
       name: 'Credentials',

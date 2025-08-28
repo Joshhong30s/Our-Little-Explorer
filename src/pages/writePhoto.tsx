@@ -128,7 +128,8 @@ export default function WritePhoto() {
         ...photo,
         userOwner: userID,
         location: photo.location || '',
-        instructions: photo.instructions || ''
+        instructions: photo.instructions || '',
+        growingTime: photo.growingTime || dayjs().toISOString()
       };
       await axios.post('/api/photo/photo', photoData);
       window.location.replace('/');

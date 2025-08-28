@@ -14,7 +14,6 @@
     "passWord": "Password",
     "errorMessage": "Incorrect username or password",
     "loginWithGoogle": "Login with Google",
-    "loginWithLine": "Login with Line",
     "noAccountMessage": "Don't have an account?",
     "registerHere": "Register here",
     "loginAlt": "Login",

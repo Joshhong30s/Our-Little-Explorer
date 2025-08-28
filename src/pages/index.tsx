@@ -42,7 +42,29 @@ export default function Home() {
         const diffMonths = Math.floor(growingTime % 12);
         return `${diffYears}Y${diffMonths}M`;
       } else {
+        // Handle empty string or invalid date - use current date as fallback
+        if (!growingTime || growingTime === '') {
+          const date = dayjs();
+          const diffYears = date.diff(babyBirthday, 'year');
+          const diffMonths = date.diff(
+            babyBirthday.add(diffYears, 'year'),
+            'month'
+          );
+          return `${diffYears}Y${diffMonths}M`;
+        }
+        
         const date = dayjs(growingTime);
+        if (!date.isValid()) {
+          // If date is still invalid, use current date
+          const currentDate = dayjs();
+          const diffYears = currentDate.diff(babyBirthday, 'year');
+          const diffMonths = currentDate.diff(
+            babyBirthday.add(diffYears, 'year'),
+            'month'
+          );
+          return `${diffYears}Y${diffMonths}M`;
+        }
+        
         const diffYears = date.diff(babyBirthday, 'year');
         const diffMonths = date.diff(
           babyBirthday.add(diffYears, 'year'),
