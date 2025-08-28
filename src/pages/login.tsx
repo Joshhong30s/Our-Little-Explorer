@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
@@ -11,6 +11,14 @@ export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(false);
+  const [isPWA, setIsPWA] = useState(false);
+
+  useEffect(() => {
+    // Detect if running in PWA mode
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || 
+                        ('standalone' in window.navigator && window.navigator.standalone);
+    setIsPWA(isStandalone);
+  }, []);
 
   const handleCredentialsSignIn = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -25,6 +33,15 @@ export default function Login() {
       setError(true);
     } else {
       window.location.replace('/');
+    }
+  };
+
+  const handleOAuthSignIn = (provider: string) => {
+    if (isPWA) {
+      // Open OAuth in browser for PWA users
+      window.open(`${window.location.origin}/api/auth/signin/${provider}?callbackUrl=${window.location.origin}`, '_blank');
+    } else {
+      signIn(provider, { callbackUrl: '/' });
     }
   };
 
@@ -99,13 +116,22 @@ export default function Login() {
             <div className="h-12 w-full">
               <button
                 className="w-full h-full flex items-center justify-center bg-[#000000] hover:bg-gray-700 text-white rounded-lg transition-colors"
-                onClick={() => signIn('google', { callbackUrl: '/' })}
+                onClick={() => handleOAuthSignIn('google')}
               >
                 <span className="text-lg font-bold">
                   {t('user.loginWithGoogle')}
+                  {isPWA && <span className="text-sm ml-2">(將開啟瀏覽器)</span>}
                 </span>
               </button>
             </div>
+            {isPWA && (
+              <div className="text-center">
+                <p className="text-sm text-gray-600 bg-blue-50 p-3 rounded-lg">
+                  💡 在 App 模式下，Google 登入會在瀏覽器中開啟。<br/>
+                  建議使用帳號密碼登入以獲得最佳體驗。
+                </p>
+              </div>
+            )}
           </div>
 
           <div className="mt-12 text-xl text-center">

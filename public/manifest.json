@@ -3,7 +3,7 @@
   "short_name": "小寶日記", 
   "description": "記錄寶寶珍貴的成長時刻",
   "start_url": "/",
-  "display": "standalone",
+  "display": "minimal-ui",
   "background_color": "#ffffff",
   "theme_color": "#3b82f6",
   "orientation": "portrait-primary",
